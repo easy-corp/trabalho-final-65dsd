@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    tools:context=".TelaServidores">
+    android:background="@color/white"
+    tools:context=".TelaCadastro">
 
     <LinearLayout
         android:id="@+id/layHeader"
@@ -32,29 +32,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="17dp"
+            android:layout_marginRight="90dp"
             android:layout_weight="1"
-            android:text="Localizar Servidor"
+            android:text="Cadastro de Usuário"
             android:textAlignment="center"
             android:textColor="#FFFFFF" />
 
-        <ImageView
-            android:id="@+id/icUsuario"
-            android:layout_width="3dp"
-            android:layout_height="45dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="0dp"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/ic_baseline_account_circle_24" />
     </LinearLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/inpIP"
+        android:id="@+id/inpNome"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="270dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:backgroundTint="#595959"
-        android:hint="IP"
+        android:hint="Nome"
         android:textColorHint="#ED1C24"
         app:boxBackgroundColor="#3C595959"
         app:hintTextColor="#ED1C24"
@@ -63,46 +56,82 @@
         app:layout_constraintTop_toBottomOf="@+id/layHeader">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edIP"
+            android:id="@+id/edNome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#595959" />
-
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/inpPorta"
+        android:id="@+id/inpSenha"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="270dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:hint="Porta"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#595959"
+        android:hint="Senha"
         android:textColorHint="#ED1C24"
-        app:boxBackgroundColor="#3D595959"
+        app:boxBackgroundColor="#3C595959"
         app:hintTextColor="#ED1C24"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inpIP">
+        app:layout_constraintTop_toBottomOf="@+id/inpNome">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edPorta"
+            android:id="@+id/edSenha"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textPassword"
             android:textColor="#595959" />
+    </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inpConfSenha"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="21dp"
+        android:backgroundTint="#595959"
+        android:hint="Confirme a Senha"
+        android:textColorHint="#ED1C24"
+        app:boxBackgroundColor="#3C595959"
+        app:hintTextColor="#ED1C24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/inpSenha">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edConfSenha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:textColor="#595959" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/btnEntrarServidor"
+        android:id="@+id/btnCadastrar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="20dp"
         android:backgroundTint="#ED1C24"
-        android:text="Entrar no Servidor"
+        android:text="Realizar Cadastro"
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inpPorta" />
+        app:layout_constraintTop_toBottomOf="@+id/icAddImg" />
+
+    <ImageView
+        android:id="@+id/icAddImg"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="28dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/inpConfSenha"
+        app:srcCompat="@drawable/ic_baseline_add_photo_alternate_24" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

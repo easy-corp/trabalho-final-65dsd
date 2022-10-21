@@ -13,9 +13,9 @@
         android:id="@+id/imageView"
         android:layout_width="304dp"
         android:layout_height="327dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/uno" />

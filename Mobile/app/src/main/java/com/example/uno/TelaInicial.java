@@ -15,8 +15,11 @@ public class TelaInicial extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Button btnEntrar = findViewById(R.id.btnEntrar);
+        Button btnCadastrar = findViewById(R.id.btnCadastrar);
 
         btnEntrar.setOnClickListener(param -> startActivity(new Intent(this, TelaServidores.class)));
+
+        btnCadastrar.setOnClickListener(param -> startActivity(new Intent(this, TelaCadastro.class)));
 
     }
 }
