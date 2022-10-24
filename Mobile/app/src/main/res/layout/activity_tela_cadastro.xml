@@ -111,11 +111,43 @@
             android:textColor="#595959" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_weight="1"
+        android:text="Selecione Seu Avatar"
+        android:textAlignment="center"
+        android:textColor="#ED1C24"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/inpConfSenha" />
+
+    <FrameLayout
+        android:id="@+id/lay"
+        android:layout_width="222dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/listaAvatares"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
+
     <Button
         android:id="@+id/btnCadastrar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="20dp"
         android:backgroundTint="#ED1C24"
         android:text="Realizar Cadastro"
         android:textColor="#FFFFFF"
@@ -123,32 +155,5 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lay" />
-
-    <ImageView
-        android:id="@+id/icAddImg"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="28dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inpConfSenha"
-        app:srcCompat="@drawable/ic_baseline_add_photo_alternate_24" />
-
-    <FrameLayout
-        android:id="@+id/lay"
-        android:layout_width="175dp"
-        android:layout_height="167dp"
-        android:layout_marginTop="36dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/icAddImg">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/listaAvatares"
-            android:layout_width="match_parent"
-            android:layout_height="146dp"
-            android:layout_marginTop="20dp" />
-    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

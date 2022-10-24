@@ -1,6 +1,7 @@
 package com.example.uno;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -8,7 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 
-import com.example.uno.control.AdapterUsuarios;
+import com.example.uno.control.AdapterAvatares;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,17 +30,15 @@ public class TelaCadastro extends AppCompatActivity {
         listaAvatares = findViewById(R.id.listaAvatares);
         listaAvatares.setHasFixedSize(true);
 
-        layoutManager = new LinearLayoutManager(this);
+        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         listaAvatares.setLayoutManager(layoutManager);
 
-        List<String> teste = new ArrayList<>();
-        teste.add("Avatar1");
-        teste.add("Avatar2");
-        teste.add("Avatar3");
-        teste.add("Avatar4");
-
-        adapterUsuarios = new AdapterUsuarios(teste);
+        adapterUsuarios = new AdapterAvatares();
         listaAvatares.setAdapter(adapterUsuarios);
+
+        DividerItemDecoration divisor = new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL);
+        divisor.setDrawable(getDrawable(R.drawable.divisor));
+        listaAvatares.addItemDecoration(divisor);
 
         icVoltar.setOnClickListener(param -> startActivity(new Intent(this, TelaInicial.class)));
     }
