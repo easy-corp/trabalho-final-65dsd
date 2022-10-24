@@ -33,7 +33,7 @@ public class TelaCadastro extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         listaAvatares.setLayoutManager(layoutManager);
 
-        adapterUsuarios = new AdapterAvatares();
+        adapterUsuarios = new AdapterAvatares(listaAvatares);
         listaAvatares.setAdapter(adapterUsuarios);
 
         DividerItemDecoration divisor = new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL);
