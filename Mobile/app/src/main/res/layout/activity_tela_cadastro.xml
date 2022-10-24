@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layApp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -114,14 +115,14 @@
         android:id="@+id/btnCadastrar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="28dp"
         android:backgroundTint="#ED1C24"
         android:text="Realizar Cadastro"
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/icAddImg" />
+        app:layout_constraintTop_toBottomOf="@+id/lay" />
 
     <ImageView
         android:id="@+id/icAddImg"
@@ -133,5 +134,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inpConfSenha"
         app:srcCompat="@drawable/ic_baseline_add_photo_alternate_24" />
+
+    <FrameLayout
+        android:id="@+id/lay"
+        android:layout_width="175dp"
+        android:layout_height="167dp"
+        android:layout_marginTop="36dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/icAddImg">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/listaAvatares"
+            android:layout_width="match_parent"
+            android:layout_height="146dp"
+            android:layout_marginTop="20dp" />
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 
 public class TelaInicial extends AppCompatActivity {
@@ -20,6 +19,5 @@ public class TelaInicial extends AppCompatActivity {
         btnEntrar.setOnClickListener(param -> startActivity(new Intent(this, TelaServidores.class)));
 
         btnCadastrar.setOnClickListener(param -> startActivity(new Intent(this, TelaCadastro.class)));
-
     }
 }
