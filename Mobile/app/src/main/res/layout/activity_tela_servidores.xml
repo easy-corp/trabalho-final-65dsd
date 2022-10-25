@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/icVoltar"
+            android:id="@+id/icSair"
             android:layout_width="2dp"
             android:layout_height="35dp"
             android:layout_marginLeft="50dp"

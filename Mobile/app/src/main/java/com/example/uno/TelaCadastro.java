@@ -11,9 +11,6 @@ import android.widget.ImageView;
 
 import com.example.uno.control.AdapterAvatares;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class TelaCadastro extends AppCompatActivity {
 
     private RecyclerView listaAvatares;
@@ -25,7 +22,7 @@ public class TelaCadastro extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_cadastro);
 
-        ImageView icVoltar = findViewById(R.id.icVoltar);
+        ImageView icVoltar = findViewById(R.id.icSair);
 
         listaAvatares = findViewById(R.id.listaAvatares);
         listaAvatares.setHasFixedSize(true);
@@ -37,7 +34,7 @@ public class TelaCadastro extends AppCompatActivity {
         listaAvatares.setAdapter(adapterUsuarios);
 
         DividerItemDecoration divisor = new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL);
-        divisor.setDrawable(getDrawable(R.drawable.divisor));
+        divisor.setDrawable(getDrawable(R.drawable.divisor_horizontal));
         listaAvatares.addItemDecoration(divisor);
 
         icVoltar.setOnClickListener(param -> startActivity(new Intent(this, TelaInicial.class)));

@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/icVoltar"
+            android:id="@+id/icSair"
             android:layout_width="2dp"
             android:layout_height="35dp"
             android:layout_marginLeft="50dp"
@@ -53,7 +53,7 @@
             android:id="@+id/imageView3"
             android:layout_width="120dp"
             android:layout_height="110dp"
-            app:srcCompat="@drawable/ic_baseline_supervised_user_circle_24" />
+            app:srcCompat="@drawable/avatar_1_selecionado" />
 
         <LinearLayout
             android:layout_width="136dp"
@@ -62,7 +62,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/txtNomeLay"
+                android:id="@+id/txtDescServer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"

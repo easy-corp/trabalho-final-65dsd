@@ -13,7 +13,7 @@ public class TelaPerfil extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_perfil);
 
-        ImageView icVoltar = findViewById(R.id.icVoltar);
+        ImageView icVoltar = findViewById(R.id.icSair);
 
         icVoltar.setOnClickListener(param -> startActivity(new Intent(this, TelaServidores.class)));
     }

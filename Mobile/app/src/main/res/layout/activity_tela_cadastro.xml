@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/icVoltar"
+            android:id="@+id/icSair"
             android:layout_width="2dp"
             android:layout_height="35dp"
             android:layout_marginLeft="50dp"
@@ -128,7 +128,7 @@
         app:layout_constraintTop_toBottomOf="@+id/inpConfSenha" />
 
     <FrameLayout
-        android:id="@+id/lay"
+        android:id="@+id/layListaJogos"
         android:layout_width="222dp"
         android:layout_height="200dp"
         android:layout_marginTop="20dp"
@@ -154,6 +154,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lay" />
+        app:layout_constraintTop_toBottomOf="@+id/layListaJogos" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

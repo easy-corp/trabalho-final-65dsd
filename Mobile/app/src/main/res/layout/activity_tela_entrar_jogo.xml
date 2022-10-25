@@ -7,10 +7,10 @@
     tools:context=".TelaEntrarJogo">
 
     <TextView
-        android:id="@+id/txtNomeLay"
+        android:id="@+id/txtDescServer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_weight="1"
         android:text="Jogos Ativos em [SERVIDOR]"
         android:textAlignment="center"
@@ -33,7 +33,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/icVoltar"
+            android:id="@+id/icSair"
             android:layout_width="2dp"
             android:layout_height="35dp"
             android:layout_marginLeft="50dp"
@@ -61,27 +61,20 @@
             app:srcCompat="@drawable/ic_baseline_account_circle_24" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btnEntrarJogo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:backgroundTint="#ED1C24"
-        android:text="Jogar"
-        android:textColor="#FFFFFF"
+    <FrameLayout
+        android:layout_width="409dp"
+        android:layout_height="630dp"
+        android:layout_marginTop="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/viewJogos" />
+        app:layout_constraintTop_toBottomOf="@+id/txtDescServer">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/viewJogos"
-        android:layout_width="148dp"
-        android:layout_height="194dp"
-        android:layout_marginTop="28dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtNomeLay" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/listaJogos"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="25dp"/>
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
