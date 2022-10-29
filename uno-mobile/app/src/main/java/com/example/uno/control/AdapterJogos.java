@@ -16,15 +16,15 @@ import com.example.uno.R;
 import com.example.uno.TelaInicial;
 import com.example.uno.TelaJogo;
 import com.example.uno.model.Jogo;
+import com.example.uno.model.Servidor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterJogos extends RecyclerView.Adapter<AdapterJogos.ViewHolder> {
 
-    List<Jogo> jogos;
+    Servidor servidor;
     Context tela;
-
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         LinearLayout layout;
@@ -44,15 +44,9 @@ public class AdapterJogos extends RecyclerView.Adapter<AdapterJogos.ViewHolder> 
         }
     }
 
-    public AdapterJogos(Context tela) {
+    public AdapterJogos(Context tela, Servidor servidor) {
         this.tela = tela;
-
-        this.jogos = new ArrayList<>();
-
-        this.jogos.add(new Jogo("Jogos da Galera", 4, 1));
-        this.jogos.add(new Jogo("Joga comigo", 4, 2));
-        this.jogos.add(new Jogo("Chega mais", 4, 4));
-        this.jogos.add(new Jogo("Vem pra diversão", 4, 3));
+        this.servidor = servidor;
     }
 
     @Override
@@ -67,7 +61,7 @@ public class AdapterJogos extends RecyclerView.Adapter<AdapterJogos.ViewHolder> 
     //Pega o elemento na lista e joga o conteudo na view referente
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Jogo jogo = jogos.get(position);
+        Jogo jogo = this.servidor.getJogos().get(position);
 
         holder.txtJogo.setText(jogo.getNome());
         holder.txtParticipantes.setText(jogo.getPartAtual() + "/" + jogo.getPartCapacidade());
@@ -90,7 +84,7 @@ public class AdapterJogos extends RecyclerView.Adapter<AdapterJogos.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return jogos.size();
+        return this.servidor.getJogos().size();
     }
 
 }

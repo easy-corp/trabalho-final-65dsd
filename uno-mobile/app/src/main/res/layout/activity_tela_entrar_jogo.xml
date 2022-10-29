@@ -4,26 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".TelaEntrarJogo">
-
-    <TextView
-        android:id="@+id/txtDescServer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_weight="1"
-        android:text="Jogos Ativos em [SERVIDOR]"
-        android:textAlignment="center"
-        android:textColor="#ED1C24"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layHeader" />
 
     <LinearLayout
         android:id="@+id/layHeader"
-        android:layout_width="414dp"
+        android:layout_width="match_parent"
         android:layout_height="56dp"
         android:background="#ED1C24"
         android:orientation="horizontal"
@@ -36,7 +22,7 @@
             android:id="@+id/icSair"
             android:layout_width="2dp"
             android:layout_height="35dp"
-            android:layout_marginLeft="50dp"
+            android:layout_marginLeft="-15dp"
             android:layout_marginTop="10dp"
             android:layout_weight="1"
             app:srcCompat="@drawable/ic_baseline_arrow_back_ios_24" />
@@ -56,19 +42,34 @@
             android:layout_width="3dp"
             android:layout_height="45dp"
             android:layout_marginTop="5dp"
-            android:layout_marginRight="0dp"
+            android:layout_marginRight="-10dp"
             android:layout_weight="1"
             app:srcCompat="@drawable/ic_baseline_account_circle_24" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/txtDescListaJogos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_weight="1"
+        android:text="Jogos Ativos em [SERVIDOR]"
+        android:textAlignment="center"
+        android:textColor="#ED1C24"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layHeader" />
+
     <FrameLayout
-        android:layout_width="409dp"
+        android:layout_width="match_parent"
         android:layout_height="630dp"
         android:layout_marginTop="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtDescServer">
+        app:layout_constraintTop_toBottomOf="@+id/txtDescListaJogos">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listaJogos"

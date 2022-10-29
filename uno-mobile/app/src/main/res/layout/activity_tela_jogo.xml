@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".TelaJogo">
 
     <LinearLayout
         android:id="@+id/layHeader"
-        android:layout_width="414dp"
+        android:layout_width="match_parent"
         android:layout_height="56dp"
         android:background="#ED1C24"
         android:orientation="horizontal"
@@ -21,7 +22,7 @@
             android:id="@+id/icSair"
             android:layout_width="2dp"
             android:layout_height="35dp"
-            android:layout_marginLeft="50dp"
+            android:layout_marginLeft="-15dp"
             android:layout_marginTop="10dp"
             android:layout_weight="1"
             app:srcCompat="@drawable/ic_baseline_power_settings_new_24" />
@@ -43,11 +44,12 @@
         android:id="@+id/layJogadores"
         android:layout_width="match_parent"
         android:layout_height="150dp"
+        android:layout_marginTop="44dp"
         android:background="@drawable/jogo_deck"
-        app:layout_constraintBottom_toTopOf="@+id/layMesa"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/layHeader"
-        app:layout_constraintVertical_bias="0.406" >
+        app:layout_constraintTop_toTopOf="@+id/layHeader">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listaJogadoresJogo"
@@ -60,20 +62,19 @@
         android:id="@+id/layMesa"
         android:layout_width="286dp"
         android:layout_height="194dp"
+        android:layout_marginTop="11dp"
         android:background="@drawable/jogo_mesa_centro"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layHeader"
-        app:layout_constraintVertical_bias="0.44">
+        app:layout_constraintTop_toBottomOf="@+id/layIdentificadorJogadores">
 
         <ImageView
             android:id="@+id/imgMonte"
             android:layout_width="110dp"
             android:layout_height="173dp"
-            android:layout_marginTop="4dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginTop="4dp"
             app:srcCompat="@drawable/costas"
             tools:layout_editor_absoluteX="-40dp"
             tools:layout_editor_absoluteY="420dp" />
@@ -82,28 +83,27 @@
             android:id="@+id/imgCartaVirada"
             android:layout_width="109dp"
             android:layout_height="173dp"
-            android:layout_marginTop="4dp"
             android:layout_marginLeft="160dp"
+            android:layout_marginTop="4dp"
             app:srcCompat="@drawable/red_1" />
     </FrameLayout>
 
     <FrameLayout
         android:id="@+id/layDeck"
         android:layout_width="match_parent"
-        android:layout_height="170dp"
-        android:layout_marginTop="112dp"
+        android:layout_height="175dp"
+        android:layout_marginBottom="-40dp"
         android:background="@drawable/jogo_deck"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layMesa" >
+        app:layout_constraintStart_toStartOf="parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listaCartasJogador"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="8dp"
-            />
+            android:layout_marginTop="12dp" />
     </FrameLayout>
 
     <FrameLayout
@@ -147,6 +147,35 @@
             android:layout_marginTop="5dp"
             android:text="Jogadores"
             android:textColor="#FFFFFF" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/layUno"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/layIdentificadorDeck"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layMesa"
+        app:layout_constraintVertical_bias="0.52">
+
+        <ImageView
+            android:id="@+id/icUno"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:srcCompat="@drawable/ic_baseline_pan_tool_24" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="65dp"
+            android:layout_marginTop="10dp"
+            android:text="UNO!"
+            android:textColor="#ED1C24"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

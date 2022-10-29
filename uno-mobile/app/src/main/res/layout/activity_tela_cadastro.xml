@@ -10,7 +10,7 @@
 
     <LinearLayout
         android:id="@+id/layHeader"
-        android:layout_width="414dp"
+        android:layout_width="match_parent"
         android:layout_height="56dp"
         android:background="#ED1C24"
         android:orientation="horizontal"
@@ -23,7 +23,7 @@
             android:id="@+id/icSair"
             android:layout_width="2dp"
             android:layout_height="35dp"
-            android:layout_marginLeft="50dp"
+            android:layout_marginLeft="-15dp"
             android:layout_marginTop="10dp"
             android:layout_weight="1"
             app:srcCompat="@drawable/ic_baseline_arrow_back_ios_24" />

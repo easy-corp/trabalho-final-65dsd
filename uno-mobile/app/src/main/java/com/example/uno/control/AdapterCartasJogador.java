@@ -10,13 +10,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.uno.R;
 import com.example.uno.model.Carta;
+import com.example.uno.model.Jogador;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterCartasJogador extends RecyclerView.Adapter<AdapterCartasJogador.ViewHolder> {
 
-    List<Carta> deck;
+    Jogador jogador;
 
     //O tipo de view que vamos usar
     public static class ViewHolder extends  RecyclerView.ViewHolder {
@@ -31,17 +32,8 @@ public class AdapterCartasJogador extends RecyclerView.Adapter<AdapterCartasJoga
         }
     }
 
-    public AdapterCartasJogador() {
-        this.deck = new ArrayList<>();
-
-        this.deck.add(new Carta("1", "RED", R.drawable.red_1));
-        this.deck.add(new Carta("4", "BLUE", R.drawable.blue_4));
-        this.deck.add(new Carta("4", "BLUE", R.drawable.blue_4));
-        this.deck.add(new Carta("8", "GREEN", R.drawable.green_8));
-        this.deck.add(new Carta("1", "RED", R.drawable.red_1));
-        this.deck.add(new Carta("8", "GREEN", R.drawable.green_8));
-        this.deck.add(new Carta("8", "GREEN", R.drawable.green_8));
-        this.deck.add(new Carta("4", "BLUE", R.drawable.blue_4));
+    public AdapterCartasJogador(Jogador jogador) {
+        this.jogador = jogador;
     }
 
     @Override
@@ -56,14 +48,14 @@ public class AdapterCartasJogador extends RecyclerView.Adapter<AdapterCartasJoga
     //Pega o elemento na lista e joga o conteudo na view referente
     @Override
     public void onBindViewHolder(AdapterCartasJogador.ViewHolder holder, int position) {
-        Carta carta = deck.get(position);
+        Carta carta = jogador.getDeck().get(position);
 
         holder.imgCarta.setBackgroundResource(carta.getImg());
     }
 
     @Override
     public int getItemCount() {
-        return deck.size();
+        return jogador.getDeck().size();
     }
 
 }

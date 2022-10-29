@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:id="@+id/layHeader"
-        android:layout_width="414dp"
+        android:layout_width="match_parent"
         android:layout_height="56dp"
         android:background="#ED1C24"
         android:orientation="horizontal"
@@ -22,7 +22,7 @@
             android:id="@+id/icSair"
             android:layout_width="2dp"
             android:layout_height="35dp"
-            android:layout_marginLeft="50dp"
+            android:layout_marginLeft="-15dp"
             android:layout_marginTop="10dp"
             android:layout_weight="1"
             app:srcCompat="@drawable/ic_baseline_arrow_back_ios_24" />
@@ -50,41 +50,44 @@
         app:layout_constraintTop_toBottomOf="@+id/layHeader">
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/imgAvatarPerfil"
             android:layout_width="120dp"
-            android:layout_height="110dp"
-            app:srcCompat="@drawable/avatar_1_selecionado" />
+            android:layout_height="120dp"
+            android:background="@drawable/avatar_1_selecionado" />
 
         <LinearLayout
             android:layout_width="136dp"
             android:layout_height="112dp"
+            android:layout_marginLeft="2dp"
             android:layout_marginStart="4dp"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/txtDescServer"
+                android:id="@+id/txtDescListaJogos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:text="Luis Felipe"
+                android:text="Nome"
                 android:textColor="#ED1C24"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/txtJogos"
+                android:id="@+id/txtPerfilJogos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="10 Jogos"
+                android:layout_marginLeft="1dp"
+                android:text="Jogos"
                 android:textColor="#ED1C24"
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/txtVitórias"
+                android:id="@+id/txtPerfilVitorias"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="6 Vitórias"
+                android:layout_marginLeft="1dp"
+                android:text="Vitórias"
                 android:textColor="#ED1C24"
                 android:textSize="16sp" />
         </LinearLayout>
