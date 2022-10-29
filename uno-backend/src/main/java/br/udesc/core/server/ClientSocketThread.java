@@ -29,10 +29,15 @@ public class ClientSocketThread extends Thread {
     private void initIO() {
         try {
             reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            writer = new PrintWriter(socket.getOutputStream());
+            writer = new PrintWriter(socket.getOutputStream(), true);
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Erro ao iniciar a comunicacao com o cliente!", e);
         }
+    }
+
+    public void sendMessage(String message){
+        writer.println(message);
+        writer.flush();
     }
 
     @Override
@@ -42,12 +47,11 @@ public class ClientSocketThread extends Thread {
         try {
             readLine = reader.readLine();
             while (readLine == null || !readLine.equals("QUIT")) {
-                if (readLine == null) {
-                    Thread.sleep(2000);
-                } else {
+                if (readLine != null) {
                     listener.onMessage(readLine);
                 }
                 readLine = reader.readLine();
+                
             }
 
         } catch (Exception e) {

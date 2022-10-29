@@ -88,4 +88,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnEntrar" />
 
+    <Button
+        android:id="@+id/btnTesteSocket"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:backgroundTint="#000000"
+        android:text="Testes Socket"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnEntrar"
+        app:strokeWidth="2dp"
+        tools:strokeColor="#F8DA27" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
