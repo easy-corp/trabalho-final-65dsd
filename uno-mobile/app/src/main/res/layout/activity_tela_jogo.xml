@@ -70,6 +70,16 @@
         app:layout_constraintTop_toBottomOf="@+id/layIdentificadorJogadores">
 
         <ImageView
+            android:id="@+id/imgMonteVirado"
+            android:layout_width="110dp"
+            android:layout_height="173dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/blue_4"
+            tools:layout_editor_absoluteX="-40dp"
+            tools:layout_editor_absoluteY="420dp" />
+
+        <ImageView
             android:id="@+id/imgMonte"
             android:layout_width="110dp"
             android:layout_height="173dp"
@@ -85,7 +95,7 @@
             android:layout_height="173dp"
             android:layout_marginLeft="160dp"
             android:layout_marginTop="4dp"
-            app:srcCompat="@drawable/red_1" />
+            android:background="@drawable/red_1" />
     </FrameLayout>
 
     <FrameLayout

@@ -10,15 +10,9 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.uno.control.AdapterJogos;
+import com.example.uno.control.adapter.AdapterJogos;
 import com.example.uno.model.Jogo;
 import com.example.uno.model.Servidor;
-
-import org.w3c.dom.Text;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 public class TelaEntrarJogo extends AppCompatActivity {
 

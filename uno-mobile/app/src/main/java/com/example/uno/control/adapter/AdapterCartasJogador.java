@@ -1,4 +1,4 @@
-package com.example.uno.control;
+package com.example.uno.control.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,9 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.uno.R;
 import com.example.uno.model.Carta;
 import com.example.uno.model.Jogador;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class AdapterCartasJogador extends RecyclerView.Adapter<AdapterCartasJogador.ViewHolder> {
 

@@ -1,4 +1,4 @@
-package com.example.uno.control;
+package com.example.uno.control.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,13 +13,9 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.uno.R;
-import com.example.uno.TelaInicial;
 import com.example.uno.TelaJogo;
 import com.example.uno.model.Jogo;
 import com.example.uno.model.Servidor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class AdapterJogos extends RecyclerView.Adapter<AdapterJogos.ViewHolder> {
 

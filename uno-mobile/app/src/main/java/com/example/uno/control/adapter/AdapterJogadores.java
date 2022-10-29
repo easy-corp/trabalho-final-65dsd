@@ -1,4 +1,4 @@
-package com.example.uno.control;
+package com.example.uno.control.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,12 +10,8 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.uno.R;
-import com.example.uno.model.Avatar;
 import com.example.uno.model.Jogador;
 import com.example.uno.model.Jogo;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class AdapterJogadores extends RecyclerView.Adapter<AdapterJogadores.ViewHolder> {
 

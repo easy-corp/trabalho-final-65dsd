@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.uno.control.AdapterAvatares;
+import com.example.uno.control.adapter.AdapterAvatares;
 
 public class TelaCadastro extends AppCompatActivity {
 
