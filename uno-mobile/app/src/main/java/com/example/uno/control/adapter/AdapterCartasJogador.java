@@ -4,6 +4,8 @@ import android.animation.ObjectAnimator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -59,9 +61,16 @@ public class AdapterCartasJogador extends RecyclerView.Adapter<AdapterCartasJoga
         holder.imgCarta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                jogador.getDeck().remove(carta);
-                telaJogo.atualizarCartaMesa(carta);
-                telaJogo.atualizarListas();
+                //Se as carta pode ser dropada na mesa
+                if (telaJogo.getJogo().isDropavel(carta)) {
+                    jogador.getDeck().remove(carta);
+                    telaJogo.atualizarCartaMesa(carta);
+                    telaJogo.atualizarListas();
+                } else {
+//                    telaJogo.exibirMensagem("Não pode dropar essa carta.");
+
+                    holder.imgCarta.startAnimation(AnimationUtils.loadAnimation(telaJogo, R.animator.shake));
+                }
             }
         });
     }

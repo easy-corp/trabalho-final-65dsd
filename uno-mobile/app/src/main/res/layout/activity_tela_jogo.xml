@@ -176,19 +176,19 @@
         app:layout_constraintVertical_bias="0.52">
 
         <ImageView
-            android:id="@+id/icUno"
+            android:id="@+id/icPedirUno"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            app:srcCompat="@drawable/ic_baseline_pan_tool_24" />
+            android:background="@drawable/mao_uno_nao_selecionado" />
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/txtPedirUno"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="65dp"
             android:layout_marginTop="10dp"
             android:text="UNO!"
-            android:textColor="#ED1C24"
+            android:textColor="#595959"
             android:textSize="32sp"
             android:textStyle="bold" />
 

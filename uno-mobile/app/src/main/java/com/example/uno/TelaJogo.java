@@ -8,9 +8,13 @@ import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.uno.control.adapter.AdapterCartasJogador;
@@ -46,8 +50,10 @@ public class TelaJogo extends AppCompatActivity {
         setContentView(R.layout.activity_tela_jogo);
 
         ImageView icSair = findViewById(R.id.icSair);
+        FrameLayout layUno = findViewById(R.id.layUno);
 
         icSair.setOnClickListener(param -> startActivity(new Intent(this, TelaEntrarJogo.class)));
+        layUno.setOnClickListener(param -> pedirUno());
 
         distribuiCartas();
         criarRecyclerViewJogadores();
@@ -56,7 +62,11 @@ public class TelaJogo extends AppCompatActivity {
         gerarCartaMesa();
     }
 
-    private void exibirMensagem(String msg) {
+    public Jogo getJogo() {
+        return this.jogo;
+    }
+
+    public void exibirMensagem(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
@@ -214,6 +224,16 @@ public class TelaJogo extends AppCompatActivity {
     public void atualizarListas() {
         adapterJogadores.notifyDataSetChanged();
         adapterCartasJogador.notifyDataSetChanged();
+    }
+
+    public void pedirUno() {
+        ImageView icPedirUno = findViewById(R.id.icPedirUno);
+        TextView txtPedirUno = findViewById(R.id.txtPedirUno);
+
+        icPedirUno.setBackgroundResource(R.drawable.mao_uno_selecionado);
+        txtPedirUno.setTextColor(Color.parseColor("#ED1C24"));
+
+        this.jogador.setIsUno(true);
     }
 
 }

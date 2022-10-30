@@ -11,6 +11,7 @@ public class Jogador {
     private int jogos;
     private int vitorias;
     private List<Carta> deck;
+    private boolean isUno;
 
     public Jogador(String nome, String senha, Avatar avatar) {
         this.nome = nome;
@@ -18,6 +19,7 @@ public class Jogador {
         this.jogos = 0;
         this.vitorias = 0;
         this.deck = new ArrayList<>();
+        this.isUno = false;
     }
 
     public String getNome() {
@@ -60,4 +62,11 @@ public class Jogador {
         return this.deck;
     }
 
+    public boolean isUno() {
+        return isUno;
+    }
+
+    public void setIsUno(boolean opt) {
+        isUno = opt;
+    }
 }

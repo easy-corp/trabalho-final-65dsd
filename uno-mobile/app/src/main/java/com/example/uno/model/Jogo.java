@@ -30,12 +30,23 @@ public class Jogo {
         return partCapacidade;
     }
 
+    //Verifica a possibilidade de entrar na sala
     public boolean isEntravel() {
         if (this.jogadores.size() < this.partCapacidade) {
             return true;
         } else {
             return false;
         }
+    }
+
+    //Verifica a possibilidade de dropar a carta na mesa
+    public boolean isDropavel(Carta carta) {
+        //Se for preta pode descartar sempre
+        if (carta.isCompativel(this.descartadas.peek())) {
+            return true;
+        }
+
+        return false;
     }
 
     public void addJogador(Jogador jogador) {
