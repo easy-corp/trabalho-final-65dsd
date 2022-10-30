@@ -38,10 +38,10 @@ public class TelaEntrarJogo extends AppCompatActivity {
     public void criarRecyclerView() {
         Servidor servidor = new Servidor("127.0.0.1", "80");
 
-        servidor.addJogo(new Jogo("Jogos da Galera", 4, 1));
-        servidor.addJogo(new Jogo("Joga comigo", 4, 2));
-        servidor.addJogo(new Jogo("Chega mais", 4, 4));
-        servidor.addJogo(new Jogo("Vem pra diversão", 4, 3));
+        servidor.addJogo(new Jogo("Jogos da Galera", 4));
+        servidor.addJogo(new Jogo("Joga comigo", 4));
+        servidor.addJogo(new Jogo("Chega mais", 4));
+        servidor.addJogo(new Jogo("Vem pra diversão", 4));
 
         TextView txtDescListaJogos = findViewById(R.id.txtDescListaJogos);
         txtDescListaJogos.setText("Jogos ativos em: " + servidor.getIP());

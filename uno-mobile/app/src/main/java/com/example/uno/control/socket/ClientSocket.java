@@ -1,4 +1,4 @@
-package com.example.uno.socket;
+package com.example.uno.control.socket;
 
 import java.io.IOException;
 import java.io.PrintWriter;

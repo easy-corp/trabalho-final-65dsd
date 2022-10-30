@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.example.uno.socket.ClientSocket;
+import com.example.uno.control.socket.ClientSocket;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.IOException;

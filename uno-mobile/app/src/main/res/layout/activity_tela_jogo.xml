@@ -90,12 +90,18 @@
             tools:layout_editor_absoluteY="420dp" />
 
         <ImageView
-            android:id="@+id/imgCartaVirada"
+            android:id="@+id/imgCartaViradaMesa"
             android:layout_width="109dp"
             android:layout_height="173dp"
             android:layout_marginLeft="160dp"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/red_1" />
+            android:layout_marginTop="4dp" />
+
+        <ImageView
+            android:id="@+id/imgProximaCartaViradaMesa"
+            android:layout_width="109dp"
+            android:layout_height="173dp"
+            android:layout_marginLeft="160dp"
+            android:layout_marginTop="4dp" />
     </FrameLayout>
 
     <FrameLayout

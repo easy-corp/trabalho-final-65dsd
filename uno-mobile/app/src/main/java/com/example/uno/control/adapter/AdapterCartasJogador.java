@@ -1,5 +1,6 @@
 package com.example.uno.control.adapter;
 
+import android.animation.ObjectAnimator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,11 +10,15 @@ import android.widget.LinearLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.uno.R;
+import com.example.uno.TelaJogo;
 import com.example.uno.model.Carta;
 import com.example.uno.model.Jogador;
+import com.example.uno.model.Jogo;
+import com.google.android.material.slider.Slider;
 
 public class AdapterCartasJogador extends RecyclerView.Adapter<AdapterCartasJogador.ViewHolder> {
 
+    TelaJogo telaJogo;
     Jogador jogador;
 
     //O tipo de view que vamos usar
@@ -29,7 +34,8 @@ public class AdapterCartasJogador extends RecyclerView.Adapter<AdapterCartasJoga
         }
     }
 
-    public AdapterCartasJogador(Jogador jogador) {
+    public AdapterCartasJogador(TelaJogo telaJogo, Jogador jogador) {
+        this.telaJogo = telaJogo;
         this.jogador = jogador;
     }
 
@@ -48,6 +54,16 @@ public class AdapterCartasJogador extends RecyclerView.Adapter<AdapterCartasJoga
         Carta carta = jogador.getDeck().get(position);
 
         holder.imgCarta.setBackgroundResource(carta.getImg());
+
+        //Descartar carta da mão do jogador
+        holder.imgCarta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                jogador.getDeck().remove(carta);
+                telaJogo.atualizarCartaMesa(carta);
+                telaJogo.atualizarListas();
+            }
+        });
     }
 
     @Override

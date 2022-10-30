@@ -8,7 +8,6 @@ public class Jogador {
     private String nome;
     private String senha;
     private Avatar avatar;
-    private int numCartas;
     private int jogos;
     private int vitorias;
     private List<Carta> deck;
@@ -16,7 +15,6 @@ public class Jogador {
     public Jogador(String nome, String senha, Avatar avatar) {
         this.nome = nome;
         this.avatar = avatar;
-        this.numCartas = 0;
         this.jogos = 0;
         this.vitorias = 0;
         this.deck = new ArrayList<>();
@@ -31,11 +29,7 @@ public class Jogador {
     }
 
     public int getNumCartas() {
-        return numCartas;
-    }
-
-    public void setNumCartas(int numCartas) {
-        this.numCartas = numCartas;
+        return deck.size();
     }
 
     public int getJogos() {

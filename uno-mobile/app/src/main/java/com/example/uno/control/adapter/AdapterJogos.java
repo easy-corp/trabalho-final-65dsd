@@ -60,7 +60,7 @@ public class AdapterJogos extends RecyclerView.Adapter<AdapterJogos.ViewHolder> 
         Jogo jogo = this.servidor.getJogos().get(position);
 
         holder.txtJogo.setText(jogo.getNome());
-        holder.txtParticipantes.setText(jogo.getPartAtual() + "/" + jogo.getPartCapacidade());
+        holder.txtParticipantes.setText(jogo.getJogadores().size() + "/" + jogo.getPartCapacidade());
 
         if (!jogo.isEntravel()) {
             holder.icEntrarJogo.setBackgroundResource(R.drawable.sala_indisponivel);
