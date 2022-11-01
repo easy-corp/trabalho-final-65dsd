@@ -49,8 +49,9 @@ public class AdapterJogadores extends RecyclerView.Adapter<AdapterJogadores.View
     @Override
     public void onBindViewHolder(AdapterJogadores.ViewHolder holder, int position) {
         Jogador jogador = this.jogo.getJogadores().get(position);
+        jogador.getAvatar().setClicado(false);
 
-        holder.imgJogador.setBackgroundResource(jogador.getAvatar().getImgNaoSelecionado());
+        holder.imgJogador.setBackgroundResource(jogador.getAvatar().getImg());
         holder.txtCartas.setText(jogador.getNumCartas() + " Cartas");
     }
 

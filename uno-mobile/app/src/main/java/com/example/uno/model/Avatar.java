@@ -8,10 +8,10 @@ public class Avatar {
     private int imgNaoSelecionado;
 
     public Avatar(int imgNaoSelecionado, int imgSelecionado) {
-        this.imgSelecionado = imgSelecionado;
-        this.imgNaoSelecionado = imgNaoSelecionado;
-        this.clicado = false;
-        this.img = imgNaoSelecionado;
+        this.img = imgNaoSelecionado;                                //Imagem do avatar
+        this.imgSelecionado = imgSelecionado;                        //Imagem normal do avatar
+        this.imgNaoSelecionado = imgNaoSelecionado;                  //Imagem do avatar com contorno
+        this.clicado = false;                                        //Controle de click no avatar
     }
 
     public boolean isClicado() {
@@ -30,14 +30,6 @@ public class Avatar {
 
     public int getImg() {
         return img;
-    }
-
-    public int getImgSelecionado() {
-        return this.imgSelecionado;
-    }
-
-    public int getImgNaoSelecionado() {
-        return this.imgSelecionado;
     }
 
 }

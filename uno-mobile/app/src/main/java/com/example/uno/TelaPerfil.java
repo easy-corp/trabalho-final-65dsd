@@ -31,7 +31,8 @@ public class TelaPerfil extends AppCompatActivity {
         TextView txtJogos = findViewById(R.id.txtPerfilJogos);
         TextView txtVitorias = findViewById(R.id.txtPerfilVitorias);
 
-        imgAvatarPerfil.setBackgroundResource(jogador.getAvatar().getImgSelecionado());
+        jogador.getAvatar().setClicado(true);
+        imgAvatarPerfil.setBackgroundResource(jogador.getAvatar().getImg());
         txtNome.setText(jogador.getNome());
         txtJogos.setText(String.valueOf(jogador.getJogos()) + " Jogos");
         txtVitorias.setText(String.valueOf(jogador.getVitorias()) + " Vitórias");
