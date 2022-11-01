@@ -35,7 +35,6 @@ public class AdapterAvatares extends RecyclerView.Adapter<AdapterAvatares.ViewHo
 
     public AdapterAvatares(RecyclerView recyclerView) {
         this.recyclerView = recyclerView;
-        this.posUltimoClick = -1;
 
         this.avatares = new ArrayList<>();
 
@@ -60,19 +59,27 @@ public class AdapterAvatares extends RecyclerView.Adapter<AdapterAvatares.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Avatar avatar = avatares.get(position);
-        holder.imgView.setBackgroundResource(avatar.getImgNaoSelecionado());
+        holder.imgView.setBackgroundResource(avatar.getImg());
 
         holder.imgView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Caso tenha sido feito um click anteriormente
+                for (Avatar av : avatares) {
+                    //Muda todos menos o clicado
+                    if (av != avatar) {
+                        av.setClicado(false);
+                    }
+                }
+
+                //Ajusta o clicado
                 if (avatar.isClicado()) {
-                    holder.imgView.setBackgroundResource(avatar.getImgNaoSelecionado());
                     avatar.setClicado(false);
                 } else {
-                    holder.imgView.setBackgroundResource(avatar.getImgSelecionado());
                     avatar.setClicado(true);
                 }
+
+                AdapterAvatares.this.notifyDataSetChanged();
             }
         });
 
