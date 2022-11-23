@@ -33,6 +33,7 @@ public class Card {
     public enum Color {
         RED,
         BLUE,
+        BLACK,
         YELLOW,
         GREEN
     }

@@ -5,10 +5,9 @@ import java.util.List;
 public class User {
     
     private int id;                 //Id do usuario
-    private String nome;            //Nome do usuario
+    private String name;            //Nome do usuario
     private String password;        //Senha do usuario
     private Avatar avatar;          //Avatar do usuario
-    private List<Match> matches;    //Partidas jogadas pelo usuario
     private List<Card> deck;        //Cartas do usuario
     private boolean isUno;          //Propriedade que define se o usuario pediu uno
     
@@ -20,12 +19,12 @@ public class User {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPassword() {
@@ -42,18 +41,6 @@ public class User {
 
     public void setAvatar(Avatar avatar) {
         this.avatar = avatar;
-    }
-
-    public List<Match> getMatches() {
-        return matches;
-    }
-
-    public void setMatches(List<Match> matches) {
-        this.matches = matches;
-    }
-
-    public void addMatch(Match match) {
-        matches.add(match);
     }
 
     public List<Card> getDeck() {
