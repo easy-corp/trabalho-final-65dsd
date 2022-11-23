@@ -35,7 +35,6 @@ public class ClientMock {
                     }
                     try {
                         String s = inputSocket.readLine();
-                        System.out.println("To vivo");
                         if(s != null){
                             System.out.println(s);
                         }

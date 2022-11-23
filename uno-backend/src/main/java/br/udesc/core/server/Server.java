@@ -39,7 +39,6 @@ public class Server {
                         @Override
                         public void onMessage(String message) {
                             logger.info("O cliente enviou uma mensagem: " + message);
-
                         }
 
                     });
