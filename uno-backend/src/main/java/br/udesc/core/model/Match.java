@@ -61,17 +61,7 @@ public class Match {
         return this.deck;
     }
 
-    public Stack<Card> getDiscard() {
-        return this.discard;
-    }
 
-    public MatchStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(MatchStatus status) {
-        this.status = status;
-    }
 
     public enum MatchStatus {
 

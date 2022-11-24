@@ -11,8 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.uno.control.adapter.AdapterJogos;
-import com.example.uno.model.Jogo;
-import com.example.uno.model.Servidor;
+import com.example.uno.model.Match;
+import com.example.uno.model.GameServer;
 
 public class TelaEntrarJogo extends AppCompatActivity {
 
@@ -36,12 +36,12 @@ public class TelaEntrarJogo extends AppCompatActivity {
     }
 
     public void criarRecyclerView() {
-        Servidor servidor = new Servidor("127.0.0.1", "80");
+        GameServer servidor = new GameServer("127.0.0.1", "80");
 
-        servidor.addJogo(new Jogo("Jogos da Galera", 4));
-        servidor.addJogo(new Jogo("Joga comigo", 4));
-        servidor.addJogo(new Jogo("Chega mais", 4));
-        servidor.addJogo(new Jogo("Vem pra diversão", 4));
+        servidor.addJogo(new Match("Jogos da Galera", 4));
+        servidor.addJogo(new Match("Joga comigo", 4));
+        servidor.addJogo(new Match("Chega mais", 4));
+        servidor.addJogo(new Match("Vem pra diversão", 4));
 
         TextView txtDescListaJogos = findViewById(R.id.txtDescListaJogos);
         txtDescListaJogos.setText("Jogos ativos em: " + servidor.getIP());

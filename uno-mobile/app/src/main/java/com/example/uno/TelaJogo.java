@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,19 +19,19 @@ import android.widget.Toast;
 import com.example.uno.control.adapter.AdapterCartasJogador;
 import com.example.uno.control.adapter.AdapterJogadores;
 import com.example.uno.model.Avatar;
-import com.example.uno.model.Carta;
-import com.example.uno.model.Jogador;
-import com.example.uno.model.Jogo;
+import com.example.uno.model.Card;
+import com.example.uno.model.User;
+import com.example.uno.model.Match;
 
 import java.util.Random;
 
 public class TelaJogo extends AppCompatActivity {
 
-    private Jogo jogo = new Jogo("Jogos da Galera", 4);
-    private Jogador jogador = new Jogador("Luis", "1234",
+    private Match jogo = new Match("Jogos da Galera", 4);
+    private User jogador = new User("Luis", "1234",
             new Avatar(R.drawable.avatar_1, R.drawable.avatar_1_selecionado));
     private Random random = new Random();
-    private Carta cartaVirada = null;
+    private Card cartaVirada = null;
 
     //RecyclerViews
     private RecyclerView listaJogadores;
@@ -62,7 +61,7 @@ public class TelaJogo extends AppCompatActivity {
         gerarCartaMesa();
     }
 
-    public Jogo getJogo() {
+    public Match getJogo() {
         return this.jogo;
     }
 
@@ -99,7 +98,7 @@ public class TelaJogo extends AppCompatActivity {
     //Gera carta inicial virada para cima na mesa
     private void gerarCartaMesa() {
         //Pega uma carta aleatoriamente para botar na mesa
-        Carta carta = this.jogo.getBaralho().get(random.nextInt(this.jogo.getBaralho().size()));
+        Card carta = this.jogo.getBaralho().get(random.nextInt(this.jogo.getBaralho().size()));
 
         //Ela não pode ser preta
         if (carta.getCor().contentEquals("black")) {
@@ -115,7 +114,7 @@ public class TelaJogo extends AppCompatActivity {
     }
 
     //Atualizar a carta da mesa ao descartar carta
-    public void atualizarCartaMesa(Carta carta) {
+    public void atualizarCartaMesa(Card carta) {
         ImageView imgCartaViradaMesa = findViewById(R.id.imgCartaViradaMesa);
         ImageView imgProximaCartaViradaMesa = findViewById(R.id.imgProximaCartaViradaMesa);
 
@@ -204,15 +203,15 @@ public class TelaJogo extends AppCompatActivity {
         this.jogo.addJogador(this.jogador);
 
         //Adiciona demais jogadores
-        this.jogo.addJogador(new Jogador("Gabriel", "1234", new Avatar(R.drawable.avatar_4, R.drawable.avatar_4_selecionado)));
-        this.jogo.addJogador(new Jogador("Murilo", "1234", new Avatar(R.drawable.avatar_5, R.drawable.avatar_5_selecionado)));
-        this.jogo.addJogador(new Jogador("Giovana", "1234", new Avatar(R.drawable.avatar_2, R.drawable.avatar_2_selecionado)));
-        this.jogo.addJogador(new Jogador("Maria", "1234", new Avatar(R.drawable.avatar_6, R.drawable.avatar_6_selecionado)));
+        this.jogo.addJogador(new User("Gabriel", "1234", new Avatar(R.drawable.avatar_4, R.drawable.avatar_4_selecionado)));
+        this.jogo.addJogador(new User("Murilo", "1234", new Avatar(R.drawable.avatar_5, R.drawable.avatar_5_selecionado)));
+        this.jogo.addJogador(new User("Giovana", "1234", new Avatar(R.drawable.avatar_2, R.drawable.avatar_2_selecionado)));
+        this.jogo.addJogador(new User("Maria", "1234", new Avatar(R.drawable.avatar_6, R.drawable.avatar_6_selecionado)));
 
-        for (Jogador j : this.jogo.getJogadores()) {
+        for (User j : this.jogo.getJogadores()) {
             for (int i = 0; i < 7; i++) {
                 //Tira uma carta do baralho para meu deck
-                Carta carta = this.jogo.getBaralho().get(random.nextInt(jogo.getBaralho().size()));
+                Card carta = this.jogo.getBaralho().get(random.nextInt(jogo.getBaralho().size()));
                 this.jogo.getBaralho().remove(carta);
 
                 j.addCarta(carta);
