@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.uno.model.Avatar;
-import com.example.uno.model.Jogador;
+import com.example.uno.model.User;
 
 public class TelaPerfil extends AppCompatActivity {
 
@@ -21,11 +21,11 @@ public class TelaPerfil extends AppCompatActivity {
 
         icSair.setOnClickListener(param -> startActivity(new Intent(this, TelaServidores.class)));
 
-        Jogador jogador = new Jogador("Luis Felipe", "1234", new Avatar(R.drawable.avatar_1, R.drawable.avatar_1_selecionado));
+        User jogador = new User("Luis Felipe", "1234", new Avatar(R.drawable.avatar_1, R.drawable.avatar_1_selecionado));
         preencherPerfil(jogador);
     }
 
-    public void preencherPerfil(Jogador jogador) {
+    public void preencherPerfil(User jogador) {
         ImageView imgAvatarPerfil = findViewById(R.id.imgAvatarPerfil);
         TextView txtNome = findViewById(R.id.txtDescListaJogos);
         TextView txtJogos = findViewById(R.id.txtPerfilJogos);

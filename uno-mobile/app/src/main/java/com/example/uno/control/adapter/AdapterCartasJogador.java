@@ -1,10 +1,8 @@
 package com.example.uno.control.adapter;
 
-import android.animation.ObjectAnimator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -13,15 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.uno.R;
 import com.example.uno.TelaJogo;
-import com.example.uno.model.Carta;
-import com.example.uno.model.Jogador;
-import com.example.uno.model.Jogo;
-import com.google.android.material.slider.Slider;
+import com.example.uno.model.Card;
+import com.example.uno.model.User;
 
 public class AdapterCartasJogador extends RecyclerView.Adapter<AdapterCartasJogador.ViewHolder> {
 
     TelaJogo telaJogo;
-    Jogador jogador;
+    User jogador;
 
     //O tipo de view que vamos usar
     public static class ViewHolder extends  RecyclerView.ViewHolder {
@@ -36,7 +32,7 @@ public class AdapterCartasJogador extends RecyclerView.Adapter<AdapterCartasJoga
         }
     }
 
-    public AdapterCartasJogador(TelaJogo telaJogo, Jogador jogador) {
+    public AdapterCartasJogador(TelaJogo telaJogo, User jogador) {
         this.telaJogo = telaJogo;
         this.jogador = jogador;
     }
@@ -53,7 +49,7 @@ public class AdapterCartasJogador extends RecyclerView.Adapter<AdapterCartasJoga
     //Pega o elemento na lista e joga o conteudo na view referente
     @Override
     public void onBindViewHolder(AdapterCartasJogador.ViewHolder holder, int position) {
-        Carta carta = jogador.getDeck().get(position);
+        Card carta = jogador.getDeck().get(position);
 
         holder.imgCarta.setBackgroundResource(carta.getImg());
 

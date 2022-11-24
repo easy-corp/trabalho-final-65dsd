@@ -2,16 +2,33 @@ package com.example.uno.model;
 
 public class Avatar {
 
-    private boolean clicado;
-    private int img;
-    private int imgSelecionado;
-    private int imgNaoSelecionado;
+    private int id;                          //Id do avatar
+    private String imageUrl;                 //Imagem do avatar
+    private String imgSelecionado;           //Imagem normal do avatar
+    private String imgNaoSelecionado;        //Imagem do avatar com contorno
+    private boolean clicado;                 //Controle de click no avatar
 
-    public Avatar(int imgNaoSelecionado, int imgSelecionado) {
-        this.img = imgNaoSelecionado;                                //Imagem do avatar
-        this.imgSelecionado = imgSelecionado;                        //Imagem normal do avatar
-        this.imgNaoSelecionado = imgNaoSelecionado;                  //Imagem do avatar com contorno
-        this.clicado = false;                                        //Controle de click no avatar
+    public Avatar(int id, String imageUrl) {
+        this.imageUrl = imageUrl;
+        this.imgSelecionado = imageUrl;
+        this.imgNaoSelecionado = imageUrl + "_selecionado";
+        this.clicado = false;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public boolean isClicado() {
@@ -20,16 +37,16 @@ public class Avatar {
 
     public void setClicado(boolean opt) {
         if (opt) {
-            this.img = imgSelecionado;
+            this.imageUrl = imgSelecionado;
         } else {
-            this.img = imgNaoSelecionado;
+            this.imageUrl = imgNaoSelecionado;
         }
 
         this.clicado = opt;
     }
 
-    public int getImg() {
-        return img;
+    public String getImg() {
+        return imageUrl;
     }
 
 }

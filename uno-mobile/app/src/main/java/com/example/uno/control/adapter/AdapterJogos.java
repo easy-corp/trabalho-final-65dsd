@@ -14,12 +14,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.uno.R;
 import com.example.uno.TelaJogo;
-import com.example.uno.model.Jogo;
-import com.example.uno.model.Servidor;
+import com.example.uno.model.Match;
+import com.example.uno.model.GameServer;
 
 public class AdapterJogos extends RecyclerView.Adapter<AdapterJogos.ViewHolder> {
 
-    Servidor servidor;
+    GameServer servidor;
     Context tela;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -40,7 +40,7 @@ public class AdapterJogos extends RecyclerView.Adapter<AdapterJogos.ViewHolder> 
         }
     }
 
-    public AdapterJogos(Context tela, Servidor servidor) {
+    public AdapterJogos(Context tela, GameServer servidor) {
         this.tela = tela;
         this.servidor = servidor;
     }
@@ -57,7 +57,7 @@ public class AdapterJogos extends RecyclerView.Adapter<AdapterJogos.ViewHolder> 
     //Pega o elemento na lista e joga o conteudo na view referente
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Jogo jogo = this.servidor.getJogos().get(position);
+        Match jogo = this.servidor.getJogos().get(position);
 
         holder.txtJogo.setText(jogo.getNome());
         holder.txtParticipantes.setText(jogo.getJogadores().size() + "/" + jogo.getPartCapacidade());

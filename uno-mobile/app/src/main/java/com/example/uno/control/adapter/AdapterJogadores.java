@@ -10,12 +10,12 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.uno.R;
-import com.example.uno.model.Jogador;
-import com.example.uno.model.Jogo;
+import com.example.uno.model.User;
+import com.example.uno.model.Match;
 
 public class AdapterJogadores extends RecyclerView.Adapter<AdapterJogadores.ViewHolder> {
 
-    Jogo jogo;
+    Match jogo;
 
     //O tipo de view que vamos usar
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -32,7 +32,7 @@ public class AdapterJogadores extends RecyclerView.Adapter<AdapterJogadores.View
         }
     }
 
-    public AdapterJogadores(Jogo jogo) {
+    public AdapterJogadores(Match jogo) {
         this.jogo = jogo;
     }
 
@@ -48,7 +48,7 @@ public class AdapterJogadores extends RecyclerView.Adapter<AdapterJogadores.View
     //Pega o elemento na lista e joga o conteudo na view referente
     @Override
     public void onBindViewHolder(AdapterJogadores.ViewHolder holder, int position) {
-        Jogador jogador = this.jogo.getJogadores().get(position);
+        User jogador = this.jogo.getJogadores().get(position);
         jogador.getAvatar().setClicado(false);
 
         holder.imgJogador.setBackgroundResource(jogador.getAvatar().getImg());
