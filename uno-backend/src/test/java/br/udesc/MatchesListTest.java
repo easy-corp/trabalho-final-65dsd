@@ -12,7 +12,7 @@ import br.udesc.core.server.ServerController;
 
 //Classe para verificar se a lista de partidas retorna 
 //Essa lista vai ser usada para exibir as partidas para o usuario
-public class ListMatchesTest {
+public class MatchesListTest {
 
     private static ServerController controller = ServerController.getInstance();
 

@@ -7,9 +7,10 @@ import org.junit.runners.Suite;
 
 @Suite.SuiteClasses({
     AvatarListTest.class,
-    ListMatchesTest.class,
+    MatchesListTest.class,
     LoginTest.class,
     MatchLifecycleTest.class,
+    ReadyToPlayTest.class,
     SignUpTest.class,
 })
 

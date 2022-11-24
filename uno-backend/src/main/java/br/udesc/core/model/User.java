@@ -10,6 +10,7 @@ public class User {
     private Avatar avatar;          //Avatar do usuario
     private List<Card> deck;        //Cartas do usuario
     private boolean isUno;          //Propriedade que define se o usuario pediu uno
+    private UserStatus status;      //Status do jogador, se esta pronto para comecar
     
     public int getId() {
         return id;
@@ -57,6 +58,21 @@ public class User {
 
     public void setIsUno(boolean opt) {
         this.isUno = opt;
+    }
+
+    public UserStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(UserStatus status) {
+        this.status = status;
+    }
+
+    public enum UserStatus {
+
+        UNREADY,
+        READY
+
     }
 
 }

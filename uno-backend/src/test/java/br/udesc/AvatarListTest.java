@@ -57,7 +57,6 @@ public class AvatarListTest {
 
         for (Avatar av : listaConvertida) {
             assertNotNull(av);
-        }
-        
+        }        
     }
 }
