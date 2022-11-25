@@ -36,6 +36,7 @@ public class MessageBroker implements ClientSocketListener {
             try {
                 String caseFormatedName = CaseFormat.LOWER_HYPHEN.to(CaseFormat.UPPER_CAMEL, type);
                 Class messageClass = Class.forName("br.udesc.core.server.messages." + caseFormatedName + "Message");
+                
                 try {
                     String methodName = Character.toLowerCase(caseFormatedName.charAt(0)) + caseFormatedName.substring(1);
                     AbstractMessage messageImpl = (AbstractMessage) messageClass.getDeclaredConstructor(ClientSocketThread.class).newInstance(socketClient);

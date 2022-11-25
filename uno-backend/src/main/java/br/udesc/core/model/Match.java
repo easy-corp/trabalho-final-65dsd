@@ -7,7 +7,7 @@ import java.util.Stack;
 public class Match {
 
     private int matchId;                    //id da partida
-    private static int idCont = 0;
+    private static int idCont = -1;
     private String name;                    //Nome do jogo
     private int qtdPlayers;                 //Capacidade máxima de jogadores
     private MatchStatus status;             //Status da partida

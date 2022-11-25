@@ -1,8 +1,6 @@
 package br.udesc.core.server;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.google.gson.Gson;
@@ -39,35 +37,42 @@ public class ServerController {
         return instance;
     }
 
+    //Recupera avatares
     public String getAvatars() {
         return gson.toJson(avatars);
     }
 
+    //Realiza cadastro
     public void signUp(SignupMessage message) {
         message.sendReply(signUp(message.getUsername(), message.getPassword(), message.getAvatarId()));
     }
 
+    //Realiza login
     public void login(LoginMessage message) {
         message.sendReply(login(message.getUsername(), message.getPassword()));
     }
 
+    //Cria partida
     public void createMatch(CreateMatchMessage message) {
         message.sendReply(createMatch(message.getName(), message.getQtdPlayers()));
     }
 
+    //Recupera infos meu perfil
     public void myProfile(MyProfileMessage message) {
         message.sendReply(myProfile(message.getUserId()));
     }
 
-    // Entra na partida
+    //Entra na partida
     public void joinMatch(JoinMatchMessage message) {
         message.sendReply(joinMatch(message.getUserId(), message.getMatchId()));
     }
 
+    //Pronto para jogar
     public void readyToPlay(ReadyToPlayMessage message) {
         message.sendReply(readyToPlay(message.getUserId()));
     }
 
+    //Recuperar lista de partidas
     public void getMatchesList(GetMatchesMessage message) {
         message.sendReply(getMatchesList());
     }
@@ -137,12 +142,12 @@ public class ServerController {
     private Map<Integer, Avatar> buildAvatars() {
         Map<Integer, Avatar> avatars = new HashMap<>();
 
-        avatars.put(1, new Avatar("avatar_1"));
-        avatars.put(2, new Avatar("avatar_2"));
-        avatars.put(3, new Avatar("avatar_3"));
-        avatars.put(4, new Avatar("avatar_4"));
-        avatars.put(5, new Avatar("avatar_5"));
-        avatars.put(6, new Avatar("avatar_6"));
+        avatars.put(0, new Avatar("avatar_1"));
+        avatars.put(1, new Avatar("avatar_2"));
+        avatars.put(2, new Avatar("avatar_3"));
+        avatars.put(3, new Avatar("avatar_4"));
+        avatars.put(4, new Avatar("avatar_5"));
+        avatars.put(5, new Avatar("avatar_6"));
 
         return avatars;
     }
