@@ -1,16 +1,28 @@
 package br.udesc.core.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class User {
     
     private int id;                 //Id do usuario
+    private static int idCont = 0;    
     private String name;            //Nome do usuario
     private String password;        //Senha do usuario
     private Avatar avatar;          //Avatar do usuario
     private List<Card> deck;        //Cartas do usuario
     private boolean isUno;          //Propriedade que define se o usuario pediu uno
     private UserStatus status;      //Status do jogador, se esta pronto para comecar
+
+    public User(String name, String password, Avatar avatar) {
+        this.id = ++idCont;
+        this.name = name;
+        this.password = password;
+        this.avatar = avatar;
+        this.deck = new ArrayList<>();
+        this.status = UserStatus.UNREADY;
+        this.isUno = false;
+    }
     
     public int getId() {
         return id;

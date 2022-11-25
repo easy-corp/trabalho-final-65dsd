@@ -3,12 +3,14 @@ package com.example.uno.model;
 public class Avatar {
 
     private int id;                          //Id do avatar
+    private static int idCont = 0;
     private String imageUrl;                 //Imagem do avatar
     private String imgSelecionado;           //Imagem normal do avatar
     private String imgNaoSelecionado;        //Imagem do avatar com contorno
     private boolean clicado;                 //Controle de click no avatar
 
-    public Avatar(int id, String imageUrl) {
+    public Avatar(String imageUrl) {
+        this.id = ++idCont;
         this.imageUrl = imageUrl;
         this.imgSelecionado = imageUrl;
         this.imgNaoSelecionado = imageUrl + "_selecionado";

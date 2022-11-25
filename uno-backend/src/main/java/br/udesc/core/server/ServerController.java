@@ -1,7 +1,9 @@
 package br.udesc.core.server;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.gson.Gson;
 
@@ -14,9 +16,9 @@ public class ServerController {
 
     private static ServerController instance;
     private Gson gson = new Gson();
-    private List<Avatar> avatars = buildAvatars();
-    private List<User> users = new ArrayList<>();
-    private List<Match> matches = new ArrayList<>();
+    private Map<Integer, Avatar> avatars = buildAvatars();
+    private Map<Integer, User> users = new HashMap<>();
+    private Map<Integer, Match> matches = new HashMap<>();
 
     private ServerController() {}
 
@@ -34,18 +36,9 @@ public class ServerController {
 
     //Realiza cadastro do usuário
     public String signUp(String username, String password, int avatarId) {
-        User user = new User();
-        user.setName(username);
-        user.setPassword(password);
+        User user = new User(username, password, avatars.get(avatarId));
         
-        //Busca o avatar selecionado
-        for (Avatar av : avatars) {
-            if (av.getId() == avatarId) {
-                user.setAvatar(av);
-            }
-        }
-
-        users.add(user);
+        users.put(user.getId(), user);
 
         return gson.toJson(user);
     }
@@ -65,13 +58,9 @@ public class ServerController {
 
     //Localiza o usuário dentre os demais
     public String myProfile(int userId) {
-        for (User us : users) {
-            if (us.getId() == userId) {
-                return gson.toJson(us);
-            }
-        }
+        User user = users.get(userId);
         
-        return null;
+        return gson.toJson(user);
     }
 
     //Entra no servidor
@@ -83,7 +72,7 @@ public class ServerController {
     public String createMatch(String name, int qtdPlayers) {
         Match match = new Match(name, qtdPlayers);
         
-        this.matches.add(match);
+        this.matches.put(match.getMatchId(), match);
 
         return gson.toJson(match);
     }
@@ -95,74 +84,52 @@ public class ServerController {
 
     //Entra na partida
     public String joinMatch(int userId, int matchId) {
-        for (User u : users) {
-            if (u.getId() == userId) {
-                for (Match m : matches) {
-                    if (m.getMatchId() == matchId) {
-                        m.addPlayer(u);
-                        return gson.toJson(m);
-                    }
-                }
-                break;
-            }
-        }
+        User user = users.get(userId);
+        Match match = matches.get(matchId);
 
-        return null;
+        match.addPlayer(user);
+
+        return gson.toJson(match);
     }
 
     //Sai da partida
     public String quitMatch(int userId, int matchId){
-        for (User u : users) {
-            if (u.getId() == userId) {
-                for (Match m : matches) {
-                    if (m.getMatchId() == matchId) {
-                        m.removePlayer(u);
-                        return gson.toJson(m);
-                    }
-                }
-                break;
-            }
-        }
+        User user = users.get(userId);
+        Match match = matches.get(matchId);
 
-        return null;
+        match.removePlayer(user);
+
+        return gson.toJson(match);
     }
 
     //Define que o usuário está pronto para jogar
     public String readyToPlay(int userId) {
-        for (User u : users) {
-            if (u.getId() == userId) {
-                u.setStatus(UserStatus.READY);
+        User user = users.get(userId);
+        
+        user.setStatus(UserStatus.READY);
 
-                return gson.toJson(u);
-            }
-        }
-
-        return null;
+        return gson.toJson(user);
     }
 
     //Define que o usuário não está pronto para jogar
     public String unreadyToPlay(int userId) {
-        for (User u : users) {
-            if (u.getId() == userId) {
-                u.setStatus(UserStatus.UNREADY);
+        User user = users.get(userId);
 
-                return gson.toJson(u);
-            }
-        }
+        user.setStatus(UserStatus.UNREADY);
 
-        return null;
+        return gson.toJson(user);
     }
 
     //Constrói avatares para serem usados ao longo da aplicação
-    private List<Avatar> buildAvatars() {
-        List<Avatar> avatars = new ArrayList<>();
+    private Map<Integer, Avatar> buildAvatars() {
+        Map<Integer, Avatar> avatars = new HashMap<>();
 
-        avatars.add(new Avatar(1, "avatar_1"));
-        avatars.add(new Avatar(2, "avatar_2"));
-        avatars.add(new Avatar(3, "avatar_3"));
-        avatars.add(new Avatar(4, "avatar_4"));
-        avatars.add(new Avatar(5, "avatar_5"));
-        avatars.add(new Avatar(6, "avatar_6"));
+        avatars.put(1, new Avatar("avatar_1"));
+        avatars.put(2, new Avatar("avatar_2"));
+        avatars.put(3, new Avatar("avatar_3"));
+        avatars.put(4, new Avatar("avatar_4"));
+        avatars.put(5, new Avatar("avatar_5"));
+        avatars.put(6, new Avatar("avatar_6"));
 
         return avatars;
     }

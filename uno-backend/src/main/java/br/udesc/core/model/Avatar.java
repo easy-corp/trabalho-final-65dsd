@@ -3,10 +3,11 @@ package br.udesc.core.model;
 public class Avatar {
 
     private int id;               //id do avatar
+    private static int idCont = 0;
     private String imageUrl;      //R.drawable.avatar_X (sendo que X varia de 1 a 6)
 
-    public Avatar(int id, String imageUrl) {
-        this.id = id;
+    public Avatar(String imageUrl) {
+        this.id = ++idCont;
         this.imageUrl = imageUrl;
     }
     

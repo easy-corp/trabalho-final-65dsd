@@ -100,91 +100,91 @@ public class Match {
         //Numeros
         for (int i = 0; i < 2; i++) {
             //1
-            baralho.add(new Card("1", Card.Color.BLUE, R.drawable.blue_1));
-            baralho.add(new Card("1", Card.Color.GREEN, R.drawable.green_1));
-            baralho.add(new Card("1", "red", R.drawable.red_1));
-            baralho.add(new Card("1", "yellow", R.drawable.yellow_1));
+            baralho.add(new Card("1", Card.Color.BLUE, "R.drawable.blue_1"));
+            baralho.add(new Card("1", Card.Color.GREEN, "R.drawable.green_1"));
+            baralho.add(new Card("1", Card.Color.RED, "R.drawable.red_1"));
+            baralho.add(new Card("1", Card.Color.YELLOW, "R.drawable.yellow_1"));
 
             //2
-            baralho.add(new Card("2", Card.Color.BLUE, R.drawable.blue_2));
-            baralho.add(new Card("2", Card.Color.GREEN, R.drawable.green_2));
-            baralho.add(new Card("2", "red", R.drawable.red_2));
-            baralho.add(new Card("2", "yellow", R.drawable.yellow_2));
+            baralho.add(new Card("2", Card.Color.BLUE, "R.drawable.blue_2"));
+            baralho.add(new Card("2", Card.Color.GREEN, "R.drawable.green_2"));
+            baralho.add(new Card("2", Card.Color.RED, "R.drawable.red_2"));
+            baralho.add(new Card("2", Card.Color.YELLOW, "R.drawable.yellow_2"));
 
             //3
-            baralho.add(new Card("3", Card.Color.BLUE, R.drawable.blue_3));
-            baralho.add(new Card("3", Card.Color.GREEN, R.drawable.green_3));
-            baralho.add(new Card("3", "red", R.drawable.red_3));
-            baralho.add(new Card("3", "yellow", R.drawable.yellow_3));
+            baralho.add(new Card("3", Card.Color.BLUE, "R.drawable.blue_3"));
+            baralho.add(new Card("3", Card.Color.GREEN, "R.drawable.green_3"));
+            baralho.add(new Card("3", Card.Color.RED, "R.drawable.red_3"));
+            baralho.add(new Card("3", Card.Color.YELLOW, "R.drawable.yellow_3"));
 
             //4
-            baralho.add(new Card("4", Card.Color.BLUE, R.drawable.blue_4));
-            baralho.add(new Card("4", Card.Color.GREEN, R.drawable.green_4));
-            baralho.add(new Card("4", "red", R.drawable.red_4));
-            baralho.add(new Card("4", "yellow", R.drawable.yellow_4));
+            baralho.add(new Card("4", Card.Color.BLUE, "R.drawable.blue_4"));
+            baralho.add(new Card("4", Card.Color.GREEN, "R.drawable.green_4"));
+            baralho.add(new Card("4", Card.Color.RED, "R.drawable.red_4"));
+            baralho.add(new Card("4", Card.Color.YELLOW, "R.drawable.yellow_4"));
 
             //5
-            baralho.add(new Card("5", Card.Color.BLUE, R.drawable.blue_5));
-            baralho.add(new Card("5", Card.Color.GREEN, R.drawable.green_5));
-            baralho.add(new Card("5", "red", R.drawable.red_5));
-            baralho.add(new Card("5", "yellow", R.drawable.yellow_5));
+            baralho.add(new Card("5", Card.Color.BLUE, "R.drawable.blue_5"));
+            baralho.add(new Card("5", Card.Color.GREEN, "R.drawable.green_5"));
+            baralho.add(new Card("5", Card.Color.RED, "R.drawable.red_5"));
+            baralho.add(new Card("5", Card.Color.YELLOW, "R.drawable.yellow_5"));
 
             //6
-            baralho.add(new Card("6", Card.Color.BLUE, R.drawable.blue_6));
-            baralho.add(new Card("6", Card.Color.GREEN, R.drawable.green_6));
-            baralho.add(new Card("6", "red", R.drawable.red_6));
-            baralho.add(new Card("6", "yellow", R.drawable.yellow_6));
+            baralho.add(new Card("6", Card.Color.BLUE, "R.drawable.blue_6"));
+            baralho.add(new Card("6", Card.Color.GREEN, "R.drawable.green_6"));
+            baralho.add(new Card("6", Card.Color.RED, "R.drawable.red_6"));
+            baralho.add(new Card("6", Card.Color.YELLOW, "R.drawable.yellow_6"));
 
             //7
-            baralho.add(new Card("7", Card.Color.BLUE, R.drawable.blue_7));
-            baralho.add(new Card("7", Card.Color.GREEN, R.drawable.green_7));
-            baralho.add(new Card("7", "red", R.drawable.red_7));
-            baralho.add(new Card("7", "yellow", R.drawable.yellow_7));
+            baralho.add(new Card("7", Card.Color.BLUE, "R.drawable.blue_7"));
+            baralho.add(new Card("7", Card.Color.GREEN, "R.drawable.green_7"));
+            baralho.add(new Card("7", Card.Color.RED, "R.drawable.red_7"));
+            baralho.add(new Card("7", Card.Color.YELLOW, "R.drawable.yellow_7"));
 
             //8
-            baralho.add(new Card("8", Card.Color.BLUE, R.drawable.blue_8));
-            baralho.add(new Card("8", Card.Color.GREEN, R.drawable.green_8));
-            baralho.add(new Card("8", "red", R.drawable.red_8));
-            baralho.add(new Card("8", "yellow", R.drawable.yellow_8));
+            baralho.add(new Card("8", Card.Color.BLUE, "R.drawable.blue_8"));
+            baralho.add(new Card("8", Card.Color.GREEN, "R.drawable.green_8"));
+            baralho.add(new Card("8", Card.Color.RED, "R.drawable.red_8"));
+            baralho.add(new Card("8", Card.Color.YELLOW, "R.drawable.yellow_8"));
 
             //9
-            baralho.add(new Card("9", Card.Color.BLUE, R.drawable.blue_9));
-            baralho.add(new Card("9", Card.Color.GREEN, R.drawable.green_9));
-            baralho.add(new Card("9", "red", R.drawable.red_9));
-            baralho.add(new Card("9", "yellow", R.drawable.yellow_9));
+            baralho.add(new Card("9", Card.Color.BLUE, "R.drawable.blue_9"));
+            baralho.add(new Card("9", Card.Color.GREEN, "R.drawable.green_9"));
+            baralho.add(new Card("9", Card.Color.RED, "R.drawable.red_9"));
+            baralho.add(new Card("9", Card.Color.YELLOW, "R.drawable.yellow_9"));
         }
 
         //Zeros
-        baralho.add(new Card("0", Card.Color.BLUE, R.drawable.blue_0));
-        baralho.add(new Card("0", Card.Color.GREEN, R.drawable.green_0));
-        baralho.add(new Card("0", "red", R.drawable.red_0));
-        baralho.add(new Card("0", "yellow", R.drawable.yellow_0));
+        baralho.add(new Card("0", Card.Color.BLUE, "R.drawable.blue_0"));
+        baralho.add(new Card("0", Card.Color.GREEN, "R.drawable.green_0"));
+        baralho.add(new Card("0", Card.Color.RED, "R.drawable.red_0"));
+        baralho.add(new Card("0", Card.Color.YELLOW, "R.drawable.yellow_0"));
 
         //Especiais
         for (int i = 0; i < 2; i++) {
             //Block
-            baralho.add(new Card("block", Card.Color.BLUE, R.drawable.blue_block));
-            baralho.add(new Card("block", Card.Color.GREEN, R.drawable.green_block));
-            baralho.add(new Card("block", "red", R.drawable.red_block));
-            baralho.add(new Card("block", "yellow", R.drawable.yellow_block));
+            baralho.add(new Card("block", Card.Color.BLUE, "R.drawable.blue_block"));
+            baralho.add(new Card("block", Card.Color.GREEN, "R.drawable.green_block"));
+            baralho.add(new Card("block", Card.Color.RED, "R.drawable.red_block"));
+            baralho.add(new Card("block", Card.Color.YELLOW, "R.drawable.yellow_block"));
 
             //Reverse
-            baralho.add(new Card("reverse", Card.Color.BLUE, R.drawable.blue_reverse));
-            baralho.add(new Card("reverse", Card.Color.GREEN, R.drawable.green_reverse));
-            baralho.add(new Card("reverse", "red", R.drawable.red_reverse));
-            baralho.add(new Card("reverse", "yellow", R.drawable.yellow_reverse));
+            baralho.add(new Card("reverse", Card.Color.BLUE, "R.drawable.blue_reverse"));
+            baralho.add(new Card("reverse", Card.Color.GREEN, "R.drawable.green_reverse"));
+            baralho.add(new Card("reverse", Card.Color.RED, "R.drawable.red_reverse"));
+            baralho.add(new Card("reverse", Card.Color.YELLOW, "R.drawable.yellow_reverse"));
 
             //+2
-            baralho.add(new Card("+2", Card.Color.BLUE, R.drawable.blue_plus2));
-            baralho.add(new Card("+2", Card.Color.GREEN, R.drawable.green_plus2));
-            baralho.add(new Card("+2", "red", R.drawable.red_plus2));
-            baralho.add(new Card("+2", "yellow", R.drawable.yellow_plus2));
+            baralho.add(new Card("+2", Card.Color.BLUE, "R.drawable.blue_plus2"));
+            baralho.add(new Card("+2", Card.Color.GREEN, "R.drawable.green_plus2"));
+            baralho.add(new Card("+2", Card.Color.RED, "R.drawable.red_plus2"));
+            baralho.add(new Card("+2", Card.Color.YELLOW, "R.drawable.yellow_plus2"));
         }
 
         //Coringas
         for (int i = 0; i < 4; i++) {
-            baralho.add(new Card("+4", Card.Color.BLACK, R.drawable.black_plus4));
-            baralho.add(new Card("color_choose", Card.Color.BLACK, R.drawable.black_color_choose));
+            baralho.add(new Card("+4", Card.Color.BLACK, "R.drawable.black_plus4"));
+            baralho.add(new Card("color_choose", Card.Color.BLACK, "R.drawable.black_color_choose"));
         }
 
         return baralho;
