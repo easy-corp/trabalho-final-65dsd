@@ -4,12 +4,12 @@ import com.google.gson.JsonObject;
 
 import br.udesc.core.server.ClientSocketThread;
 
-public class GetMatchesMessage extends AbstractMessage {
+public class GetMatchesListMessage extends AbstractMessage {
 
     private String ip;
     private int port;
 
-    public GetMatchesMessage(ClientSocketThread clientSocket) {
+    public GetMatchesListMessage(ClientSocketThread clientSocket) {
         super(clientSocket);
     }
 

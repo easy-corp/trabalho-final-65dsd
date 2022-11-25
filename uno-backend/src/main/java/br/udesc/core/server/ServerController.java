@@ -12,7 +12,7 @@ import br.udesc.core.model.Match;
 import br.udesc.core.model.User;
 import br.udesc.core.model.User.UserStatus;
 import br.udesc.core.server.messages.CreateMatchMessage;
-import br.udesc.core.server.messages.GetMatchesMessage;
+import br.udesc.core.server.messages.GetMatchesListMessage;
 import br.udesc.core.server.messages.JoinMatchMessage;
 import br.udesc.core.server.messages.LoginMessage;
 import br.udesc.core.server.messages.MyProfileMessage;
@@ -35,6 +35,8 @@ public class ServerController {
         if (instance == null) {
             instance = new ServerController();
         }
+
+        instance.createMatch("Partida do luizão", 4);
 
         return instance;
     }
@@ -68,7 +70,7 @@ public class ServerController {
         message.sendReply(readyToPlay(message.getUserId()));
     }
 
-    public void getMatchesList(GetMatchesMessage message) {
+    public void getMatchesList(GetMatchesListMessage message) {
         message.sendReply(getMatchesList());
     }
 
