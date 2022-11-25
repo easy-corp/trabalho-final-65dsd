@@ -134,4 +134,26 @@ public class ServerController {
         return avatars;
     }
 
+    public void setAvatars(List<Avatar> avatars) {
+        this.avatars = avatars;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
+    public List<Match> getMatches() {
+        return matches;
+    }
+
+    public void setMatches(List<Match> matches) {
+        this.matches = matches;
+    }
+
+    
+
 }
