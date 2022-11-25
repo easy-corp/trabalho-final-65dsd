@@ -64,12 +64,14 @@ public class ServerController {
         message.sendReply(joinMatch(message.getUserId(), message.getMatchId()));
     }
 
-    // Define que o usuário está pronto para jogar
     public void readyToPlay(ReadyToPlayMessage message) {
         message.sendReply(readyToPlay(message.getUserId()));
     }
 
-    // Realiza cadastro do usuário
+    public void getMatchesList(GetMatchesMessage message) {
+        message.sendReply(getMatchesList());
+    }
+
     public String signUp(String username, String password, int avatarId) {
         User user = new User(username, password, avatars.get(avatarId));
 
@@ -91,24 +93,17 @@ public class ServerController {
         return gson.toJson(user);
     }
 
-    // Localiza o usuário dentre os demais
     public String myProfile(int userId) {
         User user = users.get(userId);
         return gson.toJson(user);
     }
 
-    // Cria uma nova partida
     public String createMatch(String name, int qtdPlayers) {
         Match match = new Match(name, qtdPlayers);
 
         this.matches.put(match.getMatchId(), match);
 
         return gson.toJson(match);
-    }
-
-    // Lista as partidas
-    public void getMatchesList(GetMatchesMessage message) {
-        message.sendReply(getMatchesList());
     }
 
     public String getMatchesList() {
@@ -124,7 +119,6 @@ public class ServerController {
         return gson.toJson(match);
     }
 
-    // Sai da partida
     public void quitMatch(QuitMatchMessage message) {
         User user = users.get(message.getUserId());
         Match match = matches.get(message.getMatchId());
@@ -134,14 +128,12 @@ public class ServerController {
         message.sendReply(gson.toJson(match));
     }
 
-    // Define que o usuário está pronto para jogar
     public String readyToPlay(int userId) {
         User user = users.get(userId);
         user.setStatus(UserStatus.READY);
         return gson.toJson(user);
     }
 
-    // Constrói avatares para serem usados ao longo da aplicação
     private Map<Integer, Avatar> buildAvatars() {
         Map<Integer, Avatar> avatars = new HashMap<>();
 
