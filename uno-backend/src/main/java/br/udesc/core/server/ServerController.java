@@ -134,26 +134,24 @@ public class ServerController {
         return avatars;
     }
 
-    public void setAvatars(List<Avatar> avatars) {
+    public void setAvatars(Map<Integer, Avatar> avatars) {
         this.avatars = avatars;
     }
 
-    public List<User> getUsers() {
+    public Map<Integer, User> getUsers() {
         return users;
     }
 
-    public void setUsers(List<User> users) {
+    public void setUsers(Map<Integer, User> users) {
         this.users = users;
     }
 
-    public List<Match> getMatches() {
+    public Map<Integer, Match> getMatches() {
         return matches;
     }
 
-    public void setMatches(List<Match> matches) {
+    public void setMatches(Map<Integer, Match> matches) {
         this.matches = matches;
-    }
-
-    
+    }    
 
 }
