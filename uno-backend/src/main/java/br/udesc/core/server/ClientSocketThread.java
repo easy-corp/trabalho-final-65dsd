@@ -35,7 +35,7 @@ public class ClientSocketThread extends Thread {
         }
     }
 
-    public void sendMessage(String message){
+    public void sendMessage(String message) {
         writer.println(message);
         writer.flush();
     }
@@ -43,30 +43,35 @@ public class ClientSocketThread extends Thread {
     @Override
     public void run() {
         String readLine;
-
+        boolean forceQuit = false;
         try {
             readLine = reader.readLine();
-            while (readLine == null || !readLine.equals("QUIT")) {
-                if (readLine != null) {
-                    listener.onMessage(readLine);
-                }
-                readLine = reader.readLine();
-                
-            }
-
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Erro ao receber os dados do cliente!", e);
-        } finally {
-            logger.log(Level.INFO, "Fechando conexao com o cliente " + getName());
+            readLine = null;
+            logger.log(Level.SEVERE, "Erro ao processar a mensagem do cliente!", e);
+        }
+        while ((readLine == null || !readLine.equals("QUIT")) && !forceQuit) {
+            if (readLine != null) {
+                listener.onMessage(readLine, this);
+            }
             try {
-                reader.close();
-                writer.close();
-                socket.close();
-            } catch (IOException e) {
-                logger.log(Level.SEVERE, "Erro ao encerrar a conexao com o cliente!", e);
+                readLine = reader.readLine();
+            } catch (Exception e) {
+                logger.log(Level.SEVERE, "Erro ao processar a mensagem do cliente!", e);
+                readLine = null;
+                forceQuit = true;
             }
 
         }
+
+        try {
+            reader.close();
+            writer.close();
+            socket.close();
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, "Erro ao encerrar a conexao com o cliente!", e);
+        }
+
     }
 
 }
