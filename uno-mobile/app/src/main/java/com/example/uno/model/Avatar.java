@@ -5,16 +5,10 @@ public class Avatar {
     private int id;                          //Id do avatar
     private static int idCont = 0;
     private String imageUrl;                 //Imagem do avatar
-    private String imgSelecionado;           //Imagem normal do avatar
-    private String imgNaoSelecionado;        //Imagem do avatar com contorno
-    private boolean clicado;                 //Controle de click no avatar
 
     public Avatar(String imageUrl) {
         this.id = ++idCont;
         this.imageUrl = imageUrl;
-        this.imgSelecionado = imageUrl + "_selecionado";
-        this.imgNaoSelecionado = imageUrl;
-        this.clicado = false;
     }
 
     public int getId() {
@@ -33,18 +27,14 @@ public class Avatar {
         this.imageUrl = imageUrl;
     }
 
-    public boolean isClicado() {
-        return clicado;
-    }
-
-    public void setClicado(boolean opt) {
+    public void click(boolean opt) {
         if (opt) {
-            this.imageUrl = imgSelecionado;
+            this.imageUrl = this.imageUrl + "_selecionado";
         } else {
-            this.imageUrl = imgNaoSelecionado;
+            if (this.imageUrl.indexOf("_selecionado") > 0) {
+                this.imageUrl = this.imageUrl.substring(0, this.imageUrl.indexOf("_selecionado"));
+            }
         }
-
-        this.clicado = opt;
     }
 
 }

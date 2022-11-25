@@ -1,25 +1,25 @@
 package com.example.uno.control.adapter;
 
-import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.uno.R;
 import com.example.uno.model.Avatar;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AdapterAvatares extends RecyclerView.Adapter<AdapterAvatares.ViewHolder> {
 
-    List<Avatar> avatares;
+    Map<Integer, Avatar> avatares;
     RecyclerView recyclerView;
 
     //O tipo de view que vamos usar
@@ -37,15 +37,16 @@ public class AdapterAvatares extends RecyclerView.Adapter<AdapterAvatares.ViewHo
 
     public AdapterAvatares(RecyclerView recyclerView) {
         this.recyclerView = recyclerView;
+        this.avatares = new HashMap<>();
+        Gson gson = new Gson();
 
-        this.avatares = new ArrayList<>();
+        String json2 = "{\"0\":{\"id\":1,\"imageUrl\":\"avatar_1\"},\"1\":{\"id\":2,\"imageUrl\":\"avatar_2\"},\"2\":{\"id\":3,\"imageUrl\":\"avatar_3\"},\"3\":{\"id\":4,\"imageUrl\":\"avatar_4\"},\"4\":{\"id\":5,\"imageUrl\":\"avatar_5\"},\"5\":{\"id\":6,\"imageUrl\":\"avatar_6\"}}";
+        HashMap<Integer, Avatar> listaConvertida = null;
 
-        this.avatares.add(new Avatar("avatar_1"));
-        this.avatares.add(new Avatar("avatar_2"));
-        this.avatares.add(new Avatar("avatar_3"));
-        this.avatares.add(new Avatar("avatar_4"));
-        this.avatares.add(new Avatar("avatar_5"));
-        this.avatares.add(new Avatar("avatar_6"));
+        Type listType = new TypeToken<HashMap<Integer, Avatar>>(){}.getType();
+        listaConvertida = gson.fromJson(json2, listType);
+
+        this.avatares = listaConvertida;
     }
 
     @Override
@@ -68,18 +69,18 @@ public class AdapterAvatares extends RecyclerView.Adapter<AdapterAvatares.ViewHo
             @Override
             public void onClick(View view) {
                 //Caso tenha sido feito um click anteriormente
-                for (Avatar av : avatares) {
-                    //Muda todos menos o clicado
+                for (Avatar av : avatares.values()) {
+                    //Muda todos menos o clicado para não selecionado
                     if (av != avatar) {
-                        av.setClicado(false);
+                        av.click(false);
                     }
                 }
 
                 //Ajusta o clicado
-                if (avatar.isClicado()) {
-                    avatar.setClicado(false);
+                if (avatar.getImageUrl().indexOf("_selecionado") > 0) {
+                    avatar.click(false);
                 } else {
-                    avatar.setClicado(true);
+                    avatar.click(true);
                 }
 
                 AdapterAvatares.this.notifyDataSetChanged();
