@@ -11,6 +11,14 @@ import br.udesc.core.model.Avatar;
 import br.udesc.core.model.Match;
 import br.udesc.core.model.User;
 import br.udesc.core.model.User.UserStatus;
+import br.udesc.core.server.messages.CreateMatchMessage;
+import br.udesc.core.server.messages.GetMatchesMessage;
+import br.udesc.core.server.messages.JoinMatchMessage;
+import br.udesc.core.server.messages.LoginMessage;
+import br.udesc.core.server.messages.MyProfileMessage;
+import br.udesc.core.server.messages.QuitMatchMessage;
+import br.udesc.core.server.messages.ReadyToPlayMessage;
+import br.udesc.core.server.messages.SignupMessage;
 
 public class ServerController {
 
@@ -20,69 +28,93 @@ public class ServerController {
     private Map<Integer, User> users = new HashMap<>();
     private Map<Integer, Match> matches = new HashMap<>();
 
-    private ServerController() {}
+    private ServerController() {
+    }
 
-    public synchronized static ServerController getInstance(){
-        if(instance == null){
+    public synchronized static ServerController getInstance() {
+        if (instance == null) {
             instance = new ServerController();
         }
 
         return instance;
     }
 
-    public String getAvatars(){
+    public String getAvatars() {
         return gson.toJson(avatars);
     }
 
-    //Realiza cadastro do usuário
+    public void signUp(SignupMessage message) {
+        message.sendReply(signUp(message.getUsername(), message.getPassword(), message.getAvatarId()));
+    }
+
+    public void login(LoginMessage message) {
+        message.sendReply(login(message.getUsername(), message.getPassword()));
+    }
+
+    public void createMatch(CreateMatchMessage message) {
+        message.sendReply(createMatch(message.getName(), message.getQtdPlayers()));
+    }
+
+    public void myProfile(MyProfileMessage message) {
+        message.sendReply(myProfile(message.getUserId()));
+    }
+
+    // Entra na partida
+    public void joinMatch(JoinMatchMessage message) {
+        message.sendReply(joinMatch(message.getUserId(), message.getMatchId()));
+    }
+
+    // Define que o usuário está pronto para jogar
+    public void readyToPlay(ReadyToPlayMessage message) {
+        message.sendReply(readyToPlay(message.getUserId()));
+    }
+
+    // Realiza cadastro do usuário
     public String signUp(String username, String password, int avatarId) {
         User user = new User(username, password, avatars.get(avatarId));
-        
+
         users.put(user.getId(), user);
 
         return gson.toJson(user);
     }
 
-    //Verifica nome e senha do usuário
-    public String login(String username, String password){
+    public String login(String username, String password) {
         User user = null;
 
         for (User us : users.values()) {
-            if (us.getName().contentEquals(username) && us.getPassword().contentEquals(password)) {
+            if (us.getName().contentEquals(username)
+                    && us.getPassword().contentEquals(password)) {
                 user = us;
             }
         }
-        
+
         return gson.toJson(user);
     }
 
-    //Localiza o usuário dentre os demais
+    // Localiza o usuário dentre os demais
     public String myProfile(int userId) {
         User user = users.get(userId);
-        
         return gson.toJson(user);
     }
 
-    //Entra no servidor
-    public String joinServer(String ip, int port, int userId) {
-        return "";
-    }
-
-    //Cria uma nova partida
+    // Cria uma nova partida
     public String createMatch(String name, int qtdPlayers) {
         Match match = new Match(name, qtdPlayers);
-        
+
         this.matches.put(match.getMatchId(), match);
 
         return gson.toJson(match);
     }
 
-    //Lista as partidas
-    public String getMatches(String ip, int port) {
+    // Lista as partidas
+    public void getMatchesList(GetMatchesMessage message) {
+        message.sendReply(getMatchesList());
+    }
+
+    public String getMatchesList() {
         return gson.toJson(matches);
     }
 
-    //Entra na partida
     public String joinMatch(int userId, int matchId) {
         User user = users.get(userId);
         Match match = matches.get(matchId);
@@ -92,35 +124,24 @@ public class ServerController {
         return gson.toJson(match);
     }
 
-    //Sai da partida
-    public String quitMatch(int userId, int matchId){
-        User user = users.get(userId);
-        Match match = matches.get(matchId);
+    // Sai da partida
+    public void quitMatch(QuitMatchMessage message) {
+        User user = users.get(message.getUserId());
+        Match match = matches.get(message.getMatchId());
 
         match.removePlayer(user);
 
-        return gson.toJson(match);
+        message.sendReply(gson.toJson(match));
     }
 
-    //Define que o usuário está pronto para jogar
+    // Define que o usuário está pronto para jogar
     public String readyToPlay(int userId) {
         User user = users.get(userId);
-        
         user.setStatus(UserStatus.READY);
-
         return gson.toJson(user);
     }
 
-    //Define que o usuário não está pronto para jogar
-    public String unreadyToPlay(int userId) {
-        User user = users.get(userId);
-
-        user.setStatus(UserStatus.UNREADY);
-
-        return gson.toJson(user);
-    }
-
-    //Constrói avatares para serem usados ao longo da aplicação
+    // Constrói avatares para serem usados ao longo da aplicação
     private Map<Integer, Avatar> buildAvatars() {
         Map<Integer, Avatar> avatars = new HashMap<>();
 
@@ -152,6 +173,6 @@ public class ServerController {
 
     public void setMatches(Map<Integer, Match> matches) {
         this.matches = matches;
-    }    
+    }
 
 }

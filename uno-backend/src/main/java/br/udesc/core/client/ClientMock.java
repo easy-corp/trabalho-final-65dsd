@@ -7,6 +7,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import br.udesc.util.Config;
 
@@ -20,14 +22,13 @@ public class ClientMock {
         Scanner input = new Scanner(System.in);
         String line = "";
 
-        
-      
-        
+
         Thread t = new Thread(new Runnable() {
 
             @Override
             public void run() {
-                while(true){
+                boolean connected = true;
+                while(connected){
                     try {
                         Thread.sleep(2000);
                     } catch (InterruptedException e) {
@@ -39,7 +40,8 @@ public class ClientMock {
                             System.out.println(s);
                         }
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        Logger.getGlobal().log(Level.INFO, "desconectando...");
+                        connected = false;
                     }
                 }
             }
@@ -48,16 +50,14 @@ public class ClientMock {
 
         t.start();
 
-        while (!line.equals("QUIT")) {
+        while (!line.equals("QUIT") && client.isConnected()) {
             line = input.nextLine();
             output.println(line);
-        }
-
-
+        }     
         
+        client.close();
         input.close();
         output.close();
-        client.close();
 
     }
 

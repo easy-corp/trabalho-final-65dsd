@@ -15,11 +15,20 @@ public class Server {
     private Logger logger;
     private Map<Integer, ClientSocketThread> clients;
     private List<ClientSocketThread> clientSockets;
+    private static Server instance;
 
-    public Server() {
+    private Server() {
         this.logger = Logger.getLogger("ServerLogger");
         this.clients = new HashMap<>();
         this.clientSockets = new ArrayList<>();
+    }
+
+    public static Server getInstance(){
+        if(instance == null){
+            instance = new Server();
+        }
+
+        return instance;
     }
 
     public void bindUser(int userId, ClientSocketThread socketClient){

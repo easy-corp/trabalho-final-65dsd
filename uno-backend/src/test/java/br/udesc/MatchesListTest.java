@@ -22,7 +22,7 @@ public class MatchesListTest {
         List<Match> matches = null;
 
         try {
-            String json = controller.getMatches("127.0.0.1", 8080);
+            String json = controller.getMatchesList();
             
             Gson gson = new Gson();
             Type listType = new TypeToken<ArrayList<Match>>(){}.getType();
@@ -42,7 +42,7 @@ public class MatchesListTest {
         List<Match> matches = null;
 
         try {
-            String json = controller.getMatches("127.0.0.1", 8080);
+            String json = controller.getMatchesList();
             
             Gson gson = new Gson();
             Type listType = new TypeToken<ArrayList<Match>>(){}.getType();
