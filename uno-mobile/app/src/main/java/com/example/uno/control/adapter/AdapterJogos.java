@@ -57,10 +57,10 @@ public class AdapterJogos extends RecyclerView.Adapter<AdapterJogos.ViewHolder> 
     //Pega o elemento na lista e joga o conteudo na view referente
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Match jogo = this.servidor.getJogos().get(position);
+        Match jogo = this.servidor.getMatches().get(position);
 
-        holder.txtJogo.setText(jogo.getNome());
-        holder.txtParticipantes.setText(jogo.getJogadores().size() + "/" + jogo.getPartCapacidade());
+        holder.txtJogo.setText(jogo.getName());
+        holder.txtParticipantes.setText(jogo.getPlayers().size() + "/" + jogo.getQtdPlayers());
 
         if (!jogo.isEntravel()) {
             holder.icEntrarJogo.setBackgroundResource(R.drawable.sala_indisponivel);
@@ -80,7 +80,7 @@ public class AdapterJogos extends RecyclerView.Adapter<AdapterJogos.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return this.servidor.getJogos().size();
+        return this.servidor.getMatches().size();
     }
 
 }

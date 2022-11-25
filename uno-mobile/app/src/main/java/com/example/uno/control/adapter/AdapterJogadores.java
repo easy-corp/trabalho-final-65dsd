@@ -10,12 +10,14 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.uno.R;
+import com.example.uno.TelaJogo;
 import com.example.uno.model.User;
 import com.example.uno.model.Match;
 
 public class AdapterJogadores extends RecyclerView.Adapter<AdapterJogadores.ViewHolder> {
 
     Match jogo;
+    TelaJogo telaJogo;
 
     //O tipo de view que vamos usar
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -32,8 +34,9 @@ public class AdapterJogadores extends RecyclerView.Adapter<AdapterJogadores.View
         }
     }
 
-    public AdapterJogadores(Match jogo) {
+    public AdapterJogadores(Match jogo, TelaJogo telaJogo) {
         this.jogo = jogo;
+        this.telaJogo = telaJogo;
     }
 
     @Override
@@ -48,16 +51,17 @@ public class AdapterJogadores extends RecyclerView.Adapter<AdapterJogadores.View
     //Pega o elemento na lista e joga o conteudo na view referente
     @Override
     public void onBindViewHolder(AdapterJogadores.ViewHolder holder, int position) {
-        User jogador = this.jogo.getJogadores().get(position);
+        User jogador = this.jogo.getPlayers().get(position);
         jogador.getAvatar().setClicado(false);
+        int image = telaJogo.getResources().getIdentifier(jogador.getAvatar().getImageUrl(), "drawable", telaJogo.getPackageName());
 
-        holder.imgJogador.setBackgroundResource(jogador.getAvatar().getImg());
+        holder.imgJogador.setBackgroundResource(image);
         holder.txtCartas.setText(jogador.getNumCartas() + " Cartas");
     }
 
     @Override
     public int getItemCount() {
-        return this.jogo.getJogadores().size();
+        return this.jogo.getPlayers().size();
     }
 
 }

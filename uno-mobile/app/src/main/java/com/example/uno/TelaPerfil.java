@@ -21,7 +21,7 @@ public class TelaPerfil extends AppCompatActivity {
 
         icSair.setOnClickListener(param -> startActivity(new Intent(this, TelaServidores.class)));
 
-        User jogador = new User("Luis Felipe", "1234", new Avatar(R.drawable.avatar_1, R.drawable.avatar_1_selecionado));
+        User jogador = new User("Luis Felipe", "1234", new Avatar("avatar_1"));
         preencherPerfil(jogador);
     }
 
@@ -32,9 +32,12 @@ public class TelaPerfil extends AppCompatActivity {
         TextView txtVitorias = findViewById(R.id.txtPerfilVitorias);
 
         jogador.getAvatar().setClicado(true);
-        imgAvatarPerfil.setBackgroundResource(jogador.getAvatar().getImg());
-        txtNome.setText(jogador.getNome());
-        txtJogos.setText(String.valueOf(jogador.getJogos()) + " Jogos");
-        txtVitorias.setText(String.valueOf(jogador.getVitorias()) + " Vitórias");
+        int image = getResources().getIdentifier(jogador.getAvatar().getImageUrl(), "drawable", getPackageName());
+        imgAvatarPerfil.setBackgroundResource(image);
+        txtNome.setText(jogador.getName());
+
+        /////////////Verificar/////////////
+        txtJogos.setText(String.valueOf("5 Jogos"));
+        txtVitorias.setText(String.valueOf("5 Vitórias"));
     }
 }

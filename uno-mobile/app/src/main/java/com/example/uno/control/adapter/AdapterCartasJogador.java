@@ -1,5 +1,6 @@
 package com.example.uno.control.adapter;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,11 +51,13 @@ public class AdapterCartasJogador extends RecyclerView.Adapter<AdapterCartasJoga
     @Override
     public void onBindViewHolder(AdapterCartasJogador.ViewHolder holder, int position) {
         Card carta = jogador.getDeck().get(position);
+        int image = telaJogo.getResources().getIdentifier(carta.getImageUrl(), "drawable", telaJogo.getPackageName());
 
-        holder.imgCarta.setBackgroundResource(carta.getImg());
+        holder.imgCarta.setBackgroundResource(image);
 
         //Descartar carta da mão do jogador
         holder.imgCarta.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceType")
             @Override
             public void onClick(View view) {
                 //Se as carta pode ser dropada na mesa

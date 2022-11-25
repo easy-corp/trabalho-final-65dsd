@@ -12,8 +12,8 @@ public class Avatar {
     public Avatar(String imageUrl) {
         this.id = ++idCont;
         this.imageUrl = imageUrl;
-        this.imgSelecionado = imageUrl;
-        this.imgNaoSelecionado = imageUrl + "_selecionado";
+        this.imgSelecionado = imageUrl + "_selecionado";
+        this.imgNaoSelecionado = imageUrl;
         this.clicado = false;
     }
 
@@ -45,10 +45,6 @@ public class Avatar {
         }
 
         this.clicado = opt;
-    }
-
-    public String getImg() {
-        return imageUrl;
     }
 
 }

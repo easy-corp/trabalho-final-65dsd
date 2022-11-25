@@ -29,7 +29,7 @@ public class TelaJogo extends AppCompatActivity {
 
     private Match jogo = new Match("Jogos da Galera", 4);
     private User jogador = new User("Luis", "1234",
-            new Avatar(R.drawable.avatar_1, R.drawable.avatar_1_selecionado));
+            new Avatar("avatar_1"));
     private Random random = new Random();
     private Card cartaVirada = null;
 
@@ -78,7 +78,7 @@ public class TelaJogo extends AppCompatActivity {
         layManagerJogadores = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         listaJogadores.setLayoutManager(layManagerJogadores);
 
-        adapterJogadores = new AdapterJogadores(this.jogo);
+        adapterJogadores = new AdapterJogadores(this.jogo, this);
         listaJogadores.setAdapter(adapterJogadores);
     }
 
@@ -98,15 +98,15 @@ public class TelaJogo extends AppCompatActivity {
     //Gera carta inicial virada para cima na mesa
     private void gerarCartaMesa() {
         //Pega uma carta aleatoriamente para botar na mesa
-        Card carta = this.jogo.getBaralho().get(random.nextInt(this.jogo.getBaralho().size()));
+        Card carta = this.jogo.getDeck().get(random.nextInt(this.jogo.getDeck().size()));
 
         //Ela não pode ser preta
-        if (carta.getCor().contentEquals("black")) {
+        if (carta.getColor() == Card.Color.BLACK) {
             gerarCartaMesa();
         } else {
             //Tira ela do baralho e bota na pilha de descartadas
-            jogo.getBaralho().remove(carta);
-            jogo.getDescartadas().add(carta);
+            jogo.getDeck().remove(carta);
+            jogo.getDiscard().add(carta);
 
             //Atualiza a imagem na tela
             atualizarCartaMesa(carta);
@@ -123,7 +123,7 @@ public class TelaJogo extends AppCompatActivity {
         }
 
         //Adiciona a pilha de descartadas
-        jogo.getDescartadas().add(carta);
+        jogo.getDiscard().add(carta);
 
         //Move a carta de cima para fora da tela
         ObjectAnimator moveOut = ObjectAnimator.ofFloat(imgProximaCartaViradaMesa, "translationX", 1000f);
@@ -131,7 +131,8 @@ public class TelaJogo extends AppCompatActivity {
         moveOut.start();
 
         //Atualiza a imagem de cima na tela
-        imgProximaCartaViradaMesa.setBackgroundResource(jogo.getDescartadas().peek().getImg());
+        int image = getResources().getIdentifier(jogo.getDiscard().peek().getImageUrl(), "drawable", getPackageName());
+        imgProximaCartaViradaMesa.setBackgroundResource(image);
 
         //Move a carta de cima para dentro da tela
         ObjectAnimator moveIn = ObjectAnimator.ofFloat(imgProximaCartaViradaMesa, "translationX", 0);
@@ -155,8 +156,9 @@ public class TelaJogo extends AppCompatActivity {
             public void onClick(View view) {
                 if (isFront) {
                     //Recupera e troca a carta para o flip seguinte
-                    cartaVirada = jogo.getBaralho().get(random.nextInt(jogo.getBaralho().size()));
-                    imgMonteVirado.setBackgroundResource(cartaVirada.getImg());
+                    cartaVirada = jogo.getDeck().get(random.nextInt(jogo.getDeck().size()));
+                    int image = getResources().getIdentifier(cartaVirada.getImageUrl(), "drawable", getPackageName());
+                    imgMonteVirado.setBackgroundResource(image);
 
                     //Move a carta de volta para baixo do monte
                     ObjectAnimator moveIn = ObjectAnimator.ofFloat(imgMonteVirado, "translationY", 0);
@@ -188,7 +190,7 @@ public class TelaJogo extends AppCompatActivity {
 
                     //Adiciona a carta na mão do jogador
                     jogador.getDeck().add(cartaVirada);
-                    jogo.getBaralho().remove(cartaVirada);
+                    jogo.getDeck().remove(cartaVirada);
 
                     //Atualiza as listas
                     atualizarListas();
@@ -200,19 +202,19 @@ public class TelaJogo extends AppCompatActivity {
     //Distribui as cartas entre os jogadores
     private void distribuiCartas() {
         //Adiciona o jogador logado no dispositivo
-        this.jogo.addJogador(this.jogador);
+        this.jogo.addPlayer(this.jogador);
 
         //Adiciona demais jogadores
-        this.jogo.addJogador(new User("Gabriel", "1234", new Avatar(R.drawable.avatar_4, R.drawable.avatar_4_selecionado)));
-        this.jogo.addJogador(new User("Murilo", "1234", new Avatar(R.drawable.avatar_5, R.drawable.avatar_5_selecionado)));
-        this.jogo.addJogador(new User("Giovana", "1234", new Avatar(R.drawable.avatar_2, R.drawable.avatar_2_selecionado)));
-        this.jogo.addJogador(new User("Maria", "1234", new Avatar(R.drawable.avatar_6, R.drawable.avatar_6_selecionado)));
+        this.jogo.addPlayer(new User("Gabriel", "1234", new Avatar("avatar_4")));
+        this.jogo.addPlayer(new User("Murilo", "1234", new Avatar("avatar_5")));
+        this.jogo.addPlayer(new User("Giovana", "1234", new Avatar("avatar_2")));
+        this.jogo.addPlayer(new User("Maria", "1234", new Avatar("avatar_6")));
 
-        for (User j : this.jogo.getJogadores()) {
+        for (User j : this.jogo.getPlayers()) {
             for (int i = 0; i < 7; i++) {
                 //Tira uma carta do baralho para meu deck
-                Card carta = this.jogo.getBaralho().get(random.nextInt(jogo.getBaralho().size()));
-                this.jogo.getBaralho().remove(carta);
+                Card carta = this.jogo.getDeck().get(random.nextInt(jogo.getDeck().size()));
+                this.jogo.getDeck().remove(carta);
 
                 j.addCarta(carta);
             }

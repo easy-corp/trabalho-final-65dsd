@@ -1,10 +1,13 @@
 package com.example.uno.control.adapter;
 
+import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,7 +21,6 @@ public class AdapterAvatares extends RecyclerView.Adapter<AdapterAvatares.ViewHo
 
     List<Avatar> avatares;
     RecyclerView recyclerView;
-    int posUltimoClick;
 
     //O tipo de view que vamos usar
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -38,12 +40,12 @@ public class AdapterAvatares extends RecyclerView.Adapter<AdapterAvatares.ViewHo
 
         this.avatares = new ArrayList<>();
 
-        this.avatares.add(new Avatar(R.drawable.avatar_1, R.drawable.avatar_1_selecionado));
-        this.avatares.add(new Avatar(R.drawable.avatar_2, R.drawable.avatar_2_selecionado));
-        this.avatares.add(new Avatar(R.drawable.avatar_3, R.drawable.avatar_3_selecionado));
-        this.avatares.add(new Avatar(R.drawable.avatar_4, R.drawable.avatar_4_selecionado));
-        this.avatares.add(new Avatar(R.drawable.avatar_5, R.drawable.avatar_5_selecionado));
-        this.avatares.add(new Avatar(R.drawable.avatar_6, R.drawable.avatar_6_selecionado));
+        this.avatares.add(new Avatar("avatar_1"));
+        this.avatares.add(new Avatar("avatar_2"));
+        this.avatares.add(new Avatar("avatar_3"));
+        this.avatares.add(new Avatar("avatar_4"));
+        this.avatares.add(new Avatar("avatar_5"));
+        this.avatares.add(new Avatar("avatar_6"));
     }
 
     @Override
@@ -59,7 +61,8 @@ public class AdapterAvatares extends RecyclerView.Adapter<AdapterAvatares.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Avatar avatar = avatares.get(position);
-        holder.imgView.setBackgroundResource(avatar.getImg());
+        int image = recyclerView.getContext().getResources().getIdentifier(avatar.getImageUrl(), "drawable", recyclerView.getContext().getPackageName());
+        holder.imgView.setBackgroundResource(image);
 
         holder.imgView.setOnClickListener(new View.OnClickListener() {
             @Override
