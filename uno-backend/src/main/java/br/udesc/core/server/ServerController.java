@@ -47,7 +47,7 @@ public class ServerController {
     public String login(String username, String password){
         User user = null;
 
-        for (User us : users) {
+        for (User us : users.values()) {
             if (us.getName().contentEquals(username) && us.getPassword().contentEquals(password)) {
                 user = us;
             }
