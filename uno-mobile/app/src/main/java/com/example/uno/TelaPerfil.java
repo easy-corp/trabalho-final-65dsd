@@ -21,13 +21,13 @@ public class TelaPerfil extends AppCompatActivity {
 
         icSair.setOnClickListener(param -> startActivity(new Intent(this, TelaServidores.class)));
 
-        User jogador = new User("Luis Felipe", "1234", new Avatar("avatar_1"));
+        User jogador = new User("Luis", "1234", new Avatar("avatar_1"));
         preencherPerfil(jogador);
     }
 
     public void preencherPerfil(User jogador) {
         ImageView imgAvatarPerfil = findViewById(R.id.imgAvatarPerfil);
-        TextView txtNome = findViewById(R.id.txtDescListaJogos);
+        TextView txtNome = findViewById(R.id.txtPerfilNome);
         TextView txtJogos = findViewById(R.id.txtPerfilJogos);
         TextView txtVitorias = findViewById(R.id.txtPerfilVitorias);
 

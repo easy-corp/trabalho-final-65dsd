@@ -39,9 +39,9 @@ public class TelaEntrarJogo extends AppCompatActivity {
         GameServer servidor = new GameServer("127.0.0.1", 80);
 
         servidor.addMatch(new Match("Jogos da Galera", 4));
-        servidor.addMatch(new Match("Joga comigo", 4));
-        servidor.addMatch(new Match("Chega mais", 4));
-        servidor.addMatch(new Match("Vem pra diversão", 4));
+//        servidor.addMatch(new Match("Joga comigo", 4));
+//        servidor.addMatch(new Match("Chega mais", 4));
+//        servidor.addMatch(new Match("Vem pra diversão", 4));
 
         TextView txtDescListaJogos = findViewById(R.id.txtDescListaJogos);
         txtDescListaJogos.setText("Jogos ativos em: " + servidor.getIp());
