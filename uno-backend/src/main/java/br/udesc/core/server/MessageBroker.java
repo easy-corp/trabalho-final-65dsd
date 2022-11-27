@@ -28,6 +28,15 @@ public class MessageBroker implements ClientSocketListener {
         return instance;
     }
 
+    public void sendMessageToUser(int userId, String message){
+        ClientSocketThread userSocket = Server.getInstance().getClientSocket(userId);
+        if(userSocket != null){
+            userSocket.sendMessage(message);
+        }else{
+            Logger.getGlobal().log(Level.WARNING, "O usuario " + userId + " nao foi encontrado! impossivel encaminhar a mensagem");
+        }
+    }
+
     @Override
     public void onMessage(String message, ClientSocketThread socketClient) {
         JsonObject messageObject = gson.fromJson(message, JsonObject.class);

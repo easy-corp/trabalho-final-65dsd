@@ -50,7 +50,9 @@ public class ServerController {
     }
 
     public void login(LoginMessage message) {
-        message.sendReply(login(message.getUsername(), message.getPassword()));
+        User theUser = doLogin(message.getUsername(), message.getPassword());
+        Server.getInstance().bindUser(theUser.getId(), message.getSocketClient());
+        message.sendReply(gson.toJson(theUser));
     }
 
     public void createMatch(CreateMatchMessage message) {
@@ -83,6 +85,10 @@ public class ServerController {
     }
 
     public String login(String username, String password) {
+        return gson.toJson(doLogin(username, password));
+    }
+
+    private User doLogin(String username, String password){
         User user = null;
 
         for (User us : users.values()) {
@@ -92,8 +98,9 @@ public class ServerController {
             }
         }
 
-        return gson.toJson(user);
+        return user;
     }
+
 
     public String myProfile(int userId) {
         User user = users.get(userId);
