@@ -10,6 +10,7 @@ import android.graphics.Color;
 
 import androidx.core.content.ContextCompat;
 import androidx.test.espresso.action.ViewActions;
+import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
@@ -88,9 +89,11 @@ public class TestesSistema {
         //Entra na partida
         onView(withId(R.id.icEntrarJogo)).perform(ViewActions.click());
 
-        //Verifica se e possível clicar para comprar cartas
+        //Verifica se e possível clicar para comprar e descartar cartas
         //Isso significa que o jogo está rolando
         onView(withId(R.id.imgMonte)).perform(ViewActions.click());
+        onView(withId(R.id.listaCartasJogador)).perform(
+                RecyclerViewActions.actionOnItemAtPosition(0, MyViewAction.clickChildViewWithId(R.id.imgCarta)));
     }
 
 }
