@@ -46,7 +46,7 @@ public class TelaEntrarJogo extends AppCompatActivity {
         TextView txtDescListaJogos = findViewById(R.id.txtDescListaJogos);
         txtDescListaJogos.setText("Jogos ativos em: " + servidor.getIp());
 
-        listaJogos = findViewById(R.id.listaJogos);
+        listaJogos = findViewById(R.id.listaJogadoresResultado);
 
         listaJogos.setHasFixedSize(true);
 

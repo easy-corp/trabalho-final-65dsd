@@ -28,7 +28,7 @@ public class AdapterCartasJogador extends RecyclerView.Adapter<AdapterCartasJoga
         public ViewHolder(View view) {
             super(view);
 
-            layout = (LinearLayout) view.findViewById(R.id.layCartasJogador);
+            layout = (LinearLayout) view.findViewById(R.id.layJogadoresResult);
             imgCarta = (ImageView) view.findViewById(R.id.imgCarta);
         }
     }

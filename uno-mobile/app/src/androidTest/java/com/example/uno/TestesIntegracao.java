@@ -4,21 +4,15 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.matcher.ViewMatchers.*;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 
-import android.view.View;
-
-import androidx.annotation.ContentView;
 import androidx.test.espresso.action.ViewActions;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.example.uno.model.Avatar;
 import com.example.uno.model.User;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 public class TestesIntegracao {
 
@@ -55,7 +49,7 @@ public class TestesIntegracao {
         onView(withId(R.id.btnEntrarServidor)).perform(ViewActions.click());
 
         //Verifica se há jogos na tela
-        onView(withId(R.id.listaJogos)).check(matches(isDisplayed()));
+        onView(withId(R.id.listaPlayersResultado)).check(matches(isDisplayed()));
     }
 
     @Test

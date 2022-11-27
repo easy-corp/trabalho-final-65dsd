@@ -51,7 +51,8 @@ public class TelaJogo extends AppCompatActivity {
         ImageView icSair = findViewById(R.id.icSair);
         FrameLayout layUno = findViewById(R.id.layUno);
 
-        icSair.setOnClickListener(param -> startActivity(new Intent(this, TelaEntrarJogo.class)));
+//        icSair.setOnClickListener(param -> startActivity(new Intent(this, TelaEntrarJogo.class)));
+        icSair.setOnClickListener(param -> startActivity(new Intent(this, TelaResultados.class)));
         layUno.setOnClickListener(param -> pedirUno());
 
         distribuiCartas();

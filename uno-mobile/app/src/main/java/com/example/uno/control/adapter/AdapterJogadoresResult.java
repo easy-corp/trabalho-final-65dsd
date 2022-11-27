@@ -7,43 +7,44 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.uno.R;
-import com.example.uno.TelaJogo;
-import com.example.uno.model.User;
+import com.example.uno.TelaResultados;
 import com.example.uno.model.Match;
+import com.example.uno.model.User;
 
-public class AdapterJogadores extends RecyclerView.Adapter<AdapterJogadores.ViewHolder> {
+public class AdapterJogadoresResult extends RecyclerView.Adapter<AdapterJogadoresResult.ViewHolder> {
 
     private Match jogo;
-    private TelaJogo telaJogo;
+    private TelaResultados telaResultados;
 
     //O tipo de view que vamos usar
     public static class ViewHolder extends RecyclerView.ViewHolder {
         LinearLayout layout;
         ImageView imgJogador;
-        TextView txtCartas;
+        TextView txtNome;
 
         public ViewHolder(View view) {
             super(view);
 
             layout = (LinearLayout) view.findViewById(R.id.layJogadoresResult);
             imgJogador = (ImageView) view.findViewById(R.id.imgJogadorResult);
-            txtCartas = (TextView) view.findViewById(R.id.txtNomeResult);
+            txtNome = (TextView) view.findViewById(R.id.txtNomeResult);
         }
     }
 
-    public AdapterJogadores(Match jogo, TelaJogo telaJogo) {
+    public AdapterJogadoresResult(Match jogo, TelaResultados telaResultados) {
         this.jogo = jogo;
-        this.telaJogo = telaJogo;
+        this.telaResultados = telaResultados;
     }
 
     //Cria e define o layout a ser utilizado
     @Override
-    public AdapterJogadores.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View v = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.layout_recycle_jogadores, viewGroup, false);
+                .inflate(R.layout.layout_recycle_jogadores_result, viewGroup, false);
 
         ViewHolder vh = new ViewHolder(v);
         return vh;
@@ -51,13 +52,13 @@ public class AdapterJogadores extends RecyclerView.Adapter<AdapterJogadores.View
 
     //Pega o elemento na lista e joga o conteudo na view referente
     @Override
-    public void onBindViewHolder(AdapterJogadores.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         User jogador = this.jogo.getPlayers().get(position);
         jogador.getAvatar().click(true);
-        int image = telaJogo.getResources().getIdentifier(jogador.getAvatar().getImageUrl(), "drawable", telaJogo.getPackageName());
+        int image = this.telaResultados.getResources().getIdentifier(jogador.getAvatar().getImageUrl(), "drawable", telaResultados.getPackageName());
 
         holder.imgJogador.setBackgroundResource(image);
-        holder.txtCartas.setText(jogador.getNumCartas() + " Cartas");
+        holder.txtNome.setText(jogador.getName());
     }
 
     @Override
