@@ -1,7 +1,9 @@
 package com.example.uno;
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
 
 import androidx.test.espresso.action.ViewActions;
 
@@ -60,7 +62,16 @@ public class TDD {
 
     @Test
     public void testResult() {
+        //Finaliza o jogo
+        onView(withId(R.id.icSairJogo)).perform(ViewActions.click());
 
+        //Verifica se o vencedor está ali
+        onView(withId(R.id.imgVencedorAvatar)).check(matches(isDisplayed()));
+        onView(withId(R.id.txtVencedorNome)).check(matches(isDisplayed()));
+
+        //Verifica se os jogadores estão ali
+        onView(withId(R.id.imgVencedorAvatar)).check(matches(isDisplayed()));
+        onView(withId(R.id.listaJogadoresResult)).check(matches(isDisplayed()));
     }
 
 }

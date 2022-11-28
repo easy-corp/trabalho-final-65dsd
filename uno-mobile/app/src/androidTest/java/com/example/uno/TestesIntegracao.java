@@ -49,7 +49,7 @@ public class TestesIntegracao {
         onView(withId(R.id.btnEntrarServidor)).perform(ViewActions.click());
 
         //Verifica se há jogos na tela
-        onView(withId(R.id.listaPlayersResultado)).check(matches(isDisplayed()));
+        onView(withId(R.id.listaJogos)).check(matches(isDisplayed()));
     }
 
     @Test

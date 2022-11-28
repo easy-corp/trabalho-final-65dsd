@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".TelaResultados">
 
     <LinearLayout
@@ -104,11 +105,11 @@
         app:layout_constraintVertical_bias="1.0">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/listaJogadoresResultado"
+            android:id="@+id/listaJogadoresResult"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
-            android:layout_marginLeft="50dp"/>
+            android:layout_marginLeft="50dp" />
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

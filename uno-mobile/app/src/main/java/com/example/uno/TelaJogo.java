@@ -48,11 +48,11 @@ public class TelaJogo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_jogo);
 
-        ImageView icSair = findViewById(R.id.icSair);
+        ImageView icSairJogo = findViewById(R.id.icSairJogo);
         FrameLayout layUno = findViewById(R.id.layUno);
 
-//        icSair.setOnClickListener(param -> startActivity(new Intent(this, TelaEntrarJogo.class)));
-        icSair.setOnClickListener(param -> startActivity(new Intent(this, TelaResultados.class)));
+//        icSairJogo.setOnClickListener(param -> startActivity(new Intent(this, TelaEntrarJogo.class)));
+        icSairJogo.setOnClickListener(param -> startActivity(new Intent(this, TelaResultados.class)));
         layUno.setOnClickListener(param -> pedirUno());
 
         distribuiCartas();

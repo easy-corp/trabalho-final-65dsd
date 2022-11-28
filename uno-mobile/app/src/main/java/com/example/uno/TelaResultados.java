@@ -19,7 +19,7 @@ public class TelaResultados extends AppCompatActivity {
     private Match jogo = new Match("Jogos da Galera", 4);
 
     //RecyclerView
-    private RecyclerView listaJogadores;
+    private RecyclerView listaJogadoresResult;
     private RecyclerView.Adapter adapterJogadores;
     private RecyclerView.LayoutManager layJogadores;
 
@@ -46,15 +46,15 @@ public class TelaResultados extends AppCompatActivity {
     }
 
     public void criarRecyclerView() {
-        listaJogadores = findViewById(R.id.listaJogadoresResultado);
+        listaJogadoresResult = findViewById(R.id.listaJogadoresResult);
 
-        listaJogadores.setHasFixedSize(true);
+        listaJogadoresResult.setHasFixedSize(true);
 
         layJogadores = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        listaJogadores.setLayoutManager(layJogadores);
+        listaJogadoresResult.setLayoutManager(layJogadores);
 
         adapterJogadores = new AdapterJogadoresResult(this.jogo, this);
-        listaJogadores.setAdapter(adapterJogadores);
+        listaJogadoresResult.setAdapter(adapterJogadores);
     }
 
     public void geraJogadores() {
