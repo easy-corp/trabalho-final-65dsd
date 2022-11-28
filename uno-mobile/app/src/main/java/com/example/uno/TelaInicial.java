@@ -17,7 +17,7 @@ public class TelaInicial extends AppCompatActivity {
 
         EditText edIP = findViewById(R.id.edUsuario);
         EditText edPorta = findViewById(R.id.edSenha);
-        Button btnConectar = findViewById(R.id.btnEntrar);
+        Button btnConectar = findViewById(R.id.btnConectar);
 
         btnConectar.setOnClickListener(param -> conectar(edIP.getText().toString(), edPorta.getText().toString()));
     }

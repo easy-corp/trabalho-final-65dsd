@@ -25,8 +25,8 @@ public class TestesSistema {
     private User usuario;
 
     @Rule
-    public ActivityScenarioRule<TelaInicial> telaInicial
-            = new ActivityScenarioRule<TelaInicial>(TelaInicial.class);
+    public ActivityScenarioRule<TelaLogin> telaLogin
+            = new ActivityScenarioRule<TelaLogin>(TelaLogin.class);
 
     @Before
     public void antes() {
@@ -44,7 +44,7 @@ public class TestesSistema {
 
         //Verifica se a Tela de Servidores foi aberta
         //Indicando que o login foi feito
-        onView(withId(R.id.btnEntrarServidor)).check(matches(isDisplayed()));
+        onView(withId(R.id.layListaJogos)).check(matches(isDisplayed()));
     }
 
     @Test
@@ -53,11 +53,6 @@ public class TestesSistema {
         onView(withId(R.id.edUsuario)).perform(ViewActions.typeText(this.usuario.getName()), ViewActions.closeSoftKeyboard());
         onView(withId(R.id.edSenha)).perform(ViewActions.typeText(this.usuario.getPassword()), ViewActions.closeSoftKeyboard());
         onView(withId(R.id.btnEntrar)).perform(ViewActions.click());
-
-        //Entra no servidor
-        onView(withId(R.id.edUsuario)).perform(ViewActions.typeText("127.0.0.1"), ViewActions.closeSoftKeyboard());
-        onView(withId(R.id.edSenha)).perform(ViewActions.typeText("80"), ViewActions.closeSoftKeyboard());
-        onView(withId(R.id.btnEntrarServidor)).perform(ViewActions.click());
 
         //Entra na partida
         onView(withId(R.id.icEntrarJogo)).perform(ViewActions.click());
@@ -76,11 +71,6 @@ public class TestesSistema {
         onView(withId(R.id.edUsuario)).perform(ViewActions.typeText(this.usuario.getName()), ViewActions.closeSoftKeyboard());
         onView(withId(R.id.edSenha)).perform(ViewActions.typeText(this.usuario.getPassword()), ViewActions.closeSoftKeyboard());
         onView(withId(R.id.btnEntrar)).perform(ViewActions.click());
-
-        //Entra no servidor
-        onView(withId(R.id.edUsuario)).perform(ViewActions.typeText("127.0.0.1"), ViewActions.closeSoftKeyboard());
-        onView(withId(R.id.edSenha)).perform(ViewActions.typeText("80"), ViewActions.closeSoftKeyboard());
-        onView(withId(R.id.btnEntrarServidor)).perform(ViewActions.click());
 
         //Entra na partida
         onView(withId(R.id.icEntrarJogo)).perform(ViewActions.click());

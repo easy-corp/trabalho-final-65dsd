@@ -26,6 +26,11 @@ public class TestesIntegracao {
     public void antes() {
         this.usuario = new User("Luis", "1234", new Avatar("usuario_1"));
 
+        //Se conecta a um servidor
+        onView(withId(R.id.edUsuario)).perform(ViewActions.typeText("127.0.0.1"), ViewActions.closeSoftKeyboard());
+        onView(withId(R.id.edSenha)).perform(ViewActions.typeText("80"), ViewActions.closeSoftKeyboard());
+        onView(withId(R.id.btnConectar)).perform(ViewActions.click());
+
         //Realiza o login
         onView(withId(R.id.edUsuario)).perform(ViewActions.typeText(this.usuario.getName()), ViewActions.closeSoftKeyboard());
         onView(withId(R.id.edSenha)).perform(ViewActions.typeText(this.usuario.getPassword()), ViewActions.closeSoftKeyboard());
@@ -43,22 +48,12 @@ public class TestesIntegracao {
 
     @Test
     public void testShowJogos() {
-        //Se conecta a um servidor
-        onView(withId(R.id.edUsuario)).perform(ViewActions.typeText("127.0.0.1"), ViewActions.closeSoftKeyboard());
-        onView(withId(R.id.edSenha)).perform(ViewActions.typeText("80"), ViewActions.closeSoftKeyboard());
-        onView(withId(R.id.btnEntrarServidor)).perform(ViewActions.click());
-
         //Verifica se há jogos na tela
         onView(withId(R.id.listaJogos)).check(matches(isDisplayed()));
     }
 
     @Test
     public void testShowJogadores() {
-        //Se conecta a um servidor
-        onView(withId(R.id.edUsuario)).perform(ViewActions.typeText("127.0.0.1"), ViewActions.closeSoftKeyboard());
-        onView(withId(R.id.edSenha)).perform(ViewActions.typeText("80"), ViewActions.closeSoftKeyboard());
-        onView(withId(R.id.btnEntrarServidor)).perform(ViewActions.click());
-
         //Entra em um jogo
         onView(withId(R.id.icEntrarJogo)).perform(ViewActions.click());
 

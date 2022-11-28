@@ -29,20 +29,20 @@ public class TestesAceitacao {
     @Before
     public void antes() {
         this.usuario = new User("Luis", "1234", new Avatar("avatar_1"));
-    }
-
-    @Test
-    public void testInServer() {
-        //Realiza login
-        onView(withId(R.id.edUsuario)).perform(ViewActions.typeText(this.usuario.getName()), ViewActions.closeSoftKeyboard());
-        onView(withId(R.id.edSenha)).perform(ViewActions.typeText(this.usuario.getPassword()), ViewActions.closeSoftKeyboard());
-        onView(withId(R.id.btnEntrar)).perform(ViewActions.click());
 
         //Entra no servidor
         onView(withId(R.id.edUsuario)).perform(ViewActions.typeText("127.0.0.1"), ViewActions.closeSoftKeyboard());
         onView(withId(R.id.edSenha)).perform(ViewActions.typeText("80"), ViewActions.closeSoftKeyboard());
-        onView(withId(R.id.btnEntrarServidor)).perform(ViewActions.click());
+        onView(withId(R.id.btnConectar)).perform(ViewActions.click());
 
+        //Realiza login
+        onView(withId(R.id.edUsuario)).perform(ViewActions.typeText(this.usuario.getName()), ViewActions.closeSoftKeyboard());
+        onView(withId(R.id.edSenha)).perform(ViewActions.typeText(this.usuario.getPassword()), ViewActions.closeSoftKeyboard());
+        onView(withId(R.id.btnEntrar)).perform(ViewActions.click());
+    }
+
+    @Test
+    public void testInServer() {
         //Entra na partida
         onView(withId(R.id.icEntrarJogo)).perform(ViewActions.click());
 
@@ -52,16 +52,6 @@ public class TestesAceitacao {
 
     @Test
     public void testTurnos() {
-        //Realiza login
-        onView(withId(R.id.edUsuario)).perform(ViewActions.typeText(this.usuario.getName()), ViewActions.closeSoftKeyboard());
-        onView(withId(R.id.edSenha)).perform(ViewActions.typeText(this.usuario.getPassword()), ViewActions.closeSoftKeyboard());
-        onView(withId(R.id.btnEntrar)).perform(ViewActions.click());
-
-        //Entra no servidor
-        onView(withId(R.id.edUsuario)).perform(ViewActions.typeText("127.0.0.1"), ViewActions.closeSoftKeyboard());
-        onView(withId(R.id.edSenha)).perform(ViewActions.typeText("80"), ViewActions.closeSoftKeyboard());
-        onView(withId(R.id.btnEntrarServidor)).perform(ViewActions.click());
-
         //Entra na partida
         onView(withId(R.id.icEntrarJogo)).perform(ViewActions.click());
 
@@ -74,16 +64,6 @@ public class TestesAceitacao {
 
     @Test
     public void testRivalCards() {
-        //Realiza login
-        onView(withId(R.id.edUsuario)).perform(ViewActions.typeText(this.usuario.getName()), ViewActions.closeSoftKeyboard());
-        onView(withId(R.id.edSenha)).perform(ViewActions.typeText(this.usuario.getPassword()), ViewActions.closeSoftKeyboard());
-        onView(withId(R.id.btnEntrar)).perform(ViewActions.click());
-
-        //Entra no servidor
-        onView(withId(R.id.edUsuario)).perform(ViewActions.typeText("127.0.0.1"), ViewActions.closeSoftKeyboard());
-        onView(withId(R.id.edSenha)).perform(ViewActions.typeText("80"), ViewActions.closeSoftKeyboard());
-        onView(withId(R.id.btnEntrarServidor)).perform(ViewActions.click());
-
         //Entra na partida
         onView(withId(R.id.icEntrarJogo)).perform(ViewActions.click());
 
