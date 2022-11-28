@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.textclassifier.TextLanguage;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,7 +20,7 @@ public class TelaPerfil extends AppCompatActivity {
 
         ImageView icSair = findViewById(R.id.icSair);
 
-        icSair.setOnClickListener(param -> startActivity(new Intent(this, TelaServidores.class)));
+        icSair.setOnClickListener(param -> startActivity(new Intent(this, TelaEntrarJogo.class)));
 
         User jogador = new User("Luis", "1234", new Avatar("avatar_1"));
         preencherPerfil(jogador);
@@ -31,7 +32,7 @@ public class TelaPerfil extends AppCompatActivity {
         TextView txtJogos = findViewById(R.id.txtPerfilJogos);
         TextView txtVitorias = findViewById(R.id.txtPerfilVitorias);
 
-        jogador.getAvatar().click(false);
+        jogador.getAvatar().click(true);
         int image = getResources().getIdentifier(jogador.getAvatar().getImageUrl(), "drawable", getPackageName());
         imgAvatarPerfil.setBackgroundResource(image);
         txtNome.setText(jogador.getName());

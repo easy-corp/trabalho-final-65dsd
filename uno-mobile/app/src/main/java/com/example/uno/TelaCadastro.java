@@ -31,7 +31,7 @@ public class TelaCadastro extends AppCompatActivity {
         EditText edConfSenha = findViewById(R.id.edConfSenha);
         Button btnCadastrar = findViewById(R.id.btnCadastrar);
 
-        icVoltar.setOnClickListener(param -> startActivity(new Intent(this, TelaInicial.class)));
+        icVoltar.setOnClickListener(param -> startActivity(new Intent(this, TelaLogin.class)));
 
         btnCadastrar.setOnClickListener(param -> realizarCadastro(edNome.getText().toString(), edSenha.getText().toString(), edConfSenha.getText().toString()));
 

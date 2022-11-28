@@ -39,8 +39,8 @@ public class TestesAceitacao {
         onView(withId(R.id.btnEntrar)).perform(ViewActions.click());
 
         //Entra no servidor
-        onView(withId(R.id.edIP)).perform(ViewActions.typeText("127.0.0.1"), ViewActions.closeSoftKeyboard());
-        onView(withId(R.id.edPorta)).perform(ViewActions.typeText("80"), ViewActions.closeSoftKeyboard());
+        onView(withId(R.id.edUsuario)).perform(ViewActions.typeText("127.0.0.1"), ViewActions.closeSoftKeyboard());
+        onView(withId(R.id.edSenha)).perform(ViewActions.typeText("80"), ViewActions.closeSoftKeyboard());
         onView(withId(R.id.btnEntrarServidor)).perform(ViewActions.click());
 
         //Entra na partida
@@ -58,8 +58,8 @@ public class TestesAceitacao {
         onView(withId(R.id.btnEntrar)).perform(ViewActions.click());
 
         //Entra no servidor
-        onView(withId(R.id.edIP)).perform(ViewActions.typeText("127.0.0.1"), ViewActions.closeSoftKeyboard());
-        onView(withId(R.id.edPorta)).perform(ViewActions.typeText("80"), ViewActions.closeSoftKeyboard());
+        onView(withId(R.id.edUsuario)).perform(ViewActions.typeText("127.0.0.1"), ViewActions.closeSoftKeyboard());
+        onView(withId(R.id.edSenha)).perform(ViewActions.typeText("80"), ViewActions.closeSoftKeyboard());
         onView(withId(R.id.btnEntrarServidor)).perform(ViewActions.click());
 
         //Entra na partida
@@ -80,8 +80,8 @@ public class TestesAceitacao {
         onView(withId(R.id.btnEntrar)).perform(ViewActions.click());
 
         //Entra no servidor
-        onView(withId(R.id.edIP)).perform(ViewActions.typeText("127.0.0.1"), ViewActions.closeSoftKeyboard());
-        onView(withId(R.id.edPorta)).perform(ViewActions.typeText("80"), ViewActions.closeSoftKeyboard());
+        onView(withId(R.id.edUsuario)).perform(ViewActions.typeText("127.0.0.1"), ViewActions.closeSoftKeyboard());
+        onView(withId(R.id.edSenha)).perform(ViewActions.typeText("80"), ViewActions.closeSoftKeyboard());
         onView(withId(R.id.btnEntrarServidor)).perform(ViewActions.click());
 
         //Entra na partida

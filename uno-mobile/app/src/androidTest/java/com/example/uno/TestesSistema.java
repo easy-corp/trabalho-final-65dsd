@@ -3,17 +3,13 @@ package com.example.uno;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.matcher.ViewMatchers.*;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 
-import android.app.Activity;
 import android.graphics.Color;
 
-import androidx.core.content.ContextCompat;
 import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
 
 import com.example.uno.model.Avatar;
 import com.example.uno.model.User;
@@ -59,8 +55,8 @@ public class TestesSistema {
         onView(withId(R.id.btnEntrar)).perform(ViewActions.click());
 
         //Entra no servidor
-        onView(withId(R.id.edIP)).perform(ViewActions.typeText("127.0.0.1"), ViewActions.closeSoftKeyboard());
-        onView(withId(R.id.edPorta)).perform(ViewActions.typeText("80"), ViewActions.closeSoftKeyboard());
+        onView(withId(R.id.edUsuario)).perform(ViewActions.typeText("127.0.0.1"), ViewActions.closeSoftKeyboard());
+        onView(withId(R.id.edSenha)).perform(ViewActions.typeText("80"), ViewActions.closeSoftKeyboard());
         onView(withId(R.id.btnEntrarServidor)).perform(ViewActions.click());
 
         //Entra na partida
@@ -82,8 +78,8 @@ public class TestesSistema {
         onView(withId(R.id.btnEntrar)).perform(ViewActions.click());
 
         //Entra no servidor
-        onView(withId(R.id.edIP)).perform(ViewActions.typeText("127.0.0.1"), ViewActions.closeSoftKeyboard());
-        onView(withId(R.id.edPorta)).perform(ViewActions.typeText("80"), ViewActions.closeSoftKeyboard());
+        onView(withId(R.id.edUsuario)).perform(ViewActions.typeText("127.0.0.1"), ViewActions.closeSoftKeyboard());
+        onView(withId(R.id.edSenha)).perform(ViewActions.typeText("80"), ViewActions.closeSoftKeyboard());
         onView(withId(R.id.btnEntrarServidor)).perform(ViewActions.click());
 
         //Entra na partida

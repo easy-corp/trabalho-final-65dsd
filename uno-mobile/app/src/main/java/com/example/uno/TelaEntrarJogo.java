@@ -28,7 +28,7 @@ public class TelaEntrarJogo extends AppCompatActivity {
         ImageView icVoltar = findViewById(R.id.icSair);
         ImageView icUsuario = findViewById(R.id.icUsuario);
 
-        icVoltar.setOnClickListener(param -> startActivity(new Intent(this, TelaServidores.class)));
+        icVoltar.setOnClickListener(param -> startActivity(new Intent(this, TelaLogin.class)));
 
         icUsuario.setOnClickListener(param -> startActivity(new Intent(this, TelaPerfil.class)));
 
