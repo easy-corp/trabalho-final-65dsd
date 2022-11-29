@@ -19,13 +19,13 @@ public class TelaLogin extends AppCompatActivity {
         EditText edSenha = findViewById(R.id.edSenha);
         Button btnEntrar = findViewById(R.id.btnEntrar);
         Button btnCadastrar = findViewById(R.id.btnCadastrar);
-//        Button btnTestesSocket = findViewById(R.id.btnTesteSocket);
+        Button btnTestesSocket = findViewById(R.id.btnTesteSocket);
 
         btnEntrar.setOnClickListener(param -> login(edUsuario.getText().toString(), edSenha.getText().toString()));
 
         btnCadastrar.setOnClickListener(param -> startActivity(new Intent(this, TelaCadastro.class)));
 
-//        btnTestesSocket.setOnClickListener(param -> startActivity(new Intent(this, TelaTestesSocket.class)));
+        btnTestesSocket.setOnClickListener(param -> startActivity(new Intent(this, TelaTestesSocket.class)));
     }
 
     private void login(String usuario, String senha) {

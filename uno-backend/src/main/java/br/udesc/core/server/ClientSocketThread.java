@@ -8,6 +8,8 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import br.udesc.core.model.User;
+
 public class ClientSocketThread extends Thread {
 
     private Socket socket;
@@ -15,6 +17,7 @@ public class ClientSocketThread extends Thread {
     private PrintWriter writer;
     private Logger logger;
     private ClientSocketListener listener;
+    private User user;
 
     public ClientSocketThread(Socket socketClient) {
         socket = socketClient;
@@ -73,5 +76,15 @@ public class ClientSocketThread extends Thread {
         }
 
     }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    
 
 }

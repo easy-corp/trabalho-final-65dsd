@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import br.udesc.core.model.User;
 import br.udesc.util.Config;
 
 public class Server {
@@ -21,6 +23,32 @@ public class Server {
         this.logger = Logger.getLogger("ServerLogger");
         this.clients = new HashMap<>();
         this.clientSockets = new ArrayList<>();
+        this.loopClients();
+    }
+
+    private void loopClients(){
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                while(true){
+                    for(ClientSocketThread c : clients.values()){
+                        c.sendMessage("Oi " + c.getUser().getName());
+                    }
+
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }              
+                }
+
+                
+            }
+            
+        }).start();
+
     }
 
     public static Server getInstance(){
@@ -31,8 +59,9 @@ public class Server {
         return instance;
     }
 
-    public void bindUser(int userId, ClientSocketThread socketClient){
-        this.clients.put(userId, socketClient);
+    public void bindUser(User user, ClientSocketThread socketClient){
+        this.clients.put(user.getId(), socketClient);
+        socketClient.setUser(user);
     }
 
     public ClientSocketThread getClientSocket(int userId){

@@ -45,13 +45,14 @@ public class ServerController {
         return gson.toJson(avatars);
     }
 
-    public void signUp(SignupMessage message) {
+    public void signup(SignupMessage message) {
+        System.out.println("Recebi a porra de um signup!");
         message.sendReply(signUp(message.getUsername(), message.getPassword(), message.getAvatarId()));
     }
 
     public void login(LoginMessage message) {
         User theUser = doLogin(message.getUsername(), message.getPassword());
-        Server.getInstance().bindUser(theUser.getId(), message.getSocketClient());
+        Server.getInstance().bindUser(theUser, message.getSocketClient());
         message.sendReply(gson.toJson(theUser));
     }
 
