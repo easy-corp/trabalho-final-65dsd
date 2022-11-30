@@ -13,6 +13,7 @@ import br.udesc.core.model.User;
 import br.udesc.core.model.User.UserStatus;
 import br.udesc.core.server.messages.CreateMatchMessage;
 import br.udesc.core.server.messages.GetMatchesListMessage;
+import br.udesc.core.server.messages.GetavatarsMessage;
 import br.udesc.core.server.messages.JoinMatchMessage;
 import br.udesc.core.server.messages.LoginMessage;
 import br.udesc.core.server.messages.MyProfileMessage;
@@ -36,17 +37,16 @@ public class ServerController {
             instance = new ServerController();
         }
 
-        instance.createMatch("Partida do luizão", 4);
+        instance.createMatch("Partida do Luisão", 4);
 
         return instance;
     }
 
-    public String getAvatars() {
-        return gson.toJson(avatars);
+    public void getavatars(GetavatarsMessage message) {
+        message.sendReply(getAvatarsList());
     }
 
     public void signup(SignupMessage message) {
-        System.out.println("Recebi a porra de um signup!");
         message.sendReply(signUp(message.getUsername(), message.getPassword(), message.getAvatarId()));
     }
 
@@ -114,6 +114,10 @@ public class ServerController {
         this.matches.put(match.getMatchId(), match);
 
         return gson.toJson(match);
+    }
+
+    public String getAvatarsList() {
+        return gson.toJson(avatars);
     }
 
     public String getMatchesList() {

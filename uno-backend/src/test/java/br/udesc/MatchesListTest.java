@@ -4,6 +4,8 @@ import static org.junit.Assert.assertNotNull;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 import org.junit.Test;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -19,13 +21,13 @@ public class MatchesListTest {
     //Verifica se a lista de partida veio nula
     @Test
     public void verificarListaNula() {
-        List<Match> matches = null;
+        Map<Integer, Match> matches = null;
 
         try {
             String json = controller.getMatchesList();
             
             Gson gson = new Gson();
-            Type listType = new TypeToken<ArrayList<Match>>(){}.getType();
+            Type listType = new TypeToken<Map<Integer, Match>>(){}.getType();
             matches = gson.fromJson(json, listType);
         } catch (Exception e) {
             e.getMessage();
@@ -39,19 +41,19 @@ public class MatchesListTest {
     public void verificarElementoNulo() {
         //Cria um objeto nulo de partidas
         //Tenta buscar as partidas de um servidor
-        List<Match> matches = null;
+        Map<Integer, Match>matches = null;
 
         try {
             String json = controller.getMatchesList();
             
             Gson gson = new Gson();
-            Type listType = new TypeToken<ArrayList<Match>>(){}.getType();
+            Type listType = new TypeToken<Map<Integer, Match>>(){}.getType();
             matches = gson.fromJson(json, listType);
         } catch (Exception e) {
             e.getMessage();
         }
         
-        for (Match m : matches) {
+        for (Match m : matches.values()) {
             assertNotNull(m);   
         }
 

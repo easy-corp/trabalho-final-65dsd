@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 
@@ -25,12 +26,12 @@ public class AvatarListTest {
     public void verificarListaNula() {
         //Valor retornado pelo server
         Gson gson = new Gson();
-        String json = controller.getAvatars();
-        List<Avatar> listaConvertida = null;
+        String json = controller.getAvatarsList();
+        Map<Integer, Avatar> listaConvertida = null;
 
         try {
             //Transforma o Gson novamente em uma lista do tipo Avatar
-            Type listType = new TypeToken<ArrayList<Avatar>>(){}.getType();
+            Type listType = new TypeToken<Map<Integer, Avatar>>(){}.getType();
             listaConvertida = gson.fromJson(json, listType);
         } catch (Exception e) {
             e.getMessage();
@@ -44,18 +45,18 @@ public class AvatarListTest {
     public void verificarElementoNulo() {
         //Valor retornado pelo server
         Gson gson = new Gson();
-        String json = controller.getAvatars();
-        List<Avatar> listaConvertida = null;
+        String json = controller.getAvatarsList();
+        Map<Integer, Avatar> listaConvertida = null;
 
         try {
             //Transforma o Gson novamente em uma lista do tipo Avatar
-            Type listType = new TypeToken<ArrayList<Avatar>>(){}.getType();
+            Type listType = new TypeToken<Map<Integer, Avatar>>(){}.getType();
             listaConvertida = gson.fromJson(json, listType);
         } catch (Exception e) {
             e.getMessage();
         }
 
-        for (Avatar av : listaConvertida) {
+        for (Avatar av : listaConvertida.values()) {
             assertNotNull(av);
         }        
     }
