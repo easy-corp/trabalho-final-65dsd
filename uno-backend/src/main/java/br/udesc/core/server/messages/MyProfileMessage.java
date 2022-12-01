@@ -4,11 +4,11 @@ import com.google.gson.JsonObject;
 
 import br.udesc.core.server.ClientSocketThread;
 
-public class MyprofileMessage extends AbstractMessage {
+public class MyProfileMessage extends AbstractMessage {
 
     private int userId;
 
-    public MyprofileMessage(ClientSocketThread clientSocket) {
+    public MyProfileMessage(ClientSocketThread clientSocket) {
         super(clientSocket);
     }
 
