@@ -122,7 +122,8 @@ public class TestesPartida {
             System.out.println(m.getName());
         }
 
-        assertNotNull(matches.get(0));
+        //Verifica se há partidas criadas
+        assertTrue(matches.size() > 0);
     }
 
     //Teste entrar em uma partida
@@ -155,8 +156,8 @@ public class TestesPartida {
         socket.sendMessage(
             new MessageBuilder()
                 .withType("joinmatch")
-                .withParam("userId", "0")
-                .withParam("matchId", "0")
+                .withParam("userId", "1")
+                .withParam("matchId", "1")
                 .build()
         );
 
@@ -168,8 +169,8 @@ public class TestesPartida {
         //Transforma o Gson novamente em um tipo Match
         Match match = gson.fromJson(json, Match.class);
 
-        //Verifica se o usuário está lá dentro
-        assertNotNull(match.getPlayers().get(0));
+        //Verifica se o usuário não está lá dentro
+        assertNotNull(match.getPlayers().get(1));
     }
 
     //Teste sair de uma partida
@@ -201,22 +202,40 @@ public class TestesPartida {
         //Coloca o usuário na partida
         socket.sendMessage(
             new MessageBuilder()
+                .withType("joinmatch")
+                .withParam("userId", "1")
+                .withParam("matchId", "1")
+                .build()
+        );
+
+        Thread.sleep(500);
+
+        //Guarda a partida para poder comparar depois
+        String json = this.message;
+        Match matchAntes = gson.fromJson(json, Match.class);
+
+        //Retira o usuário da partida
+        socket.sendMessage(
+            new MessageBuilder()
                 .withType("quitmatch")
-                .withParam("userId", "0")
-                .withParam("matchId", "0")
+                .withParam("userId", "1")
+                .withParam("matchId", "1")
                 .build()
         );
 
         Thread.sleep(500);
 
         //Valor retornado pelo server
-        String json = this.message;
+        json = this.message;
 
         //Transforma o Gson novamente em um tipo Match
-        Match match = gson.fromJson(json, Match.class);
+        Match matchDepois = gson.fromJson(json, Match.class);
+
+        System.out.println(matchAntes.getPlayers().size());
+        System.out.println(matchDepois.getPlayers().size());
 
         //Verifica se o usuário não está lá dentro
-        assertNull(match.getPlayers().get(0));
+        assertTrue(matchAntes.getPlayers().size() > matchDepois.getPlayers().size());
     }
 
     //Teste usuário pronto para jogar
@@ -249,8 +268,8 @@ public class TestesPartida {
         socket.sendMessage(
             new MessageBuilder()
                 .withType("joinmatch")
-                .withParam("userId", "0")
-                .withParam("matchId", "0")
+                .withParam("userId", "1")
+                .withParam("matchId", "1")
                 .build()
         );
 
@@ -260,8 +279,8 @@ public class TestesPartida {
         socket.sendMessage(
             new MessageBuilder()
                 .withType("readytoplay")
-                .withParam("userId", "0")
-                .withParam("matchId", "0")
+                .withParam("userId", "1")
+                .withParam("matchId", "1")
                 .build()
         );
 
