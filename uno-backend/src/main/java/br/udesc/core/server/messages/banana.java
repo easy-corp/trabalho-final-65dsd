@@ -4,13 +4,13 @@ import com.google.gson.JsonObject;
 
 import br.udesc.core.server.ClientSocketThread;
 
-public class SignUpMessage extends AbstractMessage{
+public class banana extends AbstractMessage{
 
     private String username;
     private String password;
     private int avatarId;
 
-    public SignUpMessage(ClientSocketThread clientSocket) {
+    public banana(ClientSocketThread clientSocket) {
         super(clientSocket);
     }
 

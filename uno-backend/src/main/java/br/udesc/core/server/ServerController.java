@@ -17,7 +17,7 @@ import br.udesc.core.server.messages.LoginMessage;
 import br.udesc.core.server.messages.MyProfileMessage;
 import br.udesc.core.server.messages.QuitMatchMessage;
 import br.udesc.core.server.messages.ReadyToPlayMessage;
-import br.udesc.core.server.messages.SignUpMessage;
+import br.udesc.core.server.messages.banana;
 
 public class ServerController {
 
@@ -44,7 +44,7 @@ public class ServerController {
     }
 
     //Realiza o cadastro
-    public void signUp(SignUpMessage message) {
+    public void signUp(banana message) {
         message.sendReply(signUp(message.getUsername(), message.getPassword(), message.getAvatarId()));
     }
 
