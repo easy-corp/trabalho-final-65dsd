@@ -23,33 +23,8 @@ public class Server {
         this.logger = Logger.getLogger("ServerLogger");
         this.clients = new HashMap<>();
         this.clientSockets = new ArrayList<>();
-        this.loopClients();
     }
 
-    private void loopClients(){
-        new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                while(true){
-                    for(ClientSocketThread c : clients.values()){
-                        c.sendMessage("Oi " + c.getUser().getName());
-                    }
-
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }              
-                }
-
-                
-            }
-            
-        }).start();
-
-    }
 
     public static Server getInstance(){
         if(instance == null){

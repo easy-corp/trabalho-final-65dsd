@@ -62,7 +62,6 @@ public class ClientSocketThread extends Thread {
             try {
                 readLine = reader.readLine();
             } catch (Exception e) {
-                logger.log(Level.SEVERE, "Erro ao processar a mensagem do cliente!", e);
                 readLine = null;
                 forceQuit = true;
             }

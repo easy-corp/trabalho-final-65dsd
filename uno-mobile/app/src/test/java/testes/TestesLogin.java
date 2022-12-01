@@ -41,7 +41,7 @@ public class TestesLogin {
         //Faz signup para poder receber login depois
         socket.sendMessage(
             new MessageBuilder()
-                .withType("signup")
+                .withType("sign-up")
                 .withParam("username", "murilo")
                 .withParam("password", "1234")
                 .withParam("avatarId", "1")

@@ -40,7 +40,7 @@ public class TestesPerfil {
         //Faz signup para poder verificar informações do login depois
         socket.sendMessage(
             new MessageBuilder()
-                .withType("signup")
+                .withType("sign-up")
                 .withParam("username", "murilo")
                 .withParam("password", "1234")
                 .withParam("avatarId", "1")
@@ -74,8 +74,8 @@ public class TestesPerfil {
         //Envia a mensagem para o server
         socket.sendMessage(
             new MessageBuilder()
-                .withType("myprofile")
-                .withParam("userId", "0")
+                .withType("my-profile")
+                .withParam("userId", "1")
                 .build()
         );
 

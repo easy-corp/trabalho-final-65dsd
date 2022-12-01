@@ -11,13 +11,13 @@ import br.udesc.core.model.User;
 import br.udesc.core.model.User.UserStatus;
 import br.udesc.core.server.messages.CreateMatchMessage;
 import br.udesc.core.server.messages.GetMatchesListMessage;
-import br.udesc.core.server.messages.GetavatarsMessage;
+import br.udesc.core.server.messages.GetAvatarsMessage;
 import br.udesc.core.server.messages.JoinMatchMessage;
 import br.udesc.core.server.messages.LoginMessage;
 import br.udesc.core.server.messages.MyProfileMessage;
 import br.udesc.core.server.messages.QuitMatchMessage;
 import br.udesc.core.server.messages.ReadyToPlayMessage;
-import br.udesc.core.server.messages.SignupMessage;
+import br.udesc.core.server.messages.SignUpMessage;
 
 public class ServerController {
 
@@ -39,12 +39,12 @@ public class ServerController {
     }
 
     //Recupera a lista de avatares
-    public void getavatars(GetavatarsMessage message) {
+    public void getAvatars(GetAvatarsMessage message) {
         message.sendReply(getAvatarsList());
     }
 
     //Realiza o cadastro
-    public void signup(SignupMessage message) {
+    public void signUp(SignUpMessage message) {
         message.sendReply(signUp(message.getUsername(), message.getPassword(), message.getAvatarId()));
     }
 
@@ -57,32 +57,32 @@ public class ServerController {
     }
 
     //Recupera informações do usuário logado
-    public void myprofile(MyProfileMessage message) {
+    public void myProfile(MyProfileMessage message) {
         message.sendReply(myProfile(message.getUserId()));
     }
 
     //Cria uma nova partida
-    public void creatematch(CreateMatchMessage message) {
+    public void createMatch(CreateMatchMessage message) {
         message.sendReply(createMatch(message.getName(), message.getQtdPlayers()));
     }
 
     //Recupera a lista de partidas
-    public void getmatcheslist(GetMatchesListMessage message) {
+    public void getMatchesList(GetMatchesListMessage message) {
         message.sendReply(getMatchesList());
     }
 
     //Entra na partida
-    public void joinmatch(JoinMatchMessage message) {
+    public void joinMatch(JoinMatchMessage message) {
         message.sendReply(joinMatch(message.getUserId(), message.getMatchId()));
     }
 
     //Sai da partida
-    public void quitmatch(QuitMatchMessage message) {
+    public void quitMatch(QuitMatchMessage message) {
         message.sendReply(quitMatch(message.getUserId(), message.getMatchId()));
     }
 
     //Indica que está pronto para jogar
-    public void readytoplay(ReadyToPlayMessage message) {
+    public void readyToPlay(ReadyToPlayMessage message) {
         message.sendReply(readyToPlay(message.getUserId(), message.getMatchId()));
     }
 

@@ -69,7 +69,7 @@ public class TestesPartida {
         //Envia a mensagem para o server
         socket.sendMessage(
             new MessageBuilder()
-                .withType("creatematch")
+                .withType("create-match")
                 .withParam("name", "Jogos da Galera")
                 .withParam("qtdPlayers", "4")
                 .build()
@@ -92,7 +92,7 @@ public class TestesPartida {
         //Cria uma partida para teste
         socket.sendMessage(
             new MessageBuilder()
-                .withType("creatematch")
+                .withType("create-match")
                 .withParam("name", "Jogos da Galera")
                 .withParam("qtdPlayers", "4")
                 .build()
@@ -103,7 +103,7 @@ public class TestesPartida {
         //Envia a mensagem para o server
         socket.sendMessage(
             new MessageBuilder()
-                .withType("getmatcheslist")
+                .withType("get-matches-list")
                 .build()
         );
 
@@ -132,7 +132,7 @@ public class TestesPartida {
         //Cria uma partida para teste
         socket.sendMessage(
             new MessageBuilder()
-                .withType("creatematch")
+                .withType("create-match")
                 .withParam("name", "Jogos da Galera")
                 .withParam("qtdPlayers", "4")
                 .build()
@@ -143,7 +143,7 @@ public class TestesPartida {
         //Cria um usuário para teste
         socket.sendMessage(
             new MessageBuilder()
-                .withType("signup")
+                .withType("sign-up")
                 .withParam("username", "murilo")
                 .withParam("password", "1234")
                 .withParam("avatarId", "1")
@@ -155,7 +155,7 @@ public class TestesPartida {
         //Coloca o usuário na partida
         socket.sendMessage(
             new MessageBuilder()
-                .withType("joinmatch")
+                .withType("join-match")
                 .withParam("userId", "1")
                 .withParam("matchId", "1")
                 .build()
@@ -179,7 +179,7 @@ public class TestesPartida {
         //Cria uma partida para teste
         socket.sendMessage(
             new MessageBuilder()
-                .withType("creatematch")
+                .withType("create-match")
                 .withParam("name", "Jogos da Galera")
                 .withParam("qtdPlayers", "4")
                 .build()
@@ -190,7 +190,7 @@ public class TestesPartida {
         //Cria um usuário para teste
         socket.sendMessage(
             new MessageBuilder()
-                .withType("signup")
+                .withType("sign-up")
                 .withParam("username", "murilo")
                 .withParam("password", "1234")
                 .withParam("avatarId", "1")
@@ -202,7 +202,7 @@ public class TestesPartida {
         //Coloca o usuário na partida
         socket.sendMessage(
             new MessageBuilder()
-                .withType("joinmatch")
+                .withType("join-match")
                 .withParam("userId", "1")
                 .withParam("matchId", "1")
                 .build()
@@ -217,7 +217,7 @@ public class TestesPartida {
         //Retira o usuário da partida
         socket.sendMessage(
             new MessageBuilder()
-                .withType("quitmatch")
+                .withType("quit-match")
                 .withParam("userId", "1")
                 .withParam("matchId", "1")
                 .build()
@@ -244,7 +244,7 @@ public class TestesPartida {
         //Cria uma partida para teste
         socket.sendMessage(
             new MessageBuilder()
-                .withType("creatematch")
+                .withType("create-match")
                 .withParam("name", "Jogos da Galera")
                 .withParam("qtdPlayers", "4")
                 .build()
@@ -255,7 +255,7 @@ public class TestesPartida {
         //Cria um usuário para teste
         socket.sendMessage(
             new MessageBuilder()
-                .withType("signup")
+                .withType("sign-up")
                 .withParam("username", "murilo")
                 .withParam("password", "1234")
                 .withParam("avatarId", "1")
@@ -267,7 +267,7 @@ public class TestesPartida {
         //Coloca o usuário na partida
         socket.sendMessage(
             new MessageBuilder()
-                .withType("joinmatch")
+                .withType("join-match")
                 .withParam("userId", "1")
                 .withParam("matchId", "1")
                 .build()
@@ -278,7 +278,7 @@ public class TestesPartida {
         //Envia a mensagem para o server
         socket.sendMessage(
             new MessageBuilder()
-                .withType("readytoplay")
+                .withType("ready-to-play")
                 .withParam("userId", "1")
                 .withParam("matchId", "1")
                 .build()
