@@ -23,9 +23,9 @@ public class ServerController {
 
     private static ServerController instance;
     private Gson gson = new Gson();
-    private Map<Integer, Avatar> avatars = buildAvatars();
-    private Map<Integer, User> users = new HashMap<>();
-    private Map<Integer, Match> matches = new HashMap<>();
+    private Map<Integer, Avatar> avatars = buildAvatars();       //Lista de avatares
+    private Map<Integer, User> users = new HashMap<>();          //Lista de usuários cadastrados
+    private Map<Integer, Match> matches = new HashMap<>();       //Lista de partidas
 
     private ServerController() {
     }
