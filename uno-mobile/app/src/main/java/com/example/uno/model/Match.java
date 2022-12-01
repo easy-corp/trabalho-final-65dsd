@@ -3,7 +3,9 @@ package com.example.uno.model;
 import com.example.uno.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 
 public class Match {
@@ -13,7 +15,7 @@ public class Match {
     private String name;                    //Nome do jogo
     private int qtdPlayers;                 //Capacidade máxima de jogadores
     private MatchStatus status;             //Status da partida
-    private List<User> players;             //Lista de jogadores
+    private Map<Integer, User> players;     //Lista de jogadores
     private List<Card> deck;                //Todas as cartas do baralho
     private Stack<Card> discard;            //As cartas descartadas na mesa
 
@@ -22,7 +24,7 @@ public class Match {
         this.name = name;
         this.qtdPlayers = qtdPlayers;
         this.status = MatchStatus.WAITING;
-        this.players = new ArrayList<>();
+        this.players = new HashMap<>();
         this.deck = gerarBaralho();
         this.discard = new Stack<>();
     }
@@ -67,14 +69,14 @@ public class Match {
     }
 
     public void addPlayer(User player) {
-        this.players.add(player);
+        this.players.put(player.getId(), player);
     }
 
     public void removePlayer(User player) {
         this.players.remove(player);
     }
 
-    public List<User> getPlayers() {
+    public Map<Integer, User> getPlayers() {
         return players;
     }
 

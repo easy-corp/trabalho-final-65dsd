@@ -80,7 +80,7 @@ public class TestesCadastro {
         Type listType = new TypeToken<Map<Integer, Avatar>>(){}.getType();
         Map<Integer, Avatar> listaConvertida = gson.fromJson(json, listType);
 
-        assertNotNull(listaConvertida);
+        assertNotNull(listaConvertida.get(0));
     }
 
     //Testa se os avatares estão vindo do server

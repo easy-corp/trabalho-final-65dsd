@@ -31,7 +31,7 @@ public class ReadyToPlayTest {
         controller.joinMatch(user.getId(), match.getMatchId());
 
         try {
-            String jsonValida = controller.readyToPlay(user.getId());
+            String jsonValida = controller.readyToPlay(user.getId(), match.getMatchId());
             userValida = gson.fromJson(jsonValida, User.class);
         } catch (Exception e) {}        
 

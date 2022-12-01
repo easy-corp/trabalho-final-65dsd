@@ -9,6 +9,7 @@ import com.example.uno.control.socket.MessageBuilder;
 import com.example.uno.model.User;
 import com.google.gson.Gson;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +18,7 @@ import org.junit.runners.JUnit4;
 import java.io.IOException;
 
 @RunWith(JUnit4.class)
-public class TesteLogin {
+public class TestesLogin {
 
     private Gson gson;
     private ClientSocket socket;
@@ -59,7 +60,7 @@ public class TesteLogin {
         socket = new ClientSocket(ip, port, new IMessageListener() {
             @Override
             public void onMessage(String message) {
-                TesteLogin.this.message = message;
+                TestesLogin.this.message = message;
             }
         });
 
@@ -111,6 +112,12 @@ public class TesteLogin {
         User user = gson.fromJson(json, User.class);
 
         assertNull(user);
+    }
+
+    //Finaliza a conexão após o teste terminar
+    @After
+    public void fim() {
+        socket.killThread();
     }
 
 }

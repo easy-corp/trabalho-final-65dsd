@@ -2,8 +2,6 @@ package br.udesc;
 
 import static org.junit.Assert.assertNotNull;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;

@@ -211,7 +211,7 @@ public class TelaJogo extends AppCompatActivity {
         this.jogo.addPlayer(new User("Giovana", "1234", new Avatar("avatar_2")));
         this.jogo.addPlayer(new User("Maria", "1234", new Avatar("avatar_6")));
 
-        for (User j : this.jogo.getPlayers()) {
+        for (User j : this.jogo.getPlayers().values()) {
             for (int i = 0; i < 7; i++) {
                 //Tira uma carta do baralho para meu deck
                 Card carta = this.jogo.getDeck().get(random.nextInt(jogo.getDeck().size()));

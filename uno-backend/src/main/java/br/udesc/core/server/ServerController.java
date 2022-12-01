@@ -1,8 +1,6 @@
 package br.udesc.core.server;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.google.gson.Gson;
@@ -11,14 +9,14 @@ import br.udesc.core.model.Avatar;
 import br.udesc.core.model.Match;
 import br.udesc.core.model.User;
 import br.udesc.core.model.User.UserStatus;
-import br.udesc.core.server.messages.CreateMatchMessage;
-import br.udesc.core.server.messages.GetMatchesListMessage;
+import br.udesc.core.server.messages.CreatematchMessage;
+import br.udesc.core.server.messages.GetmatcheslistMessage;
 import br.udesc.core.server.messages.GetavatarsMessage;
-import br.udesc.core.server.messages.JoinMatchMessage;
+import br.udesc.core.server.messages.JoinmatchMessage;
 import br.udesc.core.server.messages.LoginMessage;
-import br.udesc.core.server.messages.MyProfileMessage;
-import br.udesc.core.server.messages.QuitMatchMessage;
-import br.udesc.core.server.messages.ReadyToPlayMessage;
+import br.udesc.core.server.messages.MyprofileMessage;
+import br.udesc.core.server.messages.QuitmatchMessage;
+import br.udesc.core.server.messages.ReadytoplayMessage;
 import br.udesc.core.server.messages.SignupMessage;
 
 public class ServerController {
@@ -37,44 +35,54 @@ public class ServerController {
             instance = new ServerController();
         }
 
-        instance.createMatch("Partida do Luisão", 4);
-
         return instance;
     }
 
+    //Recupera a lista de avatares
     public void getavatars(GetavatarsMessage message) {
         message.sendReply(getAvatarsList());
     }
 
+    //Realiza o cadastro
     public void signup(SignupMessage message) {
         message.sendReply(signUp(message.getUsername(), message.getPassword(), message.getAvatarId()));
     }
 
+    //Realiza login
     public void login(LoginMessage message) {
         User theUser = doLogin(message.getUsername(), message.getPassword());
         Server.getInstance().bindUser(theUser, message.getSocketClient());
         message.sendReply(gson.toJson(theUser));
     }
 
-    public void createMatch(CreateMatchMessage message) {
-        message.sendReply(createMatch(message.getName(), message.getQtdPlayers()));
-    }
-
-    public void myProfile(MyProfileMessage message) {
+    //Recupera informações do usuário logado
+    public void myprofile(MyprofileMessage message) {
         message.sendReply(myProfile(message.getUserId()));
     }
 
-    // Entra na partida
-    public void joinMatch(JoinMatchMessage message) {
+    //Cria uma nova partida
+    public void creatematch(CreatematchMessage message) {
+        message.sendReply(createMatch(message.getName(), message.getQtdPlayers()));
+    }
+
+    //Recupera a lista de partidas
+    public void getmatcheslist(GetmatcheslistMessage message) {
+        message.sendReply(getMatchesList());
+    }
+
+    //Entra na partida
+    public void joinmatch(JoinmatchMessage message) {
         message.sendReply(joinMatch(message.getUserId(), message.getMatchId()));
     }
 
-    public void readyToPlay(ReadyToPlayMessage message) {
-        message.sendReply(readyToPlay(message.getUserId()));
+    //Sai da partida
+    public void quitmatch(QuitmatchMessage message) {
+        message.sendReply(quitMatch(message.getUserId(), message.getMatchId()));
     }
 
-    public void getMatchesList(GetMatchesListMessage message) {
-        message.sendReply(getMatchesList());
+    //Indica que está pronto para jogar
+    public void readytoplay(ReadytoplayMessage message) {
+        message.sendReply(readyToPlay(message.getUserId(), message.getMatchId()));
     }
 
     public String signUp(String username, String password, int avatarId) {
@@ -133,18 +141,21 @@ public class ServerController {
         return gson.toJson(match);
     }
 
-    public void quitMatch(QuitMatchMessage message) {
-        User user = users.get(message.getUserId());
-        Match match = matches.get(message.getMatchId());
+    public String quitMatch(int userId, int matchId) {
+        User user = users.get(userId);
+        Match match = matches.get(matchId);
 
         match.removePlayer(user);
 
-        message.sendReply(gson.toJson(match));
+        return gson.toJson(match);
     }
 
-    public String readyToPlay(int userId) {
-        User user = users.get(userId);
+    public String readyToPlay(int userId, int matchId) {
+        Match match = matches.get(matchId);
+        User user = match.getPlayers().get(userId);
+        
         user.setStatus(UserStatus.READY);
+
         return gson.toJson(user);
     }
 

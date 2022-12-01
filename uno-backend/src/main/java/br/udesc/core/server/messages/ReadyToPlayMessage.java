@@ -4,19 +4,19 @@ import com.google.gson.JsonObject;
 
 import br.udesc.core.server.ClientSocketThread;
 
-public class ReadyToPlayMessage extends AbstractMessage {
+public class ReadytoplayMessage extends AbstractMessage {
 
     private int userId;
     private int matchId;
 
-    public ReadyToPlayMessage(ClientSocketThread clientSocket) {
+    public ReadytoplayMessage(ClientSocketThread clientSocket) {
         super(clientSocket);
     }
 
     @Override
     public void setupProps(JsonObject messageObject) {
         this.userId = messageObject.get("userId").getAsInt();
-        this.matchId = messageObject.get("matchid").getAsInt();
+        this.matchId = messageObject.get("matchId").getAsInt();
     }
 
     public int getUserId() {
