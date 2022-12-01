@@ -31,7 +31,7 @@ public class TestesPerfil {
         //Inicia conexão com o server
         try {
             if (socket == null) {
-                createSocketClient("192.168.3.34:2000");
+                createSocketClient(Config.getInstance().getIp());
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -87,6 +87,7 @@ public class TestesPerfil {
         //Transforma o Gson novamente em um tipo User
         User user = gson.fromJson(json, User.class);
 
+        //Verifica se o usuário recuperado possui o nome do usuário logado
         assertTrue(user.getName().contentEquals("murilo"));
     }
 

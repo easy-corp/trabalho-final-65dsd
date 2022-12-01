@@ -32,7 +32,7 @@ public class TestesLogin {
         //Inicia conexão com o server
         try {
             if (socket == null) {
-                createSocketClient("192.168.3.34:2000");
+                createSocketClient(Config.getInstance().getIp());
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -35,7 +35,7 @@ public class TestesCadastro {
         //Inicia conexão com o server
         try {
             if (socket == null) {
-                createSocketClient("192.168.3.34:2000");
+                createSocketClient(Config.getInstance().getIp());
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -67,7 +67,7 @@ public class TestesCadastro {
         //Envia a mensagem para o server
         socket.sendMessage(
             new MessageBuilder()
-                .withType("get-avatars")
+                .withType("get-avatars-list")
                 .build()
         );
 

@@ -39,7 +39,7 @@ public class ServerController {
     }
 
     //Recupera a lista de avatares
-    public void getAvatars(GetAvatarsListMessage message) {
+    public void getAvatarsList(GetAvatarsListMessage message) {
         message.sendReply(getAvatarsList());
     }
 
@@ -51,7 +51,11 @@ public class ServerController {
     //Realiza login
     public void login(LoginMessage message) {
         User theUser = doLogin(message.getUsername(), message.getPassword());
-        Server.getInstance().bindUser(theUser, message.getSocketClient());
+
+        //Se o login não exister, ele não vai tentar bindar o usuário
+        if (theUser != null) {
+            Server.getInstance().bindUser(theUser, message.getSocketClient());
+        }
 
         message.sendReply(gson.toJson(theUser));
     }

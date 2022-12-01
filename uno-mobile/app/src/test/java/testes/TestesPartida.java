@@ -37,7 +37,7 @@ public class TestesPartida {
         //Inicia conexão com o server
         try {
             if (socket == null) {
-                createSocketClient("192.168.3.34:2000");
+                createSocketClient(Config.getInstance().getIp());
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -169,7 +169,7 @@ public class TestesPartida {
         //Transforma o Gson novamente em um tipo Match
         Match match = gson.fromJson(json, Match.class);
 
-        //Verifica se o usuário não está lá dentro
+        //Verifica se o usuário está lá dentro
         assertNotNull(match.getPlayers().get(1));
     }
 
@@ -234,7 +234,8 @@ public class TestesPartida {
         System.out.println(matchAntes.getPlayers().size());
         System.out.println(matchDepois.getPlayers().size());
 
-        //Verifica se o usuário não está lá dentro
+        //Verifica se o número de usuários diminui
+        //Significa que ele foi retirado de lá
         assertTrue(matchAntes.getPlayers().size() > matchDepois.getPlayers().size());
     }
 
@@ -292,6 +293,7 @@ public class TestesPartida {
         //Transforma o Gson novamente em um tipo User
         User user = gson.fromJson(json, User.class);
 
+        //Verifica se o Status desse usuário está como READY
         assertTrue(user.getStatus() == User.UserStatus.READY);
     }
 
