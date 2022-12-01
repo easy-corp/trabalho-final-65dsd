@@ -4,9 +4,9 @@ import com.google.gson.JsonObject;
 
 import br.udesc.core.server.ClientSocketThread;
 
-public class GetAvatarsMessage extends AbstractMessage {
+public class filhodaputa extends AbstractMessage {
 
-    public GetAvatarsMessage(ClientSocketThread clientSocket) {
+    public filhodaputa(ClientSocketThread clientSocket) {
         super(clientSocket);
     }
 

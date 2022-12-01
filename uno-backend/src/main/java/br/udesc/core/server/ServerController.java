@@ -11,7 +11,7 @@ import br.udesc.core.model.User;
 import br.udesc.core.model.User.UserStatus;
 import br.udesc.core.server.messages.CreateMatchMessage;
 import br.udesc.core.server.messages.GetMatchesListMessage;
-import br.udesc.core.server.messages.GetAvatarsMessage;
+import br.udesc.core.server.messages.filhodaputa;
 import br.udesc.core.server.messages.JoinMatchMessage;
 import br.udesc.core.server.messages.LoginMessage;
 import br.udesc.core.server.messages.MyProfileMessage;
@@ -39,7 +39,7 @@ public class ServerController {
     }
 
     //Recupera a lista de avatares
-    public void getAvatars(GetAvatarsMessage message) {
+    public void getAvatars(filhodaputa message) {
         message.sendReply(getAvatarsList());
     }
 
