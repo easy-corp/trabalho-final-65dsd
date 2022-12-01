@@ -46,11 +46,8 @@ public class TelaTestesSocket extends AppCompatActivity {
 
                     socket.sendMessage(
                         new MessageBuilder()
-                        .withType("signup")
-                        .withParam("username", "murilo")
-                        .withParam("password", "123")
-                        .withParam("avatarId", "1")
-                        .build()
+                            .withType("getavatars")
+                            .build()
                     );
 
                 } catch (IOException e) {
@@ -64,12 +61,14 @@ public class TelaTestesSocket extends AppCompatActivity {
         String[] parts = serverAddress.split(":");
         String ip = parts[0];
         int port = Integer.parseInt(parts[1]);
+
         socket = new ClientSocket(ip, port, new IMessageListener() {
             @Override
             public void onMessage(String message) {
                 System.out.println(message);
             }
         });
+
         socket.start();
     }
 }
