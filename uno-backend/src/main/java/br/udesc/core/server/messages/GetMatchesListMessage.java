@@ -4,9 +4,9 @@ import com.google.gson.JsonObject;
 
 import br.udesc.core.server.ClientSocketThread;
 
-public class GetmatcheslistMessage extends AbstractMessage {
+public class GetMatchesListMessage extends AbstractMessage {
 
-    public GetmatcheslistMessage(ClientSocketThread clientSocket) {
+    public GetMatchesListMessage(ClientSocketThread clientSocket) {
         super(clientSocket);
     }
 

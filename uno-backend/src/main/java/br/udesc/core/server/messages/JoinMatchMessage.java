@@ -4,12 +4,12 @@ import com.google.gson.JsonObject;
 
 import br.udesc.core.server.ClientSocketThread;
 
-public class JoinmatchMessage extends AbstractMessage {
+public class JoinMatchMessage extends AbstractMessage {
 
     private int userId;
     private int matchId;
 
-    public JoinmatchMessage(ClientSocketThread clientSocket) {
+    public JoinMatchMessage(ClientSocketThread clientSocket) {
         super(clientSocket);
     }
 
