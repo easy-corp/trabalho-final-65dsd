@@ -47,12 +47,14 @@ public class ClientSocketThread extends Thread {
     public void run() {
         String readLine;
         boolean forceQuit = false;
+        
         try {
             readLine = reader.readLine();
         } catch (Exception e) {
             readLine = null;
             logger.log(Level.SEVERE, "Erro ao processar a mensagem do cliente!", e);
         }
+
         while ((readLine == null || !readLine.equals("QUIT")) && !forceQuit) {
             if (readLine != null) {
                 listener.onMessage(readLine, this);
@@ -64,7 +66,6 @@ public class ClientSocketThread extends Thread {
                 readLine = null;
                 forceQuit = true;
             }
-
         }
 
         try {

@@ -52,6 +52,7 @@ public class ServerController {
     public void login(LoginMessage message) {
         User theUser = doLogin(message.getUsername(), message.getPassword());
         Server.getInstance().bindUser(theUser, message.getSocketClient());
+
         message.sendReply(gson.toJson(theUser));
     }
 
@@ -100,7 +101,7 @@ public class ServerController {
     private User doLogin(String username, String password){
         User user = null;
 
-        for (User us : users.values()) {
+        for (User us : users.values()) {         
             if (us.getName().contentEquals(username)
                     && us.getPassword().contentEquals(password)) {
                 user = us;

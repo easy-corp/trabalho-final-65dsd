@@ -1,7 +1,7 @@
 package testes;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import com.example.uno.control.socket.ClientSocket;
 import com.example.uno.control.socket.IMessageListener;
@@ -9,7 +9,6 @@ import com.example.uno.control.socket.MessageBuilder;
 import com.example.uno.model.User;
 import com.google.gson.Gson;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +17,7 @@ import org.junit.runners.JUnit4;
 import java.io.IOException;
 
 @RunWith(JUnit4.class)
-public class TestesLogin {
+public class TestesPerfil {
 
     private Gson gson;
     private ClientSocket socket;
@@ -38,7 +37,7 @@ public class TestesLogin {
             e.printStackTrace();
         }
 
-        //Faz signup para poder receber login depois
+        //Faz signup para poder verificar informações do login depois
         socket.sendMessage(
             new MessageBuilder()
                 .withType("signup")
@@ -62,7 +61,7 @@ public class TestesLogin {
         socket = new ClientSocket(ip, port, new IMessageListener() {
             @Override
             public void onMessage(String message) {
-                TestesLogin.this.message = message;
+                TestesPerfil.this.message = message;
             }
         });
 
@@ -70,15 +69,13 @@ public class TestesLogin {
         socket.start();
     }
 
-    //Teste o login com usuário valido
     @Test
-    public void testeLoginValido() throws InterruptedException {
+    public void testeInfosLogin() throws InterruptedException {
         //Envia a mensagem para o server
         socket.sendMessage(
             new MessageBuilder()
-                .withType("login")
-                .withParam("username", "murilo")
-                .withParam("password", "1234")
+                .withType("myprofile")
+                .withParam("userId", "0")
                 .build()
         );
 
@@ -90,36 +87,7 @@ public class TestesLogin {
         //Transforma o Gson novamente em um tipo User
         User user = gson.fromJson(json, User.class);
 
-        assertNotNull(user);
-    }
-
-    //Teste o login com usuário invalido
-    @Test
-    public void testeLoginInvalido() throws InterruptedException {
-        //Envia a mensagem para o server
-        socket.sendMessage(
-            new MessageBuilder()
-                .withType("login")
-                .withParam("username", "murilo")
-                .withParam("password", "4321")
-                .build()
-        );
-
-        Thread.sleep(500);
-
-        //Valor retornado pelo server
-        String json = this.message;
-
-        //Transforma o Gson novamente em um tipo User
-        User user = gson.fromJson(json, User.class);
-
-        assertNull(user);
-    }
-
-    //Finaliza a conexão após o teste terminar
-    @After
-    public void fim() {
-        socket.killThread();
+        assertTrue(user.getName().contentEquals("murilo"));
     }
 
 }
