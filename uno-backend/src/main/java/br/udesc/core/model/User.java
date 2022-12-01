@@ -6,7 +6,7 @@ import java.util.List;
 public class User {
     
     private int id;                 //Id do usuario
-    private static int idCont = -1;    
+    private static int idCont = 0;    
     private String name;            //Nome do usuario
     private String password;        //Senha do usuario
     private Avatar avatar;          //Avatar do usuario

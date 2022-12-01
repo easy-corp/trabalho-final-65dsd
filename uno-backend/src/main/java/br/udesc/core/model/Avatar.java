@@ -3,7 +3,7 @@ package br.udesc.core.model;
 public class Avatar {
 
     private int id;               //id do avatar
-    private static int idCont = -1;
+    private static int idCont = 0;
     private String imageUrl;      //R.drawable.avatar_X (sendo que X varia de 1 a 6)
 
     public Avatar(String imageUrl) {
