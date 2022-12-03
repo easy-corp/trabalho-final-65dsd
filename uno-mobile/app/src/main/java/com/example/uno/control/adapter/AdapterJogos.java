@@ -17,9 +17,12 @@ import com.example.uno.TelaJogo;
 import com.example.uno.model.Match;
 import com.example.uno.model.GameServer;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class AdapterJogos extends RecyclerView.Adapter<AdapterJogos.ViewHolder> {
 
-    GameServer servidor;
+    Map<Integer, Match> matches;
     Context tela;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -40,9 +43,15 @@ public class AdapterJogos extends RecyclerView.Adapter<AdapterJogos.ViewHolder> 
         }
     }
 
-    public AdapterJogos(Context tela, GameServer servidor) {
+    public AdapterJogos(Context tela, Map<Integer, Match> matches) {
         this.tela = tela;
-        this.servidor = servidor;
+        this.matches = matches;
+
+        //Se não tiver nenhum jogo
+        if (this.matches == null) {
+            this.matches = new HashMap<>();
+        }
+
     }
 
     @Override
@@ -57,7 +66,7 @@ public class AdapterJogos extends RecyclerView.Adapter<AdapterJogos.ViewHolder> 
     //Pega o elemento na lista e joga o conteudo na view referente
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Match jogo = this.servidor.getMatches().get(position);
+        Match jogo = matches.get(position);
 
         holder.txtJogo.setText(jogo.getName());
         holder.txtParticipantes.setText(jogo.getPlayers().size() + "/" + jogo.getQtdPlayers());
@@ -80,7 +89,7 @@ public class AdapterJogos extends RecyclerView.Adapter<AdapterJogos.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return this.servidor.getMatches().size();
+        return this.matches.size();
     }
 
 }

@@ -9,15 +9,17 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.uno.control.socket.IMessageListener;
 import com.example.uno.control.socket.MessageBuilder;
 import com.example.uno.control.socket.ServiceSocket;
+import com.example.uno.model.Match;
 import com.example.uno.model.User;
 import com.google.gson.Gson;
 
-public class TelaLogin extends AppCompatActivity implements ServiceConnection, IMessageListener {
+public class TelaCriarJogo extends AppCompatActivity implements ServiceConnection, IMessageListener {
 
     private ServiceConnection service;
     private String message;
@@ -27,7 +29,7 @@ public class TelaLogin extends AppCompatActivity implements ServiceConnection, I
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tela_login);
+        setContentView(R.layout.activity_tela_criar_jogo);
 
         this.gson = new Gson();
         this.service = this;
@@ -35,20 +37,23 @@ public class TelaLogin extends AppCompatActivity implements ServiceConnection, I
         //Binda o serviço nessa Activity
         bindService(new Intent(this, ServiceSocket.class), service, 0);
 
-        EditText edUsuario = findViewById(R.id.edUsuario);
-        EditText edSenha = findViewById(R.id.edSenha);
-        Button btnEntrar = findViewById(R.id.btnEntrar);
-        Button btnCadastrar = findViewById(R.id.btnCadastrar);
+        ImageView icVoltar = findViewById(R.id.icSair);
+        ImageView icUsuario = findViewById(R.id.icUsuario);
+        EditText edTituloPartida = findViewById(R.id.edTituloPartida);
+        EditText edMaxJogadores = findViewById(R.id.edMaxJogadores);
+        Button btnCriarPartida = findViewById(R.id.btnCriarPartida);
 
-        btnEntrar.setOnClickListener(param -> {
+        icVoltar.setOnClickListener(param -> startActivity(new Intent(this, TelaEntrarJogo.class)));
+
+        icUsuario.setOnClickListener(param -> startActivity(new Intent(this, TelaPerfil.class)));
+
+        btnCriarPartida.setOnClickListener(param -> {
             try {
-                login(edUsuario.getText().toString(), edSenha.getText().toString());
+                criarPartida(edTituloPartida.getText().toString(), edMaxJogadores.getText().toString());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         });
-
-        btnCadastrar.setOnClickListener(param -> startActivity(new Intent(this, TelaCadastro.class)));
     }
 
     @Override
@@ -57,18 +62,24 @@ public class TelaLogin extends AppCompatActivity implements ServiceConnection, I
         super.onDestroy();
     }
 
-    private void login(String usuario, String senha) throws InterruptedException {
-        if (usuario.isEmpty() || senha.isEmpty()) {
-            exibirMensagem("Você precisa inserir usuário e senha para poder realizar o login.");
-        } else {
-            //Cria a mensagem de login e a envia ao servidor
-            String msg = new MessageBuilder()
-                .withType("login")
-                .withParam("username", usuario)
-                .withParam("password", senha)
-                .build();
+    public void exibirMensagem(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
 
-            binder.getService().enviarMensagem(msg);
+    public void criarPartida(String nome, String qtdPlayers) throws InterruptedException {
+        if (nome.isEmpty() || qtdPlayers.isEmpty()) {
+            exibirMensagem("Você precisa preencher todos os campos para realizar o cadastro.");
+        } else {
+            if (Integer.valueOf(qtdPlayers) < 2) {
+                exibirMensagem("São necessários pelo menos 2 jogadores para criar uma partida.");
+            } else {
+                //Cria a mensagem e envia ao servidor
+                String msg = new MessageBuilder()
+                    .withType("create-match")
+                    .withParam("name", nome)
+                    .withParam("qtdPlayers", qtdPlayers)
+                    .build();
+            }
 
             Thread.sleep(500);
 
@@ -76,19 +87,14 @@ public class TelaLogin extends AppCompatActivity implements ServiceConnection, I
             String json = this.message;
 
             //Transforma o Gson novamente em um tipo User
-            User user = gson.fromJson(json, User.class);
+            Match match = gson.fromJson(json, Match.class);
 
-            //Se o login funcionar, o servidor devolve um objeto User
-            if (user == null) {
-                exibirMensagem("Usuário ou senha inválidos.");
+            if (match == null) {
+                exibirMensagem("Ocorreu algo errado com seu cadastro, tente novamente mais tarde.");
             } else {
                 startActivity(new Intent(this, TelaEntrarJogo.class));
             }
         }
-    }
-
-    private void exibirMensagem(String msg) {
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
     //Quando o serviço for bindado
@@ -128,4 +134,5 @@ public class TelaLogin extends AppCompatActivity implements ServiceConnection, I
     public void onMessage(String message) {
         this.message = message;
     }
+
 }

@@ -52,12 +52,16 @@ public class TestesPartida {
         int port = Integer.parseInt(parts[1]);
 
         //Cria um novo socket e deixa um listener esperando a mensagem vir
-        socket = new ClientSocket(ip, port, new IMessageListener() {
+        socket = new ClientSocket(ip, port);
+
+        IMessageListener listener = new IMessageListener() {
             @Override
-            public void onMessage(String message) {
-                TestesPartida.this.message = message;
+            public void onMessage(String msg) {
+                message = msg;
             }
-        });
+        };
+
+        socket.addListener(listener);
 
         //Inicia o socket
         socket.start();
@@ -115,8 +119,6 @@ public class TestesPartida {
         //Transforma o Gson novamente em um tipo User
         Type listType = new TypeToken<Map<Integer, Match>>(){}.getType();
         Map<Integer, Match> matches = gson.fromJson(json, listType);
-
-        System.out.println(matches.size());
 
         for (Match m : matches.values()) {
             System.out.println(m.getName());

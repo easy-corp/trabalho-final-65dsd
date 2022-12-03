@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClientSocket extends Thread {
 
@@ -17,12 +19,20 @@ public class ClientSocket extends Thread {
 
     private String message;
     private boolean stop = false;
-    private IMessageListener listener;
+    private List<IMessageListener> listeners;
 
-    public ClientSocket(String serverAddress, int port, IMessageListener listener) throws IOException {
+    public ClientSocket(String serverAddress, int port) throws IOException {
         this.serverAdress = serverAddress;
         this.port = port;
-        this.listener = listener;
+        this.listeners = new ArrayList<>();
+    }
+
+    public void addListener(IMessageListener listener) {
+        this.listeners.add(listener);
+    }
+
+    public void removeListener(IMessageListener listener) {
+        this.listeners.remove(listener);
     }
 
     public void sendMessage(String message) {
@@ -63,7 +73,10 @@ public class ClientSocket extends Thread {
             try {
                 String incomingMessage = input.readLine();
                 if (incomingMessage != null) {
-                    listener.onMessage(incomingMessage);
+                    //Avisa todos que estiverem escutando
+                    for (IMessageListener listen : this.listeners) {
+                        listen.onMessage(incomingMessage);
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();

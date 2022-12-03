@@ -28,6 +28,8 @@ public class ServerController {
     private Map<Integer, Match> matches = new HashMap<>();       //Lista de partidas
 
     private ServerController() {
+        User us = new User("Luis", "1234", this.avatars.get(1));
+        this.users.put(us.getId(), us);
     }
 
     public synchronized static ServerController getInstance() {
@@ -167,12 +169,12 @@ public class ServerController {
     private Map<Integer, Avatar> buildAvatars() {
         Map<Integer, Avatar> avatars = new HashMap<>();
 
-        avatars.put(1, new Avatar("avatar_1"));
-        avatars.put(2, new Avatar("avatar_2"));
-        avatars.put(3, new Avatar("avatar_3"));
-        avatars.put(4, new Avatar("avatar_4"));
-        avatars.put(5, new Avatar("avatar_5"));
-        avatars.put(6, new Avatar("avatar_6"));
+        avatars.put(0, new Avatar("avatar_1"));
+        avatars.put(1, new Avatar("avatar_2"));
+        avatars.put(2, new Avatar("avatar_3"));
+        avatars.put(3, new Avatar("avatar_4"));
+        avatars.put(4, new Avatar("avatar_5"));
+        avatars.put(5, new Avatar("avatar_6"));
 
         return avatars;
     }

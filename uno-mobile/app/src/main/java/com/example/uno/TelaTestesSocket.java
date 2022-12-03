@@ -62,12 +62,17 @@ public class TelaTestesSocket extends AppCompatActivity {
         String ip = parts[0];
         int port = Integer.parseInt(parts[1]);
 
-        socket = new ClientSocket(ip, port, new IMessageListener() {
+        //Cria um novo socket e deixa um listener esperando a mensagem vir
+        socket = new ClientSocket(ip, port);
+
+        IMessageListener listener = new IMessageListener() {
             @Override
-            public void onMessage(String message) {
-                System.out.println(message);
+            public void onMessage(String msg) {
+                System.out.println(msg);
             }
-        });
+        };
+
+        socket.addListener(listener);
 
         socket.start();
     }
