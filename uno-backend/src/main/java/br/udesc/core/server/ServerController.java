@@ -8,16 +8,9 @@ import com.google.gson.Gson;
 import br.udesc.core.model.Avatar;
 import br.udesc.core.model.Match;
 import br.udesc.core.model.User;
+import br.udesc.core.model.Match.MatchStatus;
 import br.udesc.core.model.User.UserStatus;
-import br.udesc.core.server.messages.CreateMatchMessage;
-import br.udesc.core.server.messages.GetAvatarsListMessage;
-import br.udesc.core.server.messages.GetMatchesListMessage;
-import br.udesc.core.server.messages.JoinMatchMessage;
-import br.udesc.core.server.messages.LoginMessage;
-import br.udesc.core.server.messages.MyProfileMessage;
-import br.udesc.core.server.messages.QuitMatchMessage;
-import br.udesc.core.server.messages.ReadyToPlayMessage;
-import br.udesc.core.server.messages.SignUpMessage;
+import br.udesc.core.server.messages.*;
 
 public class ServerController {
 
@@ -28,8 +21,11 @@ public class ServerController {
     private Map<Integer, Match> matches = new HashMap<>();       //Lista de partidas
 
     private ServerController() {
-        User us = new User("Luis", "1234", this.avatars.get(1));
+        User us = new User("Luis", "1234", this.avatars.get(0));
         this.users.put(us.getId(), us);
+
+        Match match = new Match("Partida de Teste", 4);
+        this.matches.put(match.getMatchId(), match);
     }
 
     public synchronized static ServerController getInstance() {
@@ -75,6 +71,11 @@ public class ServerController {
     //Recupera a lista de partidas
     public void getMatchesList(GetMatchesListMessage message) {
         message.sendReply(getMatchesList());
+    }
+
+    //Recupera a partida que está acontecendo
+    public void getMatchLifecycle(GetMatchLifecycleMessage message) {
+        message.sendReply(matchLifecycle(message.getMatchId()));
     }
 
     //Entra na partida
@@ -137,6 +138,16 @@ public class ServerController {
 
     public String getMatchesList() {
         return gson.toJson(matches);
+    }
+
+    public String matchLifecycle(int matchId) {
+        Match match = matches.get(matchId);
+
+        if (match.getStatus() == MatchStatus.WAITING) {
+            match.iniciarPartida();
+        }        
+
+        return gson.toJson(match);
     }
 
     public String joinMatch(int userId, int matchId) {

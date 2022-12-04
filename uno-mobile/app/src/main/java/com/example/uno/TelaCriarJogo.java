@@ -26,6 +26,8 @@ public class TelaCriarJogo extends AppCompatActivity implements ServiceConnectio
     private ServiceSocket.LocalBinder binder;
     private Gson gson;
 
+    private int jogadorId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +35,8 @@ public class TelaCriarJogo extends AppCompatActivity implements ServiceConnectio
 
         this.gson = new Gson();
         this.service = this;
+
+        this.jogadorId = Integer.parseInt(this.getIntent().getStringExtra("userId"));
 
         //Binda o serviço nessa Activity
         bindService(new Intent(this, ServiceSocket.class), service, 0);
@@ -43,9 +47,9 @@ public class TelaCriarJogo extends AppCompatActivity implements ServiceConnectio
         EditText edMaxJogadores = findViewById(R.id.edMaxJogadores);
         Button btnCriarPartida = findViewById(R.id.btnCriarPartida);
 
-        icVoltar.setOnClickListener(param -> startActivity(new Intent(this, TelaEntrarJogo.class)));
+        icVoltar.setOnClickListener(param -> startActivity(new Intent(this, TelaEntrarJogo.class).putExtra("userId", String.valueOf(jogadorId))));
 
-        icUsuario.setOnClickListener(param -> startActivity(new Intent(this, TelaPerfil.class)));
+        icUsuario.setOnClickListener(param -> startActivity(new Intent(this, TelaPerfil.class).putExtra("userId", String.valueOf(jogadorId))));
 
         btnCriarPartida.setOnClickListener(param -> {
             try {
@@ -79,20 +83,22 @@ public class TelaCriarJogo extends AppCompatActivity implements ServiceConnectio
                     .withParam("name", nome)
                     .withParam("qtdPlayers", qtdPlayers)
                     .build();
-            }
 
-            Thread.sleep(500);
+                binder.getService().enviarMensagem(msg);
 
-            //Valor retornado pelo server
-            String json = this.message;
+                Thread.sleep(500);
 
-            //Transforma o Gson novamente em um tipo User
-            Match match = gson.fromJson(json, Match.class);
+                //Valor retornado pelo server
+                String json = this.message;
 
-            if (match == null) {
-                exibirMensagem("Ocorreu algo errado com seu cadastro, tente novamente mais tarde.");
-            } else {
-                startActivity(new Intent(this, TelaEntrarJogo.class));
+                //Transforma o Gson novamente em um tipo User
+                Match match = gson.fromJson(json, Match.class);
+
+                if (match == null) {
+                    exibirMensagem("Ocorreu algo errado com seu cadastro, tente novamente mais tarde.");
+                } else {
+                    startActivity(new Intent(this, TelaEntrarJogo.class).putExtra("userId", String.valueOf(jogadorId)));
+                }
             }
         }
     }

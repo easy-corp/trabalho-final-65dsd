@@ -7,9 +7,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -18,18 +21,26 @@ import android.widget.Toast;
 
 import com.example.uno.control.adapter.AdapterCartasJogador;
 import com.example.uno.control.adapter.AdapterJogadores;
+import com.example.uno.control.socket.IMessageListener;
+import com.example.uno.control.socket.MessageBuilder;
+import com.example.uno.control.socket.ServiceSocket;
 import com.example.uno.model.Avatar;
 import com.example.uno.model.Card;
 import com.example.uno.model.User;
 import com.example.uno.model.Match;
+import com.google.gson.Gson;
 
 import java.util.Random;
 
-public class TelaJogo extends AppCompatActivity {
+public class TelaJogo extends AppCompatActivity implements ServiceConnection, IMessageListener {
 
-    private Match jogo = new Match("Jogos da Galera", 4);
-    private User jogador = new User("Luis", "1234",
-            new Avatar("avatar_1"));
+    private ServiceConnection service;
+    private String message;
+    private ServiceSocket.LocalBinder binder;
+    private Gson gson;
+
+    private Match jogo;
+    private User jogador;
     private Random random = new Random();
     private Card cartaVirada = null;
 
@@ -48,18 +59,24 @@ public class TelaJogo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_jogo);
 
+        this.gson = new Gson();
+        this.service = this;
+
+        //Binda o serviço nessa Activity
+        bindService(new Intent(this, ServiceSocket.class), service, 0);
+
         ImageView icSairJogo = findViewById(R.id.icSairJogo);
         FrameLayout layUno = findViewById(R.id.layUno);
 
 //        icSairJogo.setOnClickListener(param -> startActivity(new Intent(this, TelaEntrarJogo.class)));
-        icSairJogo.setOnClickListener(param -> startActivity(new Intent(this, TelaResultados.class)));
+        icSairJogo.setOnClickListener(param -> startActivity(new Intent(this, TelaResultados.class).putExtra("userId", String.valueOf(jogador.getId()))));
         layUno.setOnClickListener(param -> pedirUno());
+    }
 
-        distribuiCartas();
-        criarRecyclerViewJogadores();
-        criarRecyclerViewCartas();
-        comprarCarta();
-        gerarCartaMesa();
+    @Override
+    protected void onDestroy() {
+        unbindService(service);
+        super.onDestroy();
     }
 
     public Match getJogo() {
@@ -71,7 +88,7 @@ public class TelaJogo extends AppCompatActivity {
     }
 
     //Gera lista de jogadores na sala
-    private void criarRecyclerViewJogadores() {
+    private void criarRecyclerViewJogadores() throws InterruptedException {
         listaJogadores = findViewById(R.id.listaJogadoresJogo);
 
         listaJogadores.setHasFixedSize(true);
@@ -201,31 +218,73 @@ public class TelaJogo extends AppCompatActivity {
     }
 
     //Distribui as cartas entre os jogadores
-    private void distribuiCartas() {
+    private void distribuiCartas() throws InterruptedException {
+        //Cria a mensagem e envia ao servidor
+        String msg = new MessageBuilder()
+            .withType("my-profile")
+            .withParam("userId", getIntent().getStringExtra("userId"))
+            .build();
+
+        binder.getService().enviarMensagem(msg);
+
+        Thread.sleep(500);
+
+        //Valor retornado pelo server
+        String json = this.message;
+
+        //Transforma o Gson novamente em um tipo User
+        this.jogador = gson.fromJson(json, User.class);
+
         //Adiciona o jogador logado no dispositivo
-        this.jogo.addPlayer(this.jogador);
+        //Cria a mensagem e envia ao servidor
+        msg = new MessageBuilder()
+            .withType("join-match")
+            .withParam("userId", String.valueOf(jogador.getId()))
+            .withParam("matchId", getIntent().getStringExtra("matchId"))
+            .build();
 
-        //Adiciona demais jogadores
-        this.jogo.addPlayer(new User("Gabriel", "1234", new Avatar("avatar_4")));
-        this.jogo.addPlayer(new User("Murilo", "1234", new Avatar("avatar_5")));
-        this.jogo.addPlayer(new User("Giovana", "1234", new Avatar("avatar_2")));
-        this.jogo.addPlayer(new User("Maria", "1234", new Avatar("avatar_6")));
+        binder.getService().enviarMensagem(msg);
+        Thread.sleep(500);
 
-        for (User j : this.jogo.getPlayers().values()) {
-            for (int i = 0; i < 7; i++) {
-                //Tira uma carta do baralho para meu deck
-                Card carta = this.jogo.getDeck().get(random.nextInt(jogo.getDeck().size()));
-                this.jogo.getDeck().remove(carta);
+        //Faz uma nova consulta pela partida
+        atualizarPartida();
+    }
 
-                j.addCarta(carta);
-            }
-        }
+    public void atualizarPartida() throws InterruptedException {
+        //Cria a mensagem e envia ao servidor
+        String msg = new MessageBuilder()
+                .withType("get-match-lifecycle")
+                .withParam("matchId", getIntent().getStringExtra("matchId"))
+                .build();
+
+        binder.getService().enviarMensagem(msg);
+
+        Thread.sleep(500);
+
+        //Valor retornado pelo server
+        String json = this.message;
+
+        System.out.println(json);
+
+        //Transforma o Gson novamente em um tipo Match
+        Match match = gson.fromJson(json, Match.class);
+        this.jogo = match;
+
+        //Atualiza o jogador também com base nos novos dados
+        this.jogador = this.jogo.getPlayers().get(jogador.getId());
+
+        atualizarListas();
     }
 
     //Atualizar as listas na tela quando os dados mudarem
     public void atualizarListas() {
-        adapterJogadores.notifyDataSetChanged();
-        adapterCartasJogador.notifyDataSetChanged();
+        if (adapterJogadores != null) {
+            adapterJogadores.notifyDataSetChanged();
+        }
+
+        if (adapterCartasJogador != null) {
+            adapterCartasJogador.notifyDataSetChanged();
+        }
     }
 
     public void pedirUno() {
@@ -236,6 +295,55 @@ public class TelaJogo extends AppCompatActivity {
         txtPedirUno.setTextColor(Color.parseColor("#ED1C24"));
 
         this.jogador.setIsUno(true);
+    }
+
+    //Quando o serviço for bindado
+    //Indica que essa activity irá ouvir as mensagens
+    @Override
+    public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+        this.binder = (ServiceSocket.LocalBinder) iBinder;
+        this.binder.addListener(this);
+
+        try {
+            distribuiCartas();
+            criarRecyclerViewJogadores();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        criarRecyclerViewCartas();
+        comprarCarta();
+        gerarCartaMesa();
+    }
+
+    //Quando o serviço for desbindado
+    @Override
+    public void onServiceDisconnected(ComponentName componentName) {
+        this.service = null;
+    }
+
+    //Quando a tela pausar
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (binder != null) {
+            binder.removeListener(this);
+        }
+    }
+
+    //Quando a tela voltar
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (binder != null) {
+            binder.addListener(this);
+        }
+    }
+
+    //Esperando mensagens
+    @Override
+    public void onMessage(String message) {
+        this.message = message;
     }
 
 }

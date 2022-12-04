@@ -53,7 +53,6 @@ public class AdapterJogadores extends RecyclerView.Adapter<AdapterJogadores.View
     @Override
     public void onBindViewHolder(AdapterJogadores.ViewHolder holder, int position) {
         User jogador = this.jogo.getPlayers().get(position);
-        jogador.getAvatar().click(true);
         int image = telaJogo.getResources().getIdentifier(jogador.getAvatar().getImageUrl(), "drawable", telaJogo.getPackageName());
 
         holder.imgJogador.setBackgroundResource(image);

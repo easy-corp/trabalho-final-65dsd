@@ -6,6 +6,12 @@ public class Card {
     private Color color;          //Cor da carta (enum)
     private String imageUrl;      //R.drawable.avatar_X (sendo que X varia de 1 a 6)
 
+    public Card(String simbolo, Color color, String imageUrl) {
+        this.simbolo = simbolo;
+        this.color = color;
+        this.imageUrl = imageUrl;
+    }
+
     public String getSimbolo() {
         return simbolo;
     }

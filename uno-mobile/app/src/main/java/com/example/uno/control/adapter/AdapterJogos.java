@@ -16,6 +16,7 @@ import com.example.uno.R;
 import com.example.uno.TelaJogo;
 import com.example.uno.model.Match;
 import com.example.uno.model.GameServer;
+import com.example.uno.model.User;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,6 +25,7 @@ public class AdapterJogos extends RecyclerView.Adapter<AdapterJogos.ViewHolder> 
 
     Map<Integer, Match> matches;
     Context tela;
+    int jogadorId;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         LinearLayout layout;
@@ -43,9 +45,10 @@ public class AdapterJogos extends RecyclerView.Adapter<AdapterJogos.ViewHolder> 
         }
     }
 
-    public AdapterJogos(Context tela, Map<Integer, Match> matches) {
+    public AdapterJogos(Context tela, Map<Integer, Match> matches, int jogadorId) {
         this.tela = tela;
         this.matches = matches;
+        this.jogadorId = jogadorId;
 
         //Se não tiver nenhum jogo
         if (this.matches == null) {
@@ -79,7 +82,11 @@ public class AdapterJogos extends RecyclerView.Adapter<AdapterJogos.ViewHolder> 
             @Override
             public void onClick(View view) {
                 if (jogo.isEntravel()) {
-                    tela.startActivity(new Intent(tela, TelaJogo.class));
+                    //Coloca o id da partida associado a intent
+                    Intent intent = new Intent(tela, TelaJogo.class);
+                    intent.putExtra("matchId", String.valueOf(jogo.getMatchId()));
+                    intent.putExtra("userId", String.valueOf(jogadorId));
+                    tela.startActivity(intent);
                 } else {
                     Toast.makeText(tela, "A sala está cheia", Toast.LENGTH_SHORT).show();
                 }

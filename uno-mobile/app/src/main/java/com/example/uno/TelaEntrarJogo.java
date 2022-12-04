@@ -20,6 +20,7 @@ import com.example.uno.control.socket.MessageBuilder;
 import com.example.uno.control.socket.ServiceSocket;
 import com.example.uno.model.Match;
 import com.example.uno.model.GameServer;
+import com.example.uno.model.User;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -33,6 +34,8 @@ public class TelaEntrarJogo extends AppCompatActivity implements ServiceConnecti
     private ServiceSocket.LocalBinder binder;
     private Gson gson;
 
+    private int jogadorId;
+
     private RecyclerView listaJogos;
     private RecyclerView.Adapter adapterJogos;
     private RecyclerView.LayoutManager layoutManager;
@@ -45,6 +48,8 @@ public class TelaEntrarJogo extends AppCompatActivity implements ServiceConnecti
         this.gson = new Gson();
         this.service = this;
 
+        this.jogadorId = Integer.parseInt(this.getIntent().getStringExtra("userId"));
+
         //Binda o serviço nessa Activity
         bindService(new Intent(this, ServiceSocket.class), service, 0);
 
@@ -54,9 +59,9 @@ public class TelaEntrarJogo extends AppCompatActivity implements ServiceConnecti
 
         icVoltar.setOnClickListener(param -> startActivity(new Intent(this, TelaLogin.class)));
 
-        icUsuario.setOnClickListener(param -> startActivity(new Intent(this, TelaPerfil.class)));
+        icUsuario.setOnClickListener(param -> startActivity(new Intent(this, TelaPerfil.class).putExtra("userId", String.valueOf(jogadorId))));
 
-        icAddMatch.setOnClickListener(param -> startActivity(new Intent(this, TelaCriarJogo.class)));
+        icAddMatch.setOnClickListener(param -> startActivity(new Intent(this, TelaCriarJogo.class).putExtra("userId", String.valueOf(jogadorId))));
     }
 
     @Override
@@ -71,19 +76,16 @@ public class TelaEntrarJogo extends AppCompatActivity implements ServiceConnecti
             .withType("get-matches-list")
             .build();
 
+        binder.getService().enviarMensagem(msg);
+
         Thread.sleep(500);
 
         //Valor retornado pelo server
         String json = this.message;
 
-        //Transforma o Gson novamente em um tipo User
+        //Transforma o Gson novamente em uma lista de Mtaches
         Type listType = new TypeToken<Map<Integer, Match>>(){}.getType();
         Map<Integer, Match> matches = gson.fromJson(json, listType);
-
-        TextView txtDescListaJogos = findViewById(R.id.txtDescListaJogos);
-        txtDescListaJogos.setText("Jogos disponíveis:");
-
-        System.out.println(json);
 
         listaJogos = findViewById(R.id.listaJogos);
 
@@ -92,7 +94,7 @@ public class TelaEntrarJogo extends AppCompatActivity implements ServiceConnecti
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         listaJogos.setLayoutManager(layoutManager);
 
-        adapterJogos = new AdapterJogos(this, matches);
+        adapterJogos = new AdapterJogos(this, matches, jogadorId);
         listaJogos.setAdapter(adapterJogos);
 
         DividerItemDecoration divisor = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);

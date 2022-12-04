@@ -82,7 +82,7 @@ public class TelaLogin extends AppCompatActivity implements ServiceConnection, I
             if (user == null) {
                 exibirMensagem("Usuário ou senha inválidos.");
             } else {
-                startActivity(new Intent(this, TelaEntrarJogo.class));
+                startActivity(new Intent(this, TelaEntrarJogo.class).putExtra("userId", String.valueOf(user.getId())));
             }
         }
     }
