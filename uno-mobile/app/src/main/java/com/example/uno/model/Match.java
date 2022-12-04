@@ -50,8 +50,9 @@ public class Match {
     }
 
     //Verifica a possibilidade de entrar na sala
+    //Se ainda tiver vagas e a sala estiver no status de WAITING
     public boolean isEntravel() {
-        if (this.players.size() < this.qtdPlayers) {
+        if (this.players.size() < this.qtdPlayers && this.status == MatchStatus.WAITING) {
             return true;
         } else {
             return false;

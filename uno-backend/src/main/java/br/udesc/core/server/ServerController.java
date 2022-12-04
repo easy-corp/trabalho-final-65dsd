@@ -143,7 +143,9 @@ public class ServerController {
     public String matchLifecycle(int matchId) {
         Match match = matches.get(matchId);
 
-        if (match.getStatus() == MatchStatus.WAITING) {
+        //A partida se inicia quando tiver mais pelo menos 2 jogadores
+        //Isso só vai acontecer se a partida ainda não tiver sido iniciada
+        if (match.getPlayers().size() > 1 && match.getStatus() == MatchStatus.WAITING) {
             match.iniciarPartida();
         }        
 
