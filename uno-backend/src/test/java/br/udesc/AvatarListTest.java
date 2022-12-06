@@ -49,7 +49,7 @@ public class AvatarListTest {
 
         try {
             //Transforma o Gson novamente em uma lista do tipo Avatar
-            Type listType = new TypeToken<Map<Integer, Avatar>>(){}.getType();
+            Type listType = new TypeToken<List<Avatar>>(){}.getType();
             listaConvertida = gson.fromJson(json, listType);
         } catch (Exception e) {
             e.getMessage();

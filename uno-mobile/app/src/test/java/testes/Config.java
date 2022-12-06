@@ -6,7 +6,7 @@ public class Config {
     private String ip;
 
     private Config() {
-        this.ip = "192.168.3.34:2000";
+        this.ip = "192.168.2.16:2000";
     }
 
     public synchronized static Config getInstance() {

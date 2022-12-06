@@ -2,6 +2,7 @@ package br.udesc;
 
 import static org.junit.Assert.assertNotNull;
 import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
@@ -19,13 +20,13 @@ public class MatchesListTest {
     //Verifica se a lista de partida veio nula
     @Test
     public void verificarListaNula() {
-        Map<Integer, Match> matches = null;
+        List<Match> matches = null;
 
         try {
             String json = controller.getMatchesList();
             
             Gson gson = new Gson();
-            Type listType = new TypeToken<Map<Integer, Match>>(){}.getType();
+            Type listType = new TypeToken<List<Match>>(){}.getType();
             matches = gson.fromJson(json, listType);
         } catch (Exception e) {
             e.getMessage();
@@ -39,19 +40,19 @@ public class MatchesListTest {
     public void verificarElementoNulo() {
         //Cria um objeto nulo de partidas
         //Tenta buscar as partidas de um servidor
-        Map<Integer, Match>matches = null;
+        List<Match> matches = null;
 
         try {
             String json = controller.getMatchesList();
             
             Gson gson = new Gson();
-            Type listType = new TypeToken<Map<Integer, Match>>(){}.getType();
+            Type listType = new TypeToken<List<Match>>(){}.getType();
             matches = gson.fromJson(json, listType);
         } catch (Exception e) {
             e.getMessage();
         }
         
-        for (Match m : matches.values()) {
+        for (Match m : matches) {
             assertNotNull(m);   
         }
 

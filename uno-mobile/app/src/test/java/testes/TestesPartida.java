@@ -20,6 +20,7 @@ import org.junit.runners.JUnit4;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Map;
 
 @RunWith(JUnit4.class)
@@ -117,10 +118,10 @@ public class TestesPartida {
         String json = this.message;
 
         //Transforma o Gson novamente em um tipo User
-        Type listType = new TypeToken<Map<Integer, Match>>(){}.getType();
-        Map<Integer, Match> matches = gson.fromJson(json, listType);
+        Type listType = new TypeToken<List<Match>>(){}.getType();
+        List<Match> matches = gson.fromJson(json, listType);
 
-        for (Match m : matches.values()) {
+        for (Match m : matches) {
             System.out.println(m.getName());
         }
 
@@ -216,6 +217,8 @@ public class TestesPartida {
         String json = this.message;
         Match matchAntes = gson.fromJson(json, Match.class);
 
+        System.out.println(json);
+
         //Retira o usuário da partida
         socket.sendMessage(
             new MessageBuilder()
@@ -232,6 +235,8 @@ public class TestesPartida {
 
         //Transforma o Gson novamente em um tipo Match
         Match matchDepois = gson.fromJson(json, Match.class);
+
+        System.out.println(json);
 
         System.out.println(matchAntes.getPlayers().size());
         System.out.println(matchDepois.getPlayers().size());

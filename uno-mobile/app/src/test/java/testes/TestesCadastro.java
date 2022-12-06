@@ -18,6 +18,7 @@ import org.junit.runners.JUnit4;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Map;
 
 @RunWith(JUnit4.class)
@@ -81,8 +82,8 @@ public class TestesCadastro {
         String json = this.message;
 
         //Transforma o Gson novamente em uma lista do tipo Avatar
-        Type listType = new TypeToken<Map<Integer, Avatar>>(){}.getType();
-        Map<Integer, Avatar> listaConvertida = gson.fromJson(json, listType);
+        Type listType = new TypeToken<List<Avatar>>(){}.getType();
+        List<Avatar> listaConvertida = gson.fromJson(json, listType);
 
         assertNotNull(listaConvertida.get(1));
     }

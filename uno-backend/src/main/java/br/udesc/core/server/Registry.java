@@ -130,9 +130,11 @@ public class Registry {
 
     public void removePlayerFromMatch(int matchId, int userId) {
         try {
+            System.out.println("adquiri");
             mutex.acquire();
-            this.getMatch(matchId).removePlayer(this.getUser(userId));
+            this.matches.get(matchId).removePlayer(this.users.get(userId));
             mutex.release();
+            System.out.println("liberei");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

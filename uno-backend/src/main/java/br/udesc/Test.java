@@ -1,5 +1,6 @@
 package br.udesc;
 
+import java.rmi.server.ServerCloneException;
 import java.time.Duration;
 import java.util.Date;
 import java.util.Random;
@@ -7,6 +8,10 @@ import java.util.concurrent.Callable;
 
 import org.awaitility.*;
 import org.awaitility.core.ConditionTimeoutException;
+
+import br.udesc.core.server.Registry;
+import br.udesc.core.server.Server;
+import br.udesc.core.server.ServerController;
 
 public class Test {
 
