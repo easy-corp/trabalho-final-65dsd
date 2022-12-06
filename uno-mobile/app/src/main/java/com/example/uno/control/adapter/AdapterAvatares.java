@@ -10,17 +10,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.uno.R;
 import com.example.uno.model.Avatar;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 public class AdapterAvatares extends RecyclerView.Adapter<AdapterAvatares.ViewHolder> {
 
-    Map<Integer, Avatar> avatares;
+    List<Avatar> avatares;
     RecyclerView recyclerView;
     int posSelecionado;
 
@@ -37,7 +32,7 @@ public class AdapterAvatares extends RecyclerView.Adapter<AdapterAvatares.ViewHo
         }
     }
 
-    public AdapterAvatares(RecyclerView recyclerView, Map<Integer, Avatar> avatares) {
+    public AdapterAvatares(RecyclerView recyclerView, List<Avatar> avatares) {
         this.recyclerView = recyclerView;
         this.avatares = avatares;
     }
@@ -63,7 +58,7 @@ public class AdapterAvatares extends RecyclerView.Adapter<AdapterAvatares.ViewHo
             @Override
             public void onClick(View view) {
                 //Caso tenha sido feito um click anteriormente
-                for (Avatar av : avatares.values()) {
+                for (Avatar av : avatares) {
                     //Muda todos menos o clicado para não selecionado
                     if (av != avatar) {
                         av.click(false);

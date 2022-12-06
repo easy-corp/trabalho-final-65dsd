@@ -20,12 +20,13 @@ import com.example.uno.control.socket.IMessageListener;
 import com.example.uno.control.socket.MessageBuilder;
 import com.example.uno.control.socket.ServiceSocket;
 import com.example.uno.model.Avatar;
+import com.example.uno.model.Match;
 import com.example.uno.model.User;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.util.Map;
+import java.util.List;
 
 public class TelaCadastro extends AppCompatActivity implements ServiceConnection, IMessageListener {
 
@@ -95,8 +96,8 @@ public class TelaCadastro extends AppCompatActivity implements ServiceConnection
 
         //Transforma a lista vinda em Gson em um mapa de objetos Avatar
         //Transforma o Gson novamente em uma lista do tipo Avatar
-        Type listType = new TypeToken<Map<Integer, Avatar>>(){}.getType();
-        Map<Integer, Avatar> avatares = gson.fromJson(json, listType);
+        Type listType = new TypeToken<List<Avatar>>(){}.getType();
+        List<Avatar> avatares = gson.fromJson(json, listType);
 
         adapterUsuarios = new AdapterAvatares(listaAvatares, avatares);
         listaAvatares.setAdapter(adapterUsuarios);

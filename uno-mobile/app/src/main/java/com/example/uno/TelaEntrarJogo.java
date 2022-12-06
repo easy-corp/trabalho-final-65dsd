@@ -25,7 +25,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.util.Map;
+import java.util.List;
 
 public class TelaEntrarJogo extends AppCompatActivity implements ServiceConnection, IMessageListener {
 
@@ -84,8 +84,8 @@ public class TelaEntrarJogo extends AppCompatActivity implements ServiceConnecti
         String json = this.message;
 
         //Transforma o Gson novamente em uma lista de Mtaches
-        Type listType = new TypeToken<Map<Integer, Match>>(){}.getType();
-        Map<Integer, Match> matches = gson.fromJson(json, listType);
+        Type listType = new TypeToken<List<Match>>(){}.getType();
+        List<Match> matches = gson.fromJson(json, listType);
 
         listaJogos = findViewById(R.id.listaJogos);
 

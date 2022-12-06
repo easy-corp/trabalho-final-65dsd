@@ -14,16 +14,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.uno.R;
 import com.example.uno.TelaJogo;
+import com.example.uno.model.Avatar;
 import com.example.uno.model.Match;
-import com.example.uno.model.GameServer;
-import com.example.uno.model.User;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AdapterJogos extends RecyclerView.Adapter<AdapterJogos.ViewHolder> {
 
-    Map<Integer, Match> matches;
+    List<Match> matches;
     Context tela;
     int jogadorId;
 
@@ -45,14 +44,14 @@ public class AdapterJogos extends RecyclerView.Adapter<AdapterJogos.ViewHolder> 
         }
     }
 
-    public AdapterJogos(Context tela, Map<Integer, Match> matches, int jogadorId) {
+    public AdapterJogos(Context tela, List<Match> matches, int jogadorId) {
         this.tela = tela;
         this.matches = matches;
         this.jogadorId = jogadorId;
 
         //Se não tiver nenhum jogo
         if (this.matches == null) {
-            this.matches = new HashMap<>();
+            this.matches = new ArrayList<>();
         }
 
     }
