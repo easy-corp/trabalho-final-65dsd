@@ -20,7 +20,7 @@ public class GetMatchLifecycleMessage extends AbstractMessage {
     }
 
     public void setMatchId(int id) {
-        this.matchId = matchId;
+        this.matchId = id;
     }
 
     public int getMatchId() {
