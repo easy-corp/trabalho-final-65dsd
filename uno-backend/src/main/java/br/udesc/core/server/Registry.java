@@ -1,9 +1,13 @@
 package br.udesc.core.server;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
+
+import com.google.gson.JsonElement;
 
 import br.udesc.core.model.Avatar;
 import br.udesc.core.model.Match;
@@ -173,6 +177,48 @@ public class Registry {
         avatars.put(5, new Avatar("avatar_6"));
 
         return avatars;
+    }
+
+    public List<Match> getMatchesWithPlayer(int userId) {
+        List<Match> partidas = new ArrayList<>();
+
+        try {
+            mutex.acquire();
+            
+            //Verifica as partidas em que esse jogador está
+            for (Match m : this.matches.values()) {
+                if (m.getPlayers().containsKey(userId)) {
+                    partidas.add(m);
+                }
+            }
+
+            mutex.release();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return partidas;
+    }
+
+    public List<Match> getWinsPlayer(int userId) {
+        List<Match> vitorias = new ArrayList<>();
+
+        try {
+            mutex.acquire();
+            
+            //Verifica as partidas em que esse jogador está
+            for (Match m : this.matches.values()) {
+                if (false) {
+                    vitorias.add(m);
+                }
+            }
+
+            mutex.release();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return vitorias;
     }
 
 }

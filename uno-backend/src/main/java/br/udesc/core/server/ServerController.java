@@ -67,6 +67,16 @@ public class ServerController {
         message.sendReply(getMatchesList());
     }
 
+    //Recupera as partidas as quais esse player participou
+    public void getMatchesWithPlayer(GetMatchesWithPlayerMessage message) {
+        message.sendReply(matchesWithPlayer(message.getUserId()));
+    }
+
+    //Recupera as partidas as quais esse player ganhou
+    public void getWinsPlayer(GetWinsPlayerMessage message) {
+        message.sendReply(matchesWinner(message.getUserId()));
+    }
+
     // Entra na partida
     public void joinMatch(JoinMatchMessage message) {
         message.sendReply(joinMatch(message.getUserId(), message.getMatchId()));
@@ -124,6 +134,14 @@ public class ServerController {
 
     public String getMatchesList() {
         return gson.toJson(this.registry.getMatchesList());
+    }
+    
+    private String matchesWithPlayer(int userId) {
+        return gson.toJson(this.registry.getMatchesWithPlayer(userId));
+    }
+
+    private String matchesWinner(int userId) {
+        return gson.toJson(this.registry.getWinsPlayer(userId));
     }
 
     public String matchLifecycle(int matchId) {

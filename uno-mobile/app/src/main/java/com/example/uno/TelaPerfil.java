@@ -15,8 +15,13 @@ import com.example.uno.control.socket.IMessageListener;
 import com.example.uno.control.socket.MessageBuilder;
 import com.example.uno.control.socket.ServiceSocket;
 import com.example.uno.model.Avatar;
+import com.example.uno.model.Match;
 import com.example.uno.model.User;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.List;
 
 public class TelaPerfil extends AppCompatActivity implements ServiceConnection, IMessageListener {
 
@@ -76,9 +81,47 @@ public class TelaPerfil extends AppCompatActivity implements ServiceConnection, 
         imgAvatarPerfil.setBackgroundResource(image);
         txtNome.setText(jogador.getName());
 
+        //Jogos
+        msg = new MessageBuilder()
+            .withType("get-matches-with-player")
+            .withParam("userId", String.valueOf(jogador.getId()))
+            .build();
+
+        binder.getService().enviarMensagem(msg);
+
+        Thread.sleep(500);
+
+        //Valor retornado pelo server
+        json = this.message;
+
+        System.out.println(json);
+
+        //Transforma o Gson novamente em uma lista de Mtaches
+        Type listType = new TypeToken<List<Match>>(){}.getType();
+        List<Match> playedMatches = gson.fromJson(json, listType);
+
+        //Vitórias
+        msg = new MessageBuilder()
+                .withType("get-wins-player")
+                .withParam("userId", String.valueOf(jogador.getId()))
+                .build();
+
+        binder.getService().enviarMensagem(msg);
+
+        Thread.sleep(500);
+
+        //Valor retornado pelo server
+        json = this.message;
+
+        System.out.println(json);
+
+        //Transforma o Gson novamente em uma lista de Mtaches
+        listType = new TypeToken<List<Match>>(){}.getType();
+        List<Match> winMatches = gson.fromJson(json, listType);
+
         /////////////Verificar/////////////
-        txtJogos.setText(String.valueOf("5 Jogos"));
-        txtVitorias.setText(String.valueOf("5 Vitórias"));
+        txtJogos.setText(String.valueOf(playedMatches.size() + " Jogos"));
+        txtVitorias.setText(String.valueOf(winMatches.size() + " Vitórias"));
     }
 
     //Quando o serviço for bindado
