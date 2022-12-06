@@ -14,6 +14,7 @@ import com.example.uno.TelaJogo;
 import com.example.uno.model.User;
 import com.example.uno.model.Match;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterJogadores extends RecyclerView.Adapter<AdapterJogadores.ViewHolder> {
@@ -40,6 +41,7 @@ public class AdapterJogadores extends RecyclerView.Adapter<AdapterJogadores.View
     public AdapterJogadores(Match jogo, TelaJogo telaJogo) {
         this.jogo = jogo;
         this.telaJogo = telaJogo;
+        this.jogadores = new ArrayList<>();
 
         for (User u : this.jogo.getPlayers().values()) {
             this.jogadores.add(u);
