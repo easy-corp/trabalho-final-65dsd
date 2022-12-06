@@ -1,0 +1,5 @@
+git clone https://github.com/easy-corp/trabalho-final-65dsd.git
+cd trabalho-final-65dsd/uno-backend
+mvn dependency:resolve
+mvn compile
+mvn -q exec:java
