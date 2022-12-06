@@ -3,6 +3,7 @@ package br.udesc;
 import static org.junit.Assert.*;
 
 import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
@@ -25,11 +26,11 @@ public class AvatarListTest {
         //Valor retornado pelo server
         Gson gson = new Gson();
         String json = controller.getAvatarsList();
-        Map<Integer, Avatar> listaConvertida = null;
+        List<Avatar> listaConvertida = null;
 
         try {
             //Transforma o Gson novamente em uma lista do tipo Avatar
-            Type listType = new TypeToken<Map<Integer, Avatar>>(){}.getType();
+            Type listType = new TypeToken<List<Avatar>>(){}.getType();
             listaConvertida = gson.fromJson(json, listType);
         } catch (Exception e) {
             e.getMessage();
@@ -44,7 +45,7 @@ public class AvatarListTest {
         //Valor retornado pelo server
         Gson gson = new Gson();
         String json = controller.getAvatarsList();
-        Map<Integer, Avatar> listaConvertida = null;
+        List<Avatar> listaConvertida = null;
 
         try {
             //Transforma o Gson novamente em uma lista do tipo Avatar
@@ -54,7 +55,7 @@ public class AvatarListTest {
             e.getMessage();
         }
 
-        for (Avatar av : listaConvertida.values()) {
+        for (Avatar av : listaConvertida) {
             assertNotNull(av);
         }        
     }

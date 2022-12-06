@@ -1,0 +1,12 @@
+-------------------------------------------------------------------------------
+Test set: br.udesc.AvatarListTest
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 1, Errors: 1, Skipped: 0, Time elapsed: 0.077 s <<< FAILURE! - in br.udesc.AvatarListTest
+verificarElementoNulo(br.udesc.AvatarListTest)  Time elapsed: 0.014 s  <<< ERROR!
+java.lang.NullPointerException: Cannot invoke "java.util.List.iterator()" because "listaConvertida" is null
+	at br.udesc.AvatarListTest.verificarElementoNulo(AvatarListTest.java:58)
+
+verificarListaNula(br.udesc.AvatarListTest)  Time elapsed: 0 s  <<< FAILURE!
+java.lang.AssertionError
+	at br.udesc.AvatarListTest.verificarListaNula(AvatarListTest.java:39)
+

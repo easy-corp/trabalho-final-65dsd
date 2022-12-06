@@ -1,0 +1,10 @@
+-------------------------------------------------------------------------------
+Test set: br.udesc.ReadyToPlayTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.001 s <<< FAILURE! - in br.udesc.ReadyToPlayTest
+verificaReadyToPlay(br.udesc.ReadyToPlayTest)  Time elapsed: 0 s  <<< ERROR!
+com.google.gson.JsonIOException: Failed making field 'java.util.Random#seed' accessible; either increase its visibility or write a custom TypeAdapter for its declaring type.
+	at br.udesc.ReadyToPlayTest.verificaReadyToPlay(ReadyToPlayTest.java:27)
+Caused by: java.lang.reflect.InaccessibleObjectException: Unable to make field private final java.util.concurrent.atomic.AtomicLong java.util.Random.seed accessible: module java.base does not "opens java.util" to unnamed module @13b6d03
+	at br.udesc.ReadyToPlayTest.verificaReadyToPlay(ReadyToPlayTest.java:27)
+
