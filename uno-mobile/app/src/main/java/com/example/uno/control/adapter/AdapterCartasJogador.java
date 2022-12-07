@@ -33,9 +33,9 @@ public class AdapterCartasJogador extends RecyclerView.Adapter<AdapterCartasJoga
         }
     }
 
-    public AdapterCartasJogador(TelaJogo telaJogo, User jogador) {
-        this.telaJogo = telaJogo;
+    public AdapterCartasJogador(User jogador, TelaJogo telaJogo) {
         this.jogador = jogador;
+        this.telaJogo = telaJogo;
     }
 
     @Override

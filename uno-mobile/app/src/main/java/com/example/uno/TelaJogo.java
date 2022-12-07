@@ -120,7 +120,7 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
         layManagerCartasJogador = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         listaCartasJogador.setLayoutManager(layManagerCartasJogador);
 
-        adapterCartasJogador = new AdapterCartasJogador(this, this.jogador);
+        adapterCartasJogador = new AdapterCartasJogador(this.jogador, this);
         listaCartasJogador.setAdapter(adapterCartasJogador);
     }
 
@@ -170,7 +170,7 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
     }
 
     //Cria animações na tela para compra de cartas na mesa
-    private void comprarCarta() {
+    private void setAnimacaoComprarCarta() {
         ImageView imgMonte = findViewById(R.id.imgMonte);
         ImageView imgMonteVirado = findViewById(R.id.imgMonteVirado);
         AnimatorSet flipFront = (AnimatorSet) AnimatorInflater.loadAnimator(getApplicationContext(), R.animator.flip_front);
@@ -229,7 +229,7 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
     }
 
     //Distribui as cartas entre os jogadores
-    private void distribuiCartas() throws InterruptedException {
+    private void entrarNaPartida() throws InterruptedException {
         //Cria a mensagem e envia ao servidor
         String msg = new MessageBuilder()
             .withType("my-profile")
@@ -325,6 +325,7 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
         atualizarPartida();
     }
 
+    //Ao clicar para pedir uno
     public void pedirUno() {
         ImageView icPedirUno = findViewById(R.id.icPedirUno);
         TextView txtPedirUno = findViewById(R.id.txtPedirUno);
@@ -343,15 +344,14 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
         this.binder.addListener(this);
 
         try {
-            distribuiCartas();
-            criarRecyclerViewJogadores();
+            entrarNaPartida();                           //Coloca o jogador na partida
+            criarRecyclerViewJogadores();                //Cria a lista de jogadores na tela
+            criarRecyclerViewCartas();                   //Cria a lista de cartas do jogador na tela
+            setAnimacaoComprarCarta();                   //Define as animações para compra de cartas
+            gerarCartaMesa();                            //Vira a primeira carta na mesa
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-        criarRecyclerViewCartas();
-        comprarCarta();
-        gerarCartaMesa();
     }
 
     //Quando o serviço for desbindado
