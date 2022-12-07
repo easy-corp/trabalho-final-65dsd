@@ -26,12 +26,14 @@
         <entry key="..\:/Users/Luis/Documents/Faculdade/2022/22-02/DSD/Uno/trabalho-final-65dsd/uno-mobile/app/src/main/res/drawable/Resultados_vencedor.xml" value="0.1935" />
         <entry key="..\:/Users/Luis/Documents/Faculdade/2022/22-02/DSD/Uno/trabalho-final-65dsd/uno-mobile/app/src/main/res/drawable/ic_baseline_celebration_24.xml" value="0.1565" />
         <entry key="..\:/Users/Luis/Documents/Faculdade/2022/22-02/DSD/Uno/trabalho-final-65dsd/uno-mobile/app/src/main/res/drawable/jogo_mesa_centro.xml" value="0.2075" />
+        <entry key="..\:/Users/Luis/Documents/Faculdade/2022/22-02/DSD/Uno/trabalho-final-65dsd/uno-mobile/app/src/main/res/drawable/mao_uno_nao_selecionado.xml" value="0.242" />
+        <entry key="..\:/Users/Luis/Documents/Faculdade/2022/22-02/DSD/Uno/trabalho-final-65dsd/uno-mobile/app/src/main/res/drawable/mao_uno_selecionado.xml" value="0.242" />
         <entry key="..\:/Users/Luis/Documents/Faculdade/2022/22-02/DSD/Uno/trabalho-final-65dsd/uno-mobile/app/src/main/res/drawable/resultados_vencedor.xml" value="0.1205" />
         <entry key="..\:/Users/Luis/Documents/Faculdade/2022/22-02/DSD/Uno/trabalho-final-65dsd/uno-mobile/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/Users/Luis/Documents/Faculdade/2022/22-02/DSD/Uno/trabalho-final-65dsd/uno-mobile/app/src/main/res/layout/activity_tela_cadastro.xml" value="0.25" />
         <entry key="..\:/Users/Luis/Documents/Faculdade/2022/22-02/DSD/Uno/trabalho-final-65dsd/uno-mobile/app/src/main/res/layout/activity_tela_criar_jogo.xml" value="0.33" />
         <entry key="..\:/Users/Luis/Documents/Faculdade/2022/22-02/DSD/Uno/trabalho-final-65dsd/uno-mobile/app/src/main/res/layout/activity_tela_entrar_jogo.xml" value="0.33" />
-        <entry key="..\:/Users/Luis/Documents/Faculdade/2022/22-02/DSD/Uno/trabalho-final-65dsd/uno-mobile/app/src/main/res/layout/activity_tela_jogo.xml" value="0.5" />
+        <entry key="..\:/Users/Luis/Documents/Faculdade/2022/22-02/DSD/Uno/trabalho-final-65dsd/uno-mobile/app/src/main/res/layout/activity_tela_jogo.xml" value="0.33" />
         <entry key="..\:/Users/Luis/Documents/Faculdade/2022/22-02/DSD/Uno/trabalho-final-65dsd/uno-mobile/app/src/main/res/layout/activity_tela_login.xml" value="0.33" />
         <entry key="..\:/Users/Luis/Documents/Faculdade/2022/22-02/DSD/Uno/trabalho-final-65dsd/uno-mobile/app/src/main/res/layout/activity_tela_login2.xml" value="0.16893115942028986" />
         <entry key="..\:/Users/Luis/Documents/Faculdade/2022/22-02/DSD/Uno/trabalho-final-65dsd/uno-mobile/app/src/main/res/layout/activity_tela_perfil.xml" value="0.2" />

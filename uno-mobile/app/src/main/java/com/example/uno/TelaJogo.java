@@ -30,6 +30,7 @@ import com.example.uno.model.User;
 import com.example.uno.model.Match;
 import com.google.gson.Gson;
 
+import java.sql.SQLOutput;
 import java.util.Random;
 
 public class TelaJogo extends AppCompatActivity implements ServiceConnection, IMessageListener {
@@ -67,9 +68,19 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
 
         ImageView icSairJogo = findViewById(R.id.icSairJogo);
         FrameLayout layUno = findViewById(R.id.layUno);
+        FrameLayout layReady = findViewById(R.id.layReady);
 
-//        icSairJogo.setOnClickListener(param -> startActivity(new Intent(this, TelaEntrarJogo.class)));
-        icSairJogo.setOnClickListener(param -> startActivity(new Intent(this, TelaResultados.class).putExtra("userId", String.valueOf(jogador.getId()))));
+        icSairJogo.setOnClickListener(param -> startActivity(new Intent(this, TelaEntrarJogo.class)));
+//        icSairJogo.setOnClickListener(param -> startActivity(new Intent(this, TelaResultados.class).putExtra("userId", String.valueOf(jogador.getId()))));
+
+        layReady.setOnClickListener(param -> {
+            try {
+                prontoParaJogar();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+
         layUno.setOnClickListener(param -> pedirUno());
     }
 
@@ -264,8 +275,6 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
         //Valor retornado pelo server
         String json = this.message;
 
-        System.out.println(json);
-
         //Transforma o Gson novamente em um tipo Match
         Match match = gson.fromJson(json, Match.class);
         this.jogo = match;
@@ -285,6 +294,35 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
         if (adapterCartasJogador != null) {
             adapterCartasJogador.notifyDataSetChanged();
         }
+    }
+
+    private void prontoParaJogar() throws InterruptedException {
+        ImageView icReady = findViewById(R.id.icReady);
+        TextView txtReady = findViewById(R.id.txtReady);
+
+        icReady.setBackgroundResource(R.drawable.ready_to_play);
+        txtReady.setTextColor(Color.parseColor("#ED1C24"));
+
+        this.jogador.setStatus(User.UserStatus.READY);
+
+        //Cria a mensagem e envia ao servidor
+        String msg = new MessageBuilder()
+                .withType("ready-to-play")
+                .withParam("matchId", getIntent().getStringExtra("matchId"))
+                .withParam("userId", getIntent().getStringExtra("userId"))
+                .build();
+
+        binder.getService().enviarMensagem(msg);
+
+        Thread.sleep(500);
+
+        //Valor retornado pelo server
+        String json = this.message;
+
+        //Atualiza o jogador com a resposta do server
+        this.jogo = gson.fromJson(json, Match.class);
+
+        atualizarPartida();
     }
 
     public void pedirUno() {
@@ -344,6 +382,15 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
     @Override
     public void onMessage(String message) {
         this.message = message;
+        System.out.println(message);
+
+        //Quando o jogo estiver rodando
+        if (this.jogo != null) {
+            if (this.jogo.getStatus() == Match.MatchStatus.PLAYING) {
+//                exibirMensagem(message);
+                System.out.println("O jogo atual é:" + gson.toJson(this.jogo));
+            }
+        }
     }
 
 }

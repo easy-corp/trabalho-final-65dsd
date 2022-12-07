@@ -166,14 +166,42 @@
     </FrameLayout>
 
     <FrameLayout
+        android:id="@+id/layReady"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        app:layout_constraintBottom_toTopOf="@+id/layIdentificadorDeck"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layMesa"
+        app:layout_constraintVertical_bias="0.517">
+
+        <ImageView
+            android:id="@+id/icReady"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="13dp"
+            android:background="@drawable/unready_to_play" />
+
+        <TextView
+            android:id="@+id/txtReady"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="Pronto"
+            android:textColor="#595959"
+            android:textSize="26sp"
+            android:textStyle="bold" />
+    </FrameLayout>
+
+    <FrameLayout
         android:id="@+id/layUno"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
         app:layout_constraintBottom_toTopOf="@+id/layIdentificadorDeck"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layMesa"
-        app:layout_constraintVertical_bias="0.52">
+        app:layout_constraintVertical_bias="0.506">
 
         <ImageView
             android:id="@+id/icPedirUno"

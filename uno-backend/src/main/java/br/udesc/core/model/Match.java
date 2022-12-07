@@ -7,6 +7,10 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Stack;
 
+import br.udesc.core.model.User.UserStatus;
+import br.udesc.core.server.ClientSocketThread;
+import br.udesc.core.server.Server;
+
 public class Match {
 
     private int matchId;                    //id da partida
@@ -191,9 +195,22 @@ public class Match {
     }
 
     public void iniciarPartida() {
+        //Identifica que a partida começou
         this.setStatus(MatchStatus.PLAYING);
 
-        distribuirCartas();   
+        //Distribui as cartas entre os jogadores
+        distribuirCartas();
+    }
+
+    public boolean allPlayersReady() {
+        //Se algum ainda não estiver pronto, retorna falso
+        for (User u : this.players.values()) {
+            if (u.getStatus() == UserStatus.UNREADY) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
 }

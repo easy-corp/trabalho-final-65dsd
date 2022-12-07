@@ -9,22 +9,24 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.google.gson.Gson;
+
 import br.udesc.core.model.User;
 import br.udesc.util.Config;
 
 public class Server {
 
     private Logger logger;
-    private Map<Integer, ClientSocketThread> clients;
     private List<ClientSocketThread> clientSockets;
+    private Map<Integer, ClientSocketThread> clients;     // Lista de clients conectados
     private static Server instance;
+    private Gson gson = new Gson();
 
     private Server() {
         this.logger = Logger.getLogger("ServerLogger");
-        this.clients = new HashMap<>();
         this.clientSockets = new ArrayList<>();
+        this.clients = new HashMap();
     }
-
 
     public static Server getInstance(){
         if(instance == null){
@@ -40,7 +42,7 @@ public class Server {
     }
 
     public ClientSocketThread getClientSocket(int userId){
-        return clients.get(userId);
+        return this.clients.get(userId);
     }
 
     public void startServer() {
@@ -77,6 +79,10 @@ public class Server {
             logger.log(Level.SEVERE, "Erro ao iniciar o servidor na portal " + Config.SOCKET_PORT, e);
         }
 
+    }
+
+    public Map<Integer, ClientSocketThread> getClients() {
+        return this.clients;
     }
 
 }

@@ -1,22 +1,26 @@
 package br.udesc.core.server;
 
 import java.util.Collection;
+import java.util.Map;
+
 import com.google.gson.Gson;
 import br.udesc.core.model.Match;
 import br.udesc.core.model.User;
-import br.udesc.core.model.Match.MatchStatus;
 import br.udesc.core.model.User.UserStatus;
 import br.udesc.core.server.messages.*;
 
 public class ServerController {
 
-    private static ServerController instance; // Instância do Singleton
-    private Registry registry = Registry.getInstance(); // Realiza o controle para integridad dos dados
+    private static ServerController instance;             // Instância do Singleton
+    private Registry registry = Registry.getInstance();   // Realiza o controle para integridad dos dados
     private Gson gson = new Gson();
 
     private ServerController() {
         User us = new User("Luis", "1234", this.registry.getAvatar(0));
         this.registry.putUser(us);
+
+        User us2 = new User("Murilo", "123", this.registry.getAvatar(3));
+        this.registry.putUser(us2);
 
         Match match = new Match("Partida de Teste", 4);
         this.registry.putMatch(match);
@@ -88,6 +92,11 @@ public class ServerController {
     }
 
     // Indica que está pronto para jogar
+    public void getMatchLifecycle(GetMatchLifecycleMessage message) throws InterruptedException {
+        message.sendReply(matchLifecycle(message.getMatchId()));
+    }
+
+    // Verifica o ciclo da partida
     public void readyToPlay(ReadyToPlayMessage message) {
         message.sendReply(readyToPlay(message.getUserId(), message.getMatchId()));
     }
@@ -144,13 +153,16 @@ public class ServerController {
         return gson.toJson(this.registry.getWinsPlayer(userId));
     }
 
-    public String matchLifecycle(int matchId) {
+    public String matchLifecycle(int matchId) throws InterruptedException {
         Match match = this.registry.getMatch(matchId);
 
-        // A partida se inicia quando tiver mais pelo menos 2 jogadores
+        // A partida se inicia quando tiver mais pelo menos 2 jogadores e todos estiverem prontos
         // Isso só vai acontecer se a partida ainda não tiver sido iniciada
-        if (match.getPlayers().size() > 1 && match.getStatus() == MatchStatus.WAITING) {
+        if (registry.getMatch(matchId).getPlayers().size() > 0 && registry.getMatch(matchId).allPlayersReady()) {
             match.iniciarPartida();
+
+            MatchRunner runner = new MatchRunner(match);
+            runner.run();
         }
 
         return gson.toJson(match);
@@ -178,7 +190,7 @@ public class ServerController {
 
         user.setStatus(UserStatus.READY);
 
-        return gson.toJson(user);
+        return gson.toJson(match);
     }
 
     public Collection<User> getUsers() {

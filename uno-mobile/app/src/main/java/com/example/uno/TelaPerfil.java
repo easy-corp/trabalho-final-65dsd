@@ -119,7 +119,6 @@ public class TelaPerfil extends AppCompatActivity implements ServiceConnection, 
         listType = new TypeToken<List<Match>>(){}.getType();
         List<Match> winMatches = gson.fromJson(json, listType);
 
-        /////////////Verificar/////////////
         txtJogos.setText(String.valueOf(playedMatches.size() + " Jogos"));
         txtVitorias.setText(String.valueOf(winMatches.size() + " Vitórias"));
     }
