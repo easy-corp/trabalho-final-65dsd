@@ -46,7 +46,6 @@ public class MatchRunner extends Thread{
         while (matchRunning) {
             //Primeiro jogador a jogar
             User user = this.match.getPlayers().get(jogadorAtual);
-            System.out.println("É a vez do " + user.getName() + " jogar");
             sendMessageToAllPlayers("É a vez do " + user.getName() + " jogar");
 
             try {
