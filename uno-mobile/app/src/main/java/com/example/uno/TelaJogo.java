@@ -451,7 +451,13 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
                         //Você pode comprar cartas
                         if (this.jogador.getUserId() == usJogada.getUserId()) {
                             this.myTurn = true;
-                            setAnimacaoComprarCarta();
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    setAnimacaoComprarCarta();
+                                }
+                            });
                         } else {
                             this.myTurn = false;
                         }
