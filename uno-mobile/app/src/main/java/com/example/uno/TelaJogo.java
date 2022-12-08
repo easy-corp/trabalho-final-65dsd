@@ -48,6 +48,7 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
     private Random random = new Random();
     private Card cartaVirada = null;
     private boolean myTurn = false;
+    private int userJogada;
     private boolean isFront = true;
 
     //RecyclerViews
@@ -439,6 +440,7 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
                         //A cada jogada
                         //Avisa de quem é a vez
                         User usJogada = gson.fromJson(msg.getContent().toString(), User.class);
+                        this.userJogada = usJogada.getUserId();
 
                         runOnUiThread(new Runnable() {
                             @Override
@@ -466,7 +468,12 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
                     case "card-played":
                         Card carta = gson.fromJson(msg.getContent().toString(), Card.class);
 
-                        //Atualiza os adapters
+                        //Atualiza a quantidade de cartas do jogador da vez
+                        this.jogo.getPlayers().get(userJogada).descartaCarta();
+
+                        System.out.println(msg.getContent().toString());
+
+                        //Atualiza a carta da mesa
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {

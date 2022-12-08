@@ -80,6 +80,10 @@ public class User {
         this.qtdCartas = qtd;
     }
 
+    public void descartaCarta() {
+        this.qtdCartas = qtdCartas - 1;
+    }
+
     public void addCarta(Card carta) {
         this.deck.add(carta);
     }
