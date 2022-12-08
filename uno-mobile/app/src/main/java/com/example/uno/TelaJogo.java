@@ -225,7 +225,7 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
         imgMonte.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                if (myTurn) {
+                if (myTurn) {
                     if (isFront) {
                         //Recupera e troca a carta para o flip seguinte
                         cartaVirada = jogo.getDeck().get(random.nextInt(jogo.getDeck().size()));
@@ -269,7 +269,7 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
                         atualizarListas();
                     }
                 }
-//            }
+            }
         });
     }
 

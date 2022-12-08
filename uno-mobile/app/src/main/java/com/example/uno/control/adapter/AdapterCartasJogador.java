@@ -61,7 +61,7 @@ public class AdapterCartasJogador extends RecyclerView.Adapter<AdapterCartasJoga
             @SuppressLint("ResourceType")
             @Override
             public void onClick(View view) {
-//                if (telaJogo.getMyTurn()) {
+                if (telaJogo.getMyTurn()) {
                     //Se a carta pode ser dropada na mesa
                     if (telaJogo.getJogo().isDropavel(carta)) {
                         String msg = new MessageBuilder()
@@ -75,11 +75,17 @@ public class AdapterCartasJogador extends RecyclerView.Adapter<AdapterCartasJoga
 
                         telaJogo.getBinder().getService().enviarMensagem(msg);
 
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
                         //Atualiza a quantidade de cartas do jogador da vez
                         jogador.removeCarta(carta);
                         telaJogo.getJogo().getPlayers().get(jogador.getUserId()).descartaCarta();
 
-//                        telaJogo.atualizarCartaMesa(carta);
+                        telaJogo.atualizarCartaMesa(carta);
                         telaJogo.atualizarListas();
 
                         telaJogo.setMyTurn(false);
@@ -87,7 +93,7 @@ public class AdapterCartasJogador extends RecyclerView.Adapter<AdapterCartasJoga
                         holder.imgCarta.startAnimation(AnimationUtils.loadAnimation(telaJogo, R.animator.shake));
                     }
                 }
-//            }
+            }
         });
     }
 
