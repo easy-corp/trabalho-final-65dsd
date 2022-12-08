@@ -1,6 +1,7 @@
 package com.example.uno.control.adapter;
 
 import android.annotation.SuppressLint;
+import android.content.ServiceConnection;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.uno.R;
 import com.example.uno.TelaJogo;
 import com.example.uno.control.socket.MessageBuilder;
+import com.example.uno.control.socket.ServiceSocket;
 import com.example.uno.model.Card;
 import com.example.uno.model.User;
 
@@ -64,28 +66,11 @@ public class AdapterCartasJogador extends RecyclerView.Adapter<AdapterCartasJoga
                 if (telaJogo.getMyTurn()) {
                     //Se a carta pode ser dropada na mesa
                     if (telaJogo.getJogo().isDropavel(carta)) {
-                        String msg = new MessageBuilder()
-                                .withType("play-card")
-                                .withParam("userId", String.valueOf(jogador.getUserId()))
-                                .withParam("matchId", String.valueOf(telaJogo.getJogo().getMatchId()))
-                                .withParam("cardSymbol", carta.getSimbolo())
-                                .withParam("cardColor", String.valueOf(carta.getColor()))
-                                .withParam("cardImageUrl", carta.getImageUrl())
-                                .build();
-
-                        telaJogo.getBinder().getService().enviarMensagem(msg);
-
-                        try {
-                            Thread.sleep(500);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                        telaJogo.enviarCartaJogada(carta);
 
                         //Atualiza a quantidade de cartas do jogador da vez
                         jogador.removeCarta(carta);
-                        telaJogo.getJogo().getPlayers().get(jogador.getUserId()).descartaCarta();
 
-                        telaJogo.atualizarCartaMesa(carta);
                         telaJogo.atualizarListas();
 
                         telaJogo.setMyTurn(false);

@@ -64,7 +64,7 @@ public class Server {
                     clientSockets.add(clientThread);
 
                     //Adiciona um listener para as mensagens vindas do cliente
-                    clientThread.setListener(MessageBroker.getInstance());
+                    clientThread.addListener(MessageBroker.getInstance());
 
                     //Inicia a thread do cliente
                     clientThread.start();

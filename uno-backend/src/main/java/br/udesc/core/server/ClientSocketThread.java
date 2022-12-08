@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,17 +18,18 @@ public class ClientSocketThread extends Thread {
     private BufferedReader reader;
     private PrintWriter writer;
     private Logger logger;
-    private ClientSocketListener listener;
+    private List<ClientSocketListener> listeners;
     private User user;
 
     public ClientSocketThread(Socket socketClient) {
         socket = socketClient;
         logger = Logger.getLogger("ClientThread");
         initIO();
+        this.listeners =  new ArrayList<>();
     }
 
-    public void setListener(ClientSocketListener listener) {
-        this.listener = listener;
+    public void addListener(ClientSocketListener listener) {
+        this.listeners.add(listener);
     }
 
     private void initIO() {
@@ -57,7 +60,9 @@ public class ClientSocketThread extends Thread {
 
         while ((readLine == null || !readLine.equals("QUIT")) && !forceQuit) {
             if (readLine != null) {
-                listener.onMessage(readLine, this);
+                for (ClientSocketListener listener : this.listeners) {
+                    listener.onMessage(readLine, this);
+                }
             }
             try {
                 readLine = reader.readLine();

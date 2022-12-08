@@ -1,9 +1,16 @@
 package br.udesc.core.server;
 
+import java.time.Duration;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
+import java.awt.EventQueue;
+
+import org.awaitility.Awaitility;
 
 import com.google.gson.Gson;
+
+import br.udesc.core.model.Card;
 import br.udesc.core.model.Match;
 import br.udesc.core.model.User;
 import br.udesc.core.model.User.UserStatus;
@@ -81,11 +88,6 @@ public class ServerController {
         message.sendReply(matchesWinner(message.getUserId()));
     }
 
-    public void playCard(PlayCardMessage message){
-        MatchRunner runner = registry.getRunner(message.getMatchId());
-        runner.onPlayCardMessage(message);
-    }
-
     // Entra na partida
     public void joinMatch(JoinMatchMessage message) {
         message.sendReply(joinMatch(message.getUserId(), message.getMatchId()));
@@ -116,7 +118,7 @@ public class ServerController {
         }
     }
 
-    // Verifica o ciclo da partida
+    // Indica que o jogador está pronto para jogar
     public void readyToPlay(ReadyToPlayMessage message) throws InterruptedException {
         readyToPlay(message.getUserId(), message.getMatchId());
 
@@ -135,14 +137,27 @@ public class ServerController {
                 TypedMessage messagetoUser = new TypedMessage("match-started", user);
                 MessageBroker.getInstance().sendMessageToUser(user.getId(), gson.toJson(messagetoUser));
             }
-
-
+            
             MatchRunner runner = new MatchRunner(match);
-            registry.addRunner(message.getMatchId(), runner);
-            runner.run();
-        }
 
+            Registry.getInstance().addRunner(match.getMatchId(), runner);
+
+            EventQueue.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    runner.run();
+                }
+            });
+        } 
     }
+
+    // Indica que uma carta foi jogada
+    public void playCard(PlayCardMessage message) {
+        System.out.println("O " + message.getUserId() + " jogou um " + message.getCardPlayed().getImageUrl());
+
+        MatchRunner runner = registry.getRunner(message.getMatchId());
+        runner.onPlayCardMessage(message);
+    }    
 
     public String signUp(String username, String password, int avatarId) {
         User user = new User(username, password, this.registry.getAvatar(avatarId));

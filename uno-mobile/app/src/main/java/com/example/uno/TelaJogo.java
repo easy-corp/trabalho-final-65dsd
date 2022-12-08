@@ -1,4 +1,4 @@
-package com.example.uno;
+    package com.example.uno;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -117,10 +117,6 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
         this.myTurn = opt;
     }
 
-    public ServiceSocket.LocalBinder getBinder() {
-        return this.binder;
-    }
-
     public void exibirMensagem(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
@@ -166,24 +162,6 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
         listaCartasJogador.setAdapter(adapterCartasJogador);
     }
 
-    //Gera carta inicial virada para cima na mesa
-    private void gerarCartaMesa() {
-        //Pega uma carta aleatoriamente para botar na mesa
-        Card carta = this.jogo.getDeck().get(random.nextInt(this.jogo.getDeck().size()));
-
-        //Ela não pode ser preta
-        if (carta.getColor() == Card.Color.BLACK) {
-            gerarCartaMesa();
-        } else {
-            //Tira ela do baralho e bota na pilha de descartadas
-            jogo.getDeck().remove(carta);
-            jogo.getDiscard().add(carta);
-
-            //Atualiza a imagem na tela
-            atualizarCartaMesa(carta);
-        }
-    }
-
     //Atualizar a carta da mesa ao descartar carta
     public void atualizarCartaMesa(Card carta) {
         ImageView imgCartaViradaMesa = findViewById(R.id.imgCartaViradaMesa);
@@ -209,6 +187,19 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
         ObjectAnimator moveIn = ObjectAnimator.ofFloat(imgProximaCartaViradaMesa, "translationX", 0);
         moveIn.setDuration(600);
         moveIn.start();
+    }
+
+    public void enviarCartaJogada(Card carta) {
+        String msg = new MessageBuilder()
+            .withType("play-card")
+            .withParam("userId", String.valueOf(jogador.getUserId()))
+            .withParam("matchId", String.valueOf(this.getJogo().getMatchId()))
+            .withParam("cardSymbol", carta.getSimbolo())
+            .withParam("cardColor", String.valueOf(carta.getColor()))
+            .withParam("cardImageUrl", carta.getImageUrl())
+            .build();
+
+        binder.getService().enviarMensagem(msg);
     }
 
     //Cria animações na tela para compra de cartas na mesa
@@ -262,8 +253,9 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
                         myTurn = false;
 
                         //Adiciona a carta na mão do jogador
+                        jogo.getPlayers().get(userJogada).compraCarta();
                         jogador.getDeck().add(cartaVirada);
-                        jogo.getDeck().remove(cartaVirada);
+//                        jogo.getDeck().remove(cartaVirada);
 
                         //Atualiza as listas
                         atualizarListas();
@@ -352,7 +344,6 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
 
         try {
             entrarNaPartida();                           //Coloca o jogador na partida
-            gerarCartaMesa();                            //Vira a primeira carta na mesa
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -412,7 +403,7 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
                 User us = null;
 
                 switch (msg.getType()) {
-                    //Quando outro player entrar na partida
+                    //Quando um player enetra na partida
                     case "player-joined":
                         //Insere ele na partida
                         us = gson.fromJson(msg.getContent().toString(), User.class);
@@ -420,13 +411,13 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
 
                         break;
                     case "player-exited":
-                        //Retira ele da partida
+                    //Quando um player sai da partida
                         us = gson.fromJson(msg.getContent().toString(), User.class);
                         this.jogo.removePlayer(us);
 
                         break;
                     case "match-started":
-                        //Quando a partida começar
+                    //Quando a partida começar
                         us = gson.fromJson(msg.getContent().toString(), User.class);
                         this.jogador.setDeck(us.getDeck());
 
@@ -436,9 +427,22 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
                         }
 
                         break;
+                    case "first-card":
+                    //Para gerar a primeira carta na mesa
+                        Card cartaMesa = gson.fromJson(msg.getContent().toString(), Card.class);
+
+                        //Atualiza a carta da mesa
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                atualizarCartaMesa(cartaMesa);
+                            }
+                        });
+
+                        break;
                     case "player-turn":
-                        //A cada jogada
-                        //Avisa de quem é a vez
+                    //A cada jogada
+                    //Avisa de quem é a vez
                         User usJogada = gson.fromJson(msg.getContent().toString(), User.class);
                         this.userJogada = usJogada.getUserId();
 
@@ -464,14 +468,19 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
                             this.myTurn = false;
                         }
 
+                        try {
+                            Thread.sleep(2000);
+                        } catch (InterruptedException exc) {
+                            exc.printStackTrace();
+                        }
+
                         break;
                     case "card-played":
+                    //Quando uma carta é jogada
                         Card carta = gson.fromJson(msg.getContent().toString(), Card.class);
 
                         //Atualiza a quantidade de cartas do jogador da vez
                         this.jogo.getPlayers().get(userJogada).descartaCarta();
-
-                        System.out.println(msg.getContent().toString());
 
                         //Atualiza a carta da mesa
                         runOnUiThread(new Runnable() {
@@ -480,6 +489,8 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
                                 atualizarCartaMesa(carta);
                             }
                         });
+
+                        break;
                 }
 
                 //Atualiza os adapters

@@ -1,0 +1,42 @@
+{
+    // Use o IntelliSense para saber mais sobre os atributos possíveis.
+    // Focalizar para exibir as descrições dos atributos existentes.
+    // Para obter mais informações, acesse: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "Launch App",
+            "request": "launch",
+            "mainClass": "br.udesc.App",
+            "projectName": "uno-backend"
+        },
+        {
+            "type": "java",
+            "name": "Launch Test",
+            "request": "launch",
+            "mainClass": "br.udesc.Test",
+            "projectName": "uno-backend"
+        },
+        {
+            "type": "java",
+            "name": "Launch TestSuiteRunner",
+            "request": "launch",
+            "mainClass": "br.udesc.TestSuiteRunner",
+            "projectName": "uno-backend"
+        },
+        {
+            "type": "java",
+            "name": "Launch ClientMock",
+            "request": "launch",
+            "mainClass": "br.udesc.core.client.ClientMock",
+            "projectName": "uno-backend"
+        }
+    ]
+}

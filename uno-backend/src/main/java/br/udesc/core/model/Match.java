@@ -9,17 +9,19 @@ import java.util.Stack;
 
 import br.udesc.core.model.User.UserStatus;
 import br.udesc.core.server.ClientSocketThread;
+import br.udesc.core.server.MatchRunner;
+import br.udesc.core.server.Registry;
 import br.udesc.core.server.Server;
 
 public class Match {
 
     private int matchId;                    //id da partida
     private static int idCont = -1;
-    private String matchName;                    //Nome do jogo
+    private String matchName;                //Nome do jogo
     private int qtdPlayers;                 //Capacidade máxima de jogadores
     private MatchStatus status;             //Status da partida
     private Map<Integer, User> players;     //Lista de jogadores
-    private List<Card> matchdeck;                //Todas as cartas do baralho
+    private List<Card> matchdeck;           //Todas as cartas do baralho
     private Stack<Card> discard;            //As cartas descartadas na mesa
     private Random random;
 
@@ -68,6 +70,18 @@ public class Match {
 
     public List<Card> getMatchdeck() {
         return this.matchdeck;
+    }
+
+    public void addDiscard(Card card) {
+        this.discard.add(card);
+    }
+
+    public List<Card> getDiscard() {
+        return this.discard;
+    }
+
+    public void cleanDiscard() {
+        this.discard.removeAllElements();
     }
 
     public enum MatchStatus {
@@ -194,7 +208,7 @@ public class Match {
         }
     }
 
-    public void iniciarPartida() {
+    public void iniciarPartida() throws InterruptedException {
         //Identifica que a partida começou
         this.setStatus(MatchStatus.PLAYING);
 
