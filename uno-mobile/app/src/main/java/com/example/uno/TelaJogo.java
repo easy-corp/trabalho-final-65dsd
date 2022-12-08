@@ -406,11 +406,13 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
                     case "match-started":
                         //Quando a partida começar
                         us = gson.fromJson(msg.getContent().toString(), User.class);
-                        this.jogador = us;
+                        this.jogador.setDeck(us.getDeck());
 
+                        //Não sabemos a mão dos outros jogadores, somente a quantidade
                         for (User player : this.jogo.getPlayers().values()) {
                             player.setQtdCartas(7);
                         }
+
                         break;
                 }
 
