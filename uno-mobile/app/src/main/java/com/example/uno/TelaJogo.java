@@ -58,14 +58,18 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
     private RecyclerView.LayoutManager layManagerJogadores;
     private RecyclerView.LayoutManager layManagerCartasJogador;
 
-    ImageView icSairJogo = findViewById(R.id.icSairJogo);
-    FrameLayout layUno = findViewById(R.id.layUno);
-    FrameLayout layReady = findViewById(R.id.layReady);
+    ImageView icSairJogo;
+    FrameLayout layUno;
+    FrameLayout layReady;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_jogo);
+
+        icSairJogo = findViewById(R.id.icSairJogo);
+        layUno = findViewById(R.id.layUno);
+        layReady = findViewById(R.id.layReady);
 
         this.gson = new Gson();
         this.service = this;
@@ -347,7 +351,6 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
 
         try {
             entrarNaPartida();                           //Coloca o jogador na partida
-//            setAnimacaoComprarCarta();                   //Define as animações para compra de cartas
             gerarCartaMesa();                            //Vira a primeira carta na mesa
         } catch (InterruptedException e) {
             e.printStackTrace();
