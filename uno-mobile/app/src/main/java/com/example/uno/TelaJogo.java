@@ -47,6 +47,8 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
     private User jogador;
     private Random random = new Random();
     private Card cartaVirada = null;
+    private boolean myTurn = false;
+    private boolean isFront = true;
 
     //RecyclerViews
     private RecyclerView listaJogadores;
@@ -56,7 +58,9 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
     private RecyclerView.LayoutManager layManagerJogadores;
     private RecyclerView.LayoutManager layManagerCartasJogador;
 
-    private boolean isFront = true;
+    ImageView icSairJogo = findViewById(R.id.icSairJogo);
+    FrameLayout layUno = findViewById(R.id.layUno);
+    FrameLayout layReady = findViewById(R.id.layReady);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,10 +73,6 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
         //Binda o serviço nessa Activity
         bindService(new Intent(this, ServiceSocket.class), service, 0);
 
-        ImageView icSairJogo = findViewById(R.id.icSairJogo);
-        FrameLayout layUno = findViewById(R.id.layUno);
-        FrameLayout layReady = findViewById(R.id.layReady);
-
         icSairJogo.setOnClickListener(param -> {
             try {
                 quitMatch();
@@ -80,6 +80,7 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
                 e.printStackTrace();
             }
         });
+
 //        icSairJogo.setOnClickListener(param -> startActivity(new Intent(this, TelaResultados.class).putExtra("userId", String.valueOf(jogador.getUserId()))));
 
         layReady.setOnClickListener(param -> {
@@ -101,6 +102,18 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
 
     public Match getJogo() {
         return this.jogo;
+    }
+
+    public boolean getMyTurn() {
+        return this.myTurn;
+    }
+
+    public void setMyTurn(boolean opt) {
+        this.myTurn = opt;
+    }
+
+    public ServiceSocket.LocalBinder getBinder() {
+        return this.binder;
     }
 
     public void exibirMensagem(String msg) {
@@ -207,46 +220,49 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
         imgMonte.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isFront) {
-                    //Recupera e troca a carta para o flip seguinte
-                    cartaVirada = jogo.getDeck().get(random.nextInt(jogo.getDeck().size()));
-                    int image = getResources().getIdentifier(cartaVirada.getImageUrl(), "drawable", getPackageName());
-                    imgMonteVirado.setBackgroundResource(image);
+                if (myTurn) {
+                    if (isFront) {
+                        //Recupera e troca a carta para o flip seguinte
+                        cartaVirada = jogo.getDeck().get(random.nextInt(jogo.getDeck().size()));
+                        int image = getResources().getIdentifier(cartaVirada.getImageUrl(), "drawable", getPackageName());
+                        imgMonteVirado.setBackgroundResource(image);
 
-                    //Move a carta de volta para baixo do monte
-                    ObjectAnimator moveIn = ObjectAnimator.ofFloat(imgMonteVirado, "translationY", 0);
-                    moveIn.setDuration(0);
-                    moveIn.start();
+                        //Move a carta de volta para baixo do monte
+                        ObjectAnimator moveIn = ObjectAnimator.ofFloat(imgMonteVirado, "translationY", 0);
+                        moveIn.setDuration(0);
+                        moveIn.start();
 
-                    //Flipa a carta de costas
-                    flipFront.setTarget(imgMonte);
-                    flipBack.setTarget(imgMonteVirado);
+                        //Flipa a carta de costas
+                        flipFront.setTarget(imgMonte);
+                        flipBack.setTarget(imgMonteVirado);
 
-                    flipFront.start();
-                    flipBack.start();
+                        flipFront.start();
+                        flipBack.start();
 
-                    isFront = false;
-                } else {
-                    //Tira a carta da tela
-                    ObjectAnimator moveOut = ObjectAnimator.ofFloat(imgMonteVirado, "translationY", 1000f);
-                    moveOut.setDuration(600);
-                    moveOut.start();
+                        isFront = false;
+                    } else {
+                        //Tira a carta da tela
+                        ObjectAnimator moveOut = ObjectAnimator.ofFloat(imgMonteVirado, "translationY", 1000f);
+                        moveOut.setDuration(600);
+                        moveOut.start();
 
-                    //Volta a de costas para cima
-                    flipFront.setTarget(imgMonteVirado);
-                    flipBack.setTarget(imgMonte);
+                        //Volta a de costas para cima
+                        flipFront.setTarget(imgMonteVirado);
+                        flipBack.setTarget(imgMonte);
 
-                    flipBack.start();
-                    flipFront.start();
+                        flipBack.start();
+                        flipFront.start();
 
-                    isFront = true;
+                        isFront = true;
+                        myTurn = false;
 
-                    //Adiciona a carta na mão do jogador
-                    jogador.getDeck().add(cartaVirada);
-                    jogo.getDeck().remove(cartaVirada);
+                        //Adiciona a carta na mão do jogador
+                        jogador.getDeck().add(cartaVirada);
+                        jogo.getDeck().remove(cartaVirada);
 
-                    //Atualiza as listas
-                    atualizarListas();
+                        //Atualiza as listas
+                        atualizarListas();
+                    }
                 }
             }
         });
@@ -308,7 +324,7 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
 
         binder.getService().enviarMensagem(msg);
 
-        Thread.sleep(500);
+        layReady.setOnClickListener(null);
     }
 
     //Ao clicar para pedir uno
@@ -331,7 +347,7 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
 
         try {
             entrarNaPartida();                           //Coloca o jogador na partida
-            setAnimacaoComprarCarta();                   //Define as animações para compra de cartas
+//            setAnimacaoComprarCarta();                   //Define as animações para compra de cartas
             gerarCartaMesa();                            //Vira a primeira carta na mesa
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -397,11 +413,13 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
                         //Insere ele na partida
                         us = gson.fromJson(msg.getContent().toString(), User.class);
                         this.jogo.addPlayer(us);
+
                         break;
                     case "player-exited":
-                        //Retira ele na partida
+                        //Retira ele da partida
                         us = gson.fromJson(msg.getContent().toString(), User.class);
                         this.jogo.removePlayer(us);
+
                         break;
                     case "match-started":
                         //Quando a partida começar
@@ -411,6 +429,28 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
                         //Não sabemos a mão dos outros jogadores, somente a quantidade
                         for (User player : this.jogo.getPlayers().values()) {
                             player.setQtdCartas(7);
+                        }
+
+                        break;
+                    case "player-turn":
+                        //A cada jogada
+                        //Avisa de quem é a vez
+                        User usJogada = gson.fromJson(msg.getContent().toString(), User.class);
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                exibirMensagem("Vez de: " + usJogada.getName());
+                            }
+                        });
+
+                        //Se você for o player da vez
+                        //Você pode comprar cartas
+                        if (this.jogador.getUserId() == usJogada.getUserId()) {
+                            this.myTurn = true;
+                            setAnimacaoComprarCarta();
+                        } else {
+                            this.myTurn = false;
                         }
 
                         break;

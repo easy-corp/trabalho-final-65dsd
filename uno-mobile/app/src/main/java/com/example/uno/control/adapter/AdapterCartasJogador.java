@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.uno.R;
 import com.example.uno.TelaJogo;
+import com.example.uno.control.socket.MessageBuilder;
 import com.example.uno.model.Card;
 import com.example.uno.model.User;
 
@@ -60,15 +61,27 @@ public class AdapterCartasJogador extends RecyclerView.Adapter<AdapterCartasJoga
             @SuppressLint("ResourceType")
             @Override
             public void onClick(View view) {
-                //Se as carta pode ser dropada na mesa
-                if (telaJogo.getJogo().isDropavel(carta)) {
-                    jogador.getDeck().remove(carta);
-                    telaJogo.atualizarCartaMesa(carta);
-                    telaJogo.atualizarListas();
-                } else {
-//                    telaJogo.exibirMensagem("Não pode dropar essa carta.");
+                if (telaJogo.getMyTurn()) {
+                    //Se a carta pode ser dropada na mesa
+                    if (telaJogo.getJogo().isDropavel(carta)) {
+                        jogador.getDeck().remove(carta);
+                        telaJogo.atualizarCartaMesa(carta);
+                        telaJogo.atualizarListas();
 
-                    holder.imgCarta.startAnimation(AnimationUtils.loadAnimation(telaJogo, R.animator.shake));
+                        telaJogo.setMyTurn(false);
+
+                        String msg = new MessageBuilder()
+                            .withType("play-card")
+                            .withParam("userId", String.valueOf(jogador.getUserId()))
+                            .withParam("matchId", String.valueOf(telaJogo.getJogo().getMatchId()))
+                            .withParam("cardSymbol", carta.getSimbolo())
+                            .withParam("cardColor", String.valueOf(carta.getColor()))
+                            .build();
+
+                        telaJogo.getBinder().getService().enviarMensagem(msg);
+                    } else {
+                        holder.imgCarta.startAnimation(AnimationUtils.loadAnimation(telaJogo, R.animator.shake));
+                    }
                 }
             }
         });
@@ -78,5 +91,6 @@ public class AdapterCartasJogador extends RecyclerView.Adapter<AdapterCartasJoga
     public int getItemCount() {
         return jogador.getDeck().size();
     }
+
 
 }

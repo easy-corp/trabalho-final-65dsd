@@ -13,7 +13,7 @@ public class User {
     private List<Card> deck;        //Cartas do usuario
     private boolean isUno;          //Propriedade que define se o usuario pediu uno
     private UserStatus status;      //Status do jogador, se esta pronto para comecar
-    private int qtdCartas;
+    private int qtdCartas;          //Qtd de cartas na mão do jogador
 
     public User(String name, String password, Avatar avatar) {
         this.id = ++idCont;
