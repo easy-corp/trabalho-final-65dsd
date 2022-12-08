@@ -1,27 +1,28 @@
 package br.udesc.core.server.messages;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 public class MessageBuilder {
 
     private JsonObject messageObject;
+    private static final Gson gson = new Gson();
 
-    public MessageBuilder(){
+    public MessageBuilder() {
         this.messageObject = new JsonObject();
     }
 
-    public MessageBuilder withType(String type){
+    public MessageBuilder withType(String type) {
         this.messageObject.addProperty("type", type);
         return this;
     }
 
-    public MessageBuilder withParam(String paramName, String value){
+    public MessageBuilder withParam(String paramName, String value) {
         this.messageObject.addProperty(paramName, value);
         return this;
     }
 
-    public String build(){
+    public String build() {
         return this.messageObject.toString();
     }
-
 }

@@ -15,21 +15,21 @@ public class Match {
 
     private int matchId;                    //id da partida
     private static int idCont = -1;
-    private String name;                    //Nome do jogo
+    private String matchName;                    //Nome do jogo
     private int qtdPlayers;                 //Capacidade máxima de jogadores
     private MatchStatus status;             //Status da partida
     private Map<Integer, User> players;     //Lista de jogadores
-    private List<Card> deck;                //Todas as cartas do baralho
+    private List<Card> matchdeck;                //Todas as cartas do baralho
     private Stack<Card> discard;            //As cartas descartadas na mesa
     private Random random;
 
     public Match(String name, int qtdPlayers) {
         this.matchId = ++idCont;
-        this.name = name;
+        this.matchName = name;
         this.qtdPlayers = qtdPlayers;
         this.status = MatchStatus.WAITING;
         this.players = new HashMap<Integer, User>();
-        this.deck = gerarBaralho();
+        this.matchdeck = gerarBaralho();
         this.discard = new Stack<>();
         this.random = new Random();
     }
@@ -38,12 +38,12 @@ public class Match {
         return matchId;
     }
 
-    public String getName() {
-        return name;
+    public String getMatchName() {
+        return matchName;
     }
     
-    public void setName(String name) {
-        this.name = name;
+    public void setMatchName(String name) {
+        this.matchName = name;
     }
 
     public int getQtdPlayers() {
@@ -66,8 +66,8 @@ public class Match {
         return players;
     }
 
-    public List<Card> getDeck() {
-        return this.deck;
+    public List<Card> getMatchdeck() {
+        return this.matchdeck;
     }
 
     public enum MatchStatus {
@@ -152,31 +152,31 @@ public class Match {
         baralho.add(new Card("0", Card.Color.YELLOW, "yellow_0"));
 
         //Especiais
-        for (int i = 0; i < 2; i++) {
-            //Block
-            baralho.add(new Card("block", Card.Color.BLUE, "blue_block"));
-            baralho.add(new Card("block", Card.Color.GREEN, "green_block"));
-            baralho.add(new Card("block", Card.Color.RED, "red_block"));
-            baralho.add(new Card("block", Card.Color.YELLOW, "yellow_block"));
+        // for (int i = 0; i < 2; i++) {
+        //     //Block
+        //     baralho.add(new Card("block", Card.Color.BLUE, "blue_block"));
+        //     baralho.add(new Card("block", Card.Color.GREEN, "green_block"));
+        //     baralho.add(new Card("block", Card.Color.RED, "red_block"));
+        //     baralho.add(new Card("block", Card.Color.YELLOW, "yellow_block"));
 
-            //Reverse
-            baralho.add(new Card("reverse", Card.Color.BLUE, "blue_reverse"));
-            baralho.add(new Card("reverse", Card.Color.GREEN, "green_reverse"));
-            baralho.add(new Card("reverse", Card.Color.RED, "red_reverse"));
-            baralho.add(new Card("reverse", Card.Color.YELLOW, "yellow_reverse"));
+        //     //Reverse
+        //     baralho.add(new Card("reverse", Card.Color.BLUE, "blue_reverse"));
+        //     baralho.add(new Card("reverse", Card.Color.GREEN, "green_reverse"));
+        //     baralho.add(new Card("reverse", Card.Color.RED, "red_reverse"));
+        //     baralho.add(new Card("reverse", Card.Color.YELLOW, "yellow_reverse"));
 
-            //+2
-            baralho.add(new Card("+2", Card.Color.BLUE, "blue_plus2"));
-            baralho.add(new Card("+2", Card.Color.GREEN, "green_plus2"));
-            baralho.add(new Card("+2", Card.Color.RED, "red_plus2"));
-            baralho.add(new Card("+2", Card.Color.YELLOW, "yellow_plus2"));
-        }
+        //     //+2
+        //     baralho.add(new Card("+2", Card.Color.BLUE, "blue_plus2"));
+        //     baralho.add(new Card("+2", Card.Color.GREEN, "green_plus2"));
+        //     baralho.add(new Card("+2", Card.Color.RED, "red_plus2"));
+        //     baralho.add(new Card("+2", Card.Color.YELLOW, "yellow_plus2"));
+        // }
 
         //Coringas
-        for (int i = 0; i < 4; i++) {
-            baralho.add(new Card("+4", Card.Color.BLACK, "black_plus4"));
-            baralho.add(new Card("color_choose", Card.Color.BLACK, "black_color_choose"));
-        }
+        // for (int i = 0; i < 4; i++) {
+        //     baralho.add(new Card("+4", Card.Color.BLACK, "black_plus4"));
+        //     baralho.add(new Card("color_choose", Card.Color.BLACK, "black_color_choose"));
+        // }
 
         return baralho;
     }
@@ -186,8 +186,8 @@ public class Match {
         for (User j : this.getPlayers().values()) {
             for (int i = 0; i < 7; i++) {
                 //Tira uma carta do baralho para meu deck
-                Card carta = this.getDeck().get(this.random.nextInt(getDeck().size()));
-                this.getDeck().remove(carta);
+                Card carta = this.getMatchdeck().get(this.random.nextInt(getMatchdeck().size()));
+                this.getMatchdeck().remove(carta);
 
                 j.addCarta(carta);
             }

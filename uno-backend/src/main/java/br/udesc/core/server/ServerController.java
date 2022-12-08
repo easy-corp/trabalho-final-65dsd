@@ -11,8 +11,8 @@ import br.udesc.core.server.messages.*;
 
 public class ServerController {
 
-    private static ServerController instance;             // Instância do Singleton
-    private Registry registry = Registry.getInstance();   // Realiza o controle para integridad dos dados
+    private static ServerController instance; // Instância do Singleton
+    private Registry registry = Registry.getInstance(); // Realiza o controle para integridad dos dados
     private Gson gson = new Gson();
 
     private ServerController() {
@@ -71,34 +71,77 @@ public class ServerController {
         message.sendReply(getMatchesList());
     }
 
-    //Recupera as partidas as quais esse player participou
+    // Recupera as partidas as quais esse player participou
     public void getMatchesWithPlayer(GetMatchesWithPlayerMessage message) {
         message.sendReply(matchesWithPlayer(message.getUserId()));
     }
 
-    //Recupera as partidas as quais esse player ganhou
+    // Recupera as partidas as quais esse player ganhou
     public void getWinsPlayer(GetWinsPlayerMessage message) {
         message.sendReply(matchesWinner(message.getUserId()));
+    }
+
+    public void playCard(PlayCardMessage message){
+        MatchRunner runner = registry.getRunner(message.getMatchId());
+        runner.onPlayCardMessage(message);
     }
 
     // Entra na partida
     public void joinMatch(JoinMatchMessage message) {
         message.sendReply(joinMatch(message.getUserId(), message.getMatchId()));
+        Match m = this.registry.getMatch(message.getMatchId());
+        User u = this.registry.getUser(message.getUserId());
+
+        TypedMessage messageToPlayers = new TypedMessage("player-joined", u);
+
+        // Avisar os otro que o cara entro
+        for (User user : m.getPlayers().values()) {
+            if (user.getId() != message.getUserId()) {
+                MessageBroker.getInstance().sendMessageToUser(user.getId(), gson.toJson(messageToPlayers));
+            }
+        }
     }
 
     // Sai da partida
     public void quitMatch(QuitMatchMessage message) {
-        message.sendReply(quitMatch(message.getUserId(), message.getMatchId()));
-    }
+        quitMatch(message.getUserId(), message.getMatchId());
+        Match m = this.registry.getMatch(message.getMatchId());
+        User u = this.registry.getUser(message.getUserId());
+        TypedMessage messageToPlayers = new TypedMessage("player-exited", u);
 
-    // Indica que está pronto para jogar
-    public void getMatchLifecycle(GetMatchLifecycleMessage message) throws InterruptedException {
-        message.sendReply(matchLifecycle(message.getMatchId()));
+        for (User user : m.getPlayers().values()) {
+            if (user.getId() != message.getUserId()) {
+                MessageBroker.getInstance().sendMessageToUser(user.getId(), gson.toJson(messageToPlayers));
+            }
+        }
     }
 
     // Verifica o ciclo da partida
-    public void readyToPlay(ReadyToPlayMessage message) {
-        message.sendReply(readyToPlay(message.getUserId(), message.getMatchId()));
+    public void readyToPlay(ReadyToPlayMessage message) throws InterruptedException {
+        readyToPlay(message.getUserId(), message.getMatchId());
+
+        Match match = this.registry.getMatch(message.getMatchId());
+
+        boolean allPlayersReady = true;
+
+        for (User u : match.getPlayers().values()) {
+            allPlayersReady = allPlayersReady && u.getStatus() == UserStatus.READY;
+        }
+
+        if (allPlayersReady) {
+            match.iniciarPartida();
+
+            for (User user : match.getPlayers().values()) {
+                TypedMessage messagetoUser = new TypedMessage("match-started", user);
+                MessageBroker.getInstance().sendMessageToUser(user.getId(), gson.toJson(messagetoUser));
+            }
+
+
+            MatchRunner runner = new MatchRunner(match);
+            registry.addRunner(message.getMatchId(), runner);
+            runner.run();
+        }
+
     }
 
     public String signUp(String username, String password, int avatarId) {
@@ -144,28 +187,13 @@ public class ServerController {
     public String getMatchesList() {
         return gson.toJson(this.registry.getMatchesList());
     }
-    
+
     private String matchesWithPlayer(int userId) {
         return gson.toJson(this.registry.getMatchesWithPlayer(userId));
     }
 
     private String matchesWinner(int userId) {
         return gson.toJson(this.registry.getWinsPlayer(userId));
-    }
-
-    public String matchLifecycle(int matchId) throws InterruptedException {
-        Match match = this.registry.getMatch(matchId);
-
-        // A partida se inicia quando tiver mais pelo menos 2 jogadores e todos estiverem prontos
-        // Isso só vai acontecer se a partida ainda não tiver sido iniciada
-        if (registry.getMatch(matchId).getPlayers().size() > 0 && registry.getMatch(matchId).allPlayersReady()) {
-            match.iniciarPartida();
-
-            MatchRunner runner = new MatchRunner(match);
-            runner.run();
-        }
-
-        return gson.toJson(match);
     }
 
     public String joinMatch(int userId, int matchId) {

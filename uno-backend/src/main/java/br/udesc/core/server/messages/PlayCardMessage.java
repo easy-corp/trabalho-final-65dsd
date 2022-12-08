@@ -23,7 +23,8 @@ public class PlayCardMessage extends AbstractMessage {
 
         String cardSymbol = messageObject.get("cardSymbol").getAsString();
         Color c = Color.valueOf(messageObject.get("cardColor").getAsString());
-        this.cardPlayed = new Card(cardSymbol, c, "");
+        String url = messageObject.get("cardImageUrl").getAsString();
+        this.cardPlayed = new Card(cardSymbol, c, url);
     }
 
     public Card getCardPlayed() {

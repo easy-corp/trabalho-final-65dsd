@@ -68,6 +68,14 @@ public class User {
         this.deck = deck;
     }
 
+    public void popCarta(Card c){
+        for(Card card : this.deck){
+            if(card.getSimbolo() == c.getSimbolo() && card.getColor() == c.getColor()){
+                this.deck.remove(c);
+            }
+        }
+    }
+
     public boolean isUno() {
         return isUno;
     }
