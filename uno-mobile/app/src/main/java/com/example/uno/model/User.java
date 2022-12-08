@@ -13,6 +13,7 @@ public class User {
     private List<Card> deck;        //Cartas do usuario
     private boolean isUno;          //Propriedade que define se o usuario pediu uno
     private UserStatus status;      //Status do jogador, se esta pronto para comecar
+    private int qtdCartas;
 
     public User(String name, String password, Avatar avatar) {
         this.id = ++idCont;
@@ -65,7 +66,18 @@ public class User {
     }
 
     public int getNumCartas() {
-        return deck.size();
+        return this.qtdCartas;
+    }
+
+    public int popCarta(Card carta) {
+        this.deck.remove(carta);
+        this.setQtdCartas(this.deck.size());
+
+        return this.deck.size();
+    }
+
+    public void setQtdCartas(int qtd) {
+        this.qtdCartas = qtd;
     }
 
     public void addCarta(Card carta) {

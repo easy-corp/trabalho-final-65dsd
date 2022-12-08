@@ -33,6 +33,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import java.sql.SQLOutput;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class TelaJogo extends AppCompatActivity implements ServiceConnection, IMessageListener {
@@ -308,9 +309,6 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
         binder.getService().enviarMensagem(msg);
 
         Thread.sleep(500);
-
-        //Valor retornado pelo server
-        String json = this.message;
     }
 
     //Ao clicar para pedir uno
@@ -405,6 +403,15 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
                         us = gson.fromJson(msg.getContent().toString(), User.class);
                         this.jogo.removePlayer(us);
                         break;
+                    case "match-started":
+                        //Quando a partida começar
+                        us = gson.fromJson(msg.getContent().toString(), User.class);
+                        this.jogador = us;
+
+                        for (User player : this.jogo.getPlayers().values()) {
+                            player.setQtdCartas(7);
+                        }
+                        break;
                 }
 
                 //Atualiza os adapters
@@ -414,6 +421,7 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
                         atualizarListas();
                     }
                 });
+
             }
         }
     }
