@@ -72,7 +72,13 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
         FrameLayout layUno = findViewById(R.id.layUno);
         FrameLayout layReady = findViewById(R.id.layReady);
 
-        icSairJogo.setOnClickListener(param -> quitMatch());
+        icSairJogo.setOnClickListener(param -> {
+            try {
+                quitMatch();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
 //        icSairJogo.setOnClickListener(param -> startActivity(new Intent(this, TelaResultados.class).putExtra("userId", String.valueOf(jogador.getUserId()))));
 
         layReady.setOnClickListener(param -> {
@@ -101,7 +107,7 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
     }
 
     //Sai da partida
-    public void quitMatch() {
+    public void quitMatch() throws InterruptedException {
         String msg = new MessageBuilder()
             .withType("quit-match")
             .withParam("userId", getIntent().getStringExtra("userId"))
@@ -109,6 +115,8 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
             .build();
 
         binder.getService().enviarMensagem(msg);
+
+        Thread.sleep(500);
 
         startActivity(new Intent(this, TelaEntrarJogo.class).putExtra("userId", String.valueOf(jogador.getUserId())));
     }
