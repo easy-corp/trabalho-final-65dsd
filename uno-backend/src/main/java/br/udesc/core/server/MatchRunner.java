@@ -30,6 +30,7 @@ public class MatchRunner extends Thread {
         this.match = match;
         this.players = new ArrayList<>();
         this.gson = new Gson();
+        this.random = new Random();
 
         // Transforma o Map de players em lista para facilitar as nossas operações
         for (User u : this.match.getPlayers().values()) {
@@ -75,9 +76,13 @@ public class MatchRunner extends Thread {
                 // Pula pro próximo jogador da lista
                 jogadorAtual = getProximoPlayer(jogadorAtual);
             }
-
+            
             // Verifica se a partida terminou
             // Se algum jogador estiver com 0 cartas
+            if (verificarGanhador() != null) {
+                // Avisa todo mundo que a partida terminou
+                sendMessageToAllPlayers(new TypedMessage("match-ended", verificarGanhador()));
+            }
         }
     }
 
@@ -137,6 +142,19 @@ public class MatchRunner extends Thread {
             //Atualiza a imagem na tela
             sendMessageToAllPlayers(new TypedMessage("first-card", carta));
         }
+    }
+
+    // Verifica se algum jogador estiver com 0 cartas
+    public User verificarGanhador() {
+        User winner = null;
+
+        for (User us : match.getPlayers().values()) {
+            if (us.getDeck().size() == 0) {
+                winner = us;
+            }   
+        }
+
+        return winner;
     }
 
 }

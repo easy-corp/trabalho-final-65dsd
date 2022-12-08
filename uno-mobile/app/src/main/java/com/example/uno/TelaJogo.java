@@ -86,8 +86,6 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
             }
         });
 
-//        icSairJogo.setOnClickListener(param -> startActivity(new Intent(this, TelaResultados.class).putExtra("userId", String.valueOf(jogador.getUserId()))));
-
         layReady.setOnClickListener(param -> {
             try {
                 prontoParaJogar();
@@ -216,50 +214,48 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
         imgMonte.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (myTurn) {
-                    if (isFront) {
-                        //Recupera e troca a carta para o flip seguinte
-                        cartaVirada = jogo.getDeck().get(random.nextInt(jogo.getDeck().size()));
-                        int image = getResources().getIdentifier(cartaVirada.getImageUrl(), "drawable", getPackageName());
-                        imgMonteVirado.setBackgroundResource(image);
+                if (isFront) {
+                    //Recupera e troca a carta para o flip seguinte
+                    cartaVirada = jogo.getDeck().get(random.nextInt(jogo.getDeck().size()));
+                    int image = getResources().getIdentifier(cartaVirada.getImageUrl(), "drawable", getPackageName());
+                    imgMonteVirado.setBackgroundResource(image);
 
-                        //Move a carta de volta para baixo do monte
-                        ObjectAnimator moveIn = ObjectAnimator.ofFloat(imgMonteVirado, "translationY", 0);
-                        moveIn.setDuration(0);
-                        moveIn.start();
+                    //Move a carta de volta para baixo do monte
+                    ObjectAnimator moveIn = ObjectAnimator.ofFloat(imgMonteVirado, "translationY", 0);
+                    moveIn.setDuration(0);
+                    moveIn.start();
 
-                        //Flipa a carta de costas
-                        flipFront.setTarget(imgMonte);
-                        flipBack.setTarget(imgMonteVirado);
+                    //Flipa a carta de costas
+                    flipFront.setTarget(imgMonte);
+                    flipBack.setTarget(imgMonteVirado);
 
-                        flipFront.start();
-                        flipBack.start();
+                    flipFront.start();
+                    flipBack.start();
 
-                        isFront = false;
-                    } else {
-                        //Tira a carta da tela
-                        ObjectAnimator moveOut = ObjectAnimator.ofFloat(imgMonteVirado, "translationY", 1000f);
-                        moveOut.setDuration(600);
-                        moveOut.start();
+                    isFront = false;
+                } else {
+                    //Tira a carta da tela
+                    ObjectAnimator moveOut = ObjectAnimator.ofFloat(imgMonteVirado, "translationY", 1000f);
+                    moveOut.setDuration(600);
+                    moveOut.start();
 
-                        //Volta a de costas para cima
-                        flipFront.setTarget(imgMonteVirado);
-                        flipBack.setTarget(imgMonte);
+                    //Volta a de costas para cima
+                    flipFront.setTarget(imgMonteVirado);
+                    flipBack.setTarget(imgMonte);
 
-                        flipBack.start();
-                        flipFront.start();
+                    flipBack.start();
+                    flipFront.start();
 
-                        isFront = true;
-                        myTurn = false;
+                    isFront = true;
+                    myTurn = false;
 
-                        //Adiciona a carta na mão do jogador
-                        jogo.getPlayers().get(userJogada).compraCarta();
-                        jogador.getDeck().add(cartaVirada);
+                    //Adiciona a carta na mão do jogador
+                    jogo.getPlayers().get(userJogada).compraCarta();
+                    jogador.getDeck().add(cartaVirada);
 //                        jogo.getDeck().remove(cartaVirada);
 
-                        //Atualiza as listas
-                        atualizarListas();
-                    }
+                    //Atualiza as listas
+                    atualizarListas();
                 }
             }
         });
@@ -489,6 +485,20 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
                                 atualizarCartaMesa(carta);
                             }
                         });
+
+                        break;
+                    case "match-ended":
+                        //Quando a partida termina
+                        //Declara-se o ganhador
+                        User winner = gson.fromJson(msg.getContent().toString(), User.class);
+
+                        //Inicia a tela de resultados
+                        //Enviamos o jogador atual, a partida e o vencedor
+                        Intent telaResultados = new Intent(this, TelaResultados.class);
+                        telaResultados.putExtra("userId", String.valueOf(jogador.getUserId()));
+                        telaResultados.putExtra("matchId", String.valueOf(jogo.getMatchId()));
+                        telaResultados.putExtra("winnerId", String.valueOf(winner.getUserId()));
+                        startActivity(telaResultados);
 
                         break;
                 }

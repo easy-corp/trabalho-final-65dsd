@@ -4,19 +4,30 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.uno.control.adapter.AdapterJogadoresResult;
+import com.example.uno.control.socket.IMessageListener;
+import com.example.uno.control.socket.MessageBuilder;
+import com.example.uno.control.socket.ServiceSocket;
 import com.example.uno.model.Avatar;
 import com.example.uno.model.Match;
 import com.example.uno.model.User;
+import com.google.gson.Gson;
 
-public class TelaResultados extends AppCompatActivity {
+public class TelaResultados extends AppCompatActivity implements ServiceConnection, IMessageListener {
 
-    private Match jogo = new Match("Jogos da Galera", 4);
+    private ServiceConnection service;
+    private String message;
+    private ServiceSocket.LocalBinder binder;
+    private Match jogo;
+    private Gson gson;
 
     //RecyclerView
     private RecyclerView listaJogadoresResult;
@@ -32,6 +43,9 @@ public class TelaResultados extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_resultados);
 
+        this.gson = new Gson();
+        this.service = this;
+
         ImageView icVoltar = findViewById(R.id.icSair);
         ImageView icUsuario = findViewById(R.id.icUsuario);
         this.imgVencedorAvatar = findViewById(R.id.imgVencedorAvatar);
@@ -40,9 +54,6 @@ public class TelaResultados extends AppCompatActivity {
         icVoltar.setOnClickListener(param -> startActivity(new Intent(this, TelaEntrarJogo.class)));
 
         icUsuario.setOnClickListener(param -> startActivity(new Intent(this, TelaPerfil.class)));
-
-        geraJogadores();
-        criarRecyclerView();
     }
 
     public void criarRecyclerView() {
@@ -57,20 +68,74 @@ public class TelaResultados extends AppCompatActivity {
         listaJogadoresResult.setAdapter(adapterJogadores);
     }
 
-    public void geraJogadores() {
-        //Adiciona jogadores
-        this.jogo.addPlayer(new User("Gabriel", "1234", new Avatar("avatar_4")));
-        this.jogo.addPlayer(new User("Murilo", "1234", new Avatar("avatar_5")));
-        this.jogo.addPlayer(new User("Giovana", "1234", new Avatar("avatar_2")));
-        this.jogo.addPlayer(new User("Maria", "1234", new Avatar("avatar_6")));
+    public void geraJogadores() throws InterruptedException {
+        //Recupera a partida
+        //Cria a mensagem e envia ao servidor
+        String msg = new MessageBuilder()
+                .withType("get-match")
+                .withParam("matchId", getIntent().getStringExtra("matchId"))
+                .build();
+
+        binder.getService().enviarMensagem(msg);
+
+        Thread.sleep(500);
+
+        String json = this.message;
+        this.jogo = gson.fromJson(json, Match.class);
 
         //Preenche vencedor
-        User vencedor = new User("Luis", "1234", new Avatar("avatar_1"));
+
+        User vencedor = jogo.getPlayers().get(getIntent().getStringExtra("winnerId"));
         vencedor.getAvatar().click(true);
 
         int image = getResources().getIdentifier(vencedor.getAvatar().getImageUrl(), "drawable", getPackageName());
         this.imgVencedorAvatar.setBackgroundResource(image);
 
         this.txtVencedorNome.setText(vencedor.getName());
+    }
+
+    //Quando o serviço for bindado
+    //Indica que essa activity irá ouvir as mensagens
+    @Override
+    public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+        this.binder = (ServiceSocket.LocalBinder) iBinder;
+        this.binder.addListener(this);
+
+        try {
+            geraJogadores();
+            criarRecyclerView();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //Quando o serviço for desbindado
+    @Override
+    public void onServiceDisconnected(ComponentName componentName) {
+        this.service = null;
+    }
+
+    //Quando a tela pausar
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (binder != null) {
+            binder.removeListener(this);
+        }
+    }
+
+    //Quando a tela voltar
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (binder != null) {
+            binder.addListener(this);
+        }
+    }
+
+    //Esperando mensagens
+    @Override
+    public void onMessage(String message) {
+        this.message = message;
     }
 }

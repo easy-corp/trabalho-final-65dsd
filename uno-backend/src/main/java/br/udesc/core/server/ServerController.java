@@ -10,7 +10,6 @@ import org.awaitility.Awaitility;
 
 import com.google.gson.Gson;
 
-import br.udesc.core.model.Card;
 import br.udesc.core.model.Match;
 import br.udesc.core.model.User;
 import br.udesc.core.model.User.UserStatus;
@@ -66,6 +65,11 @@ public class ServerController {
     // Recupera informações do usuário logado
     public void myProfile(MyProfileMessage message) {
         message.sendReply(myProfile(message.getUserId()));
+    }
+
+    // Recupera informações de uma partida específica
+    public void myProfile(GetMatchMessage message) {
+        message.sendReply(getMatch(message.getMatchId()));
     }
 
     // Cria uma nova partida
@@ -185,6 +189,11 @@ public class ServerController {
     public String myProfile(int userId) {
         User user = this.registry.getUser(userId);
         return gson.toJson(user);
+    }
+
+    public String getMatch(int matchId) {
+        Match match = this.registry.getMatch(matchId);
+        return gson.toJson(match);
     }
 
     public String createMatch(String name, int qtdPlayers) {
