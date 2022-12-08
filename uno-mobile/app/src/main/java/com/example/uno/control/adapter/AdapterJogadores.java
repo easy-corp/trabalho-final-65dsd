@@ -21,7 +21,6 @@ public class AdapterJogadores extends RecyclerView.Adapter<AdapterJogadores.View
 
     private TelaJogo telaJogo;
     private Match jogo;
-    private List<User> jogadores;
 
     //O tipo de view que vamos usar
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -41,11 +40,6 @@ public class AdapterJogadores extends RecyclerView.Adapter<AdapterJogadores.View
     public AdapterJogadores(Match jogo, TelaJogo telaJogo) {
         this.jogo = jogo;
         this.telaJogo = telaJogo;
-        this.jogadores = new ArrayList<>();
-
-        for (User u : this.jogo.getPlayers().values()) {
-            this.jogadores.add(u);
-        }
     }
 
     //Cria e define o layout a ser utilizado
@@ -61,7 +55,7 @@ public class AdapterJogadores extends RecyclerView.Adapter<AdapterJogadores.View
     //Pega o elemento na lista e joga o conteudo na view referente
     @Override
     public void onBindViewHolder(AdapterJogadores.ViewHolder holder, int position) {
-        User jogador = this.jogadores.get(position);
+        User jogador = (User) this.jogo.getPlayers().values().toArray()[position];
         int image = telaJogo.getResources().getIdentifier(jogador.getAvatar().getImageUrl(), "drawable", telaJogo.getPackageName());
 
         holder.imgJogador.setBackgroundResource(image);

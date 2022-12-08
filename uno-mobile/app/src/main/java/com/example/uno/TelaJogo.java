@@ -30,6 +30,7 @@ import com.example.uno.model.User;
 import com.example.uno.model.Match;
 import com.example.uno.model.message.TypedMessage;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import java.sql.SQLOutput;
 import java.util.Random;
@@ -54,7 +55,7 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
     private RecyclerView.LayoutManager layManagerJogadores;
     private RecyclerView.LayoutManager layManagerCartasJogador;
 
-    private Boolean isFront = true;
+    private boolean isFront = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +72,7 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
         FrameLayout layUno = findViewById(R.id.layUno);
         FrameLayout layReady = findViewById(R.id.layReady);
 
-        icSairJogo.setOnClickListener(param -> startActivity(new Intent(this, TelaEntrarJogo.class).putExtra("userId", String.valueOf(jogador.getUserId()))));
+        icSairJogo.setOnClickListener(param -> quitMatch());
 //        icSairJogo.setOnClickListener(param -> startActivity(new Intent(this, TelaResultados.class).putExtra("userId", String.valueOf(jogador.getUserId()))));
 
         layReady.setOnClickListener(param -> {
@@ -97,6 +98,19 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
 
     public void exibirMensagem(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    //Sai da partida
+    public void quitMatch() {
+        String msg = new MessageBuilder()
+            .withType("quit-match")
+            .withParam("userId", getIntent().getStringExtra("userId"))
+            .withParam("matchId", getIntent().getStringExtra("matchId"))
+            .build();
+
+        binder.getService().enviarMensagem(msg);
+
+        startActivity(new Intent(this, TelaEntrarJogo.class).putExtra("userId", String.valueOf(jogador.getUserId())));
     }
 
     //Gera lista de jogadores na sala
@@ -368,9 +382,30 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
                 criarRecyclerViewJogadores();                //Cria a lista de jogadores na tela
                 criarRecyclerViewCartas();                   //Cria a lista de cartas do jogador na tela
             } catch (Exception ex) {
-                //Uma mensagem qualquer
-                System.out.println(ex);
-                System.out.println("filho da puta");
+                TypedMessage msg = gson.fromJson(message, TypedMessage.class);
+                User us = null;
+
+                switch (msg.getType()) {
+                    //Quando outro player entrar na partida
+                    case "player-joined":
+                        //Insere ele na partida
+                        us = gson.fromJson(msg.getContent().toString(), User.class);
+                        this.jogo.addPlayer(us);
+                        break;
+                    case "played-exited":
+                        //Retira ele na partida
+                        us = gson.fromJson(msg.getContent().toString(), User.class);
+                        this.jogo.removePlayer(us);
+                        break;
+                }
+
+                //Atualiza os adapters
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        atualizarListas();
+                    }
+                });
             }
         }
     }
