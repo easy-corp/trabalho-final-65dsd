@@ -100,6 +100,11 @@ public class User {
         isUno = opt;
     }
 
+    public void removeCarta(Card carta) {
+        this.getDeck().remove(carta);
+        this.setQtdCartas(deck.size());
+    }
+
     public enum UserStatus {
         UNREADY,
         READY

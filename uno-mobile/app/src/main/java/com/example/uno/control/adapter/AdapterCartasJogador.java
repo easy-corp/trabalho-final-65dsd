@@ -64,7 +64,7 @@ public class AdapterCartasJogador extends RecyclerView.Adapter<AdapterCartasJoga
                 if (telaJogo.getMyTurn()) {
                     //Se a carta pode ser dropada na mesa
                     if (telaJogo.getJogo().isDropavel(carta)) {
-                        jogador.getDeck().remove(carta);
+                        jogador.removeCarta(carta);
                         telaJogo.atualizarCartaMesa(carta);
                         telaJogo.atualizarListas();
 
@@ -76,6 +76,7 @@ public class AdapterCartasJogador extends RecyclerView.Adapter<AdapterCartasJoga
                             .withParam("matchId", String.valueOf(telaJogo.getJogo().getMatchId()))
                             .withParam("cardSymbol", carta.getSimbolo())
                             .withParam("cardColor", String.valueOf(carta.getColor()))
+                            .withParam("cardImageUrl", carta.getImageUrl())
                             .build();
 
                         telaJogo.getBinder().getService().enviarMensagem(msg);
