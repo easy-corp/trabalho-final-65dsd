@@ -68,7 +68,7 @@ public class AdapterCartasJogador extends RecyclerView.Adapter<AdapterCartasJoga
                         jogador.removeCarta(carta);
                         telaJogo.getJogo().getPlayers().get(jogador.getUserId()).descartaCarta();
 
-                        telaJogo.atualizarCartaMesa(carta);
+//                        telaJogo.atualizarCartaMesa(carta);
                         telaJogo.atualizarListas();
 
                         telaJogo.setMyTurn(false);
