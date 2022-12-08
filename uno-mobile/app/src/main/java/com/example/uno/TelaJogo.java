@@ -465,7 +465,14 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
                         break;
                     case "card-played":
                         Card carta = gson.fromJson(msg.getContent().toString(), Card.class);
-                        System.out.println("teste");
+
+                        //Atualiza os adapters
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                atualizarCartaMesa(carta);
+                            }
+                        });
                 }
 
                 //Atualiza os adapters
