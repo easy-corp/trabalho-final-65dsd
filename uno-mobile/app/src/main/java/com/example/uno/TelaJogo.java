@@ -400,7 +400,7 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
                         us = gson.fromJson(msg.getContent().toString(), User.class);
                         this.jogo.addPlayer(us);
                         break;
-                    case "played-exited":
+                    case "player-exited":
                         //Retira ele na partida
                         us = gson.fromJson(msg.getContent().toString(), User.class);
                         this.jogo.removePlayer(us);
