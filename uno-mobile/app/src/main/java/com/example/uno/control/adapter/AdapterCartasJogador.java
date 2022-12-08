@@ -64,25 +64,25 @@ public class AdapterCartasJogador extends RecyclerView.Adapter<AdapterCartasJoga
                 if (telaJogo.getMyTurn()) {
                     //Se a carta pode ser dropada na mesa
                     if (telaJogo.getJogo().isDropavel(carta)) {
+                        String msg = new MessageBuilder()
+                                .withType("play-card")
+                                .withParam("userId", String.valueOf(jogador.getUserId()))
+                                .withParam("matchId", String.valueOf(telaJogo.getJogo().getMatchId()))
+                                .withParam("cardSymbol", carta.getSimbolo())
+                                .withParam("cardColor", String.valueOf(carta.getColor()))
+                                .withParam("cardImageUrl", carta.getImageUrl())
+                                .build();
+
+                        telaJogo.getBinder().getService().enviarMensagem(msg);
+
                         //Atualiza a quantidade de cartas do jogador da vez
                         jogador.removeCarta(carta);
                         telaJogo.getJogo().getPlayers().get(jogador.getUserId()).descartaCarta();
 
 //                        telaJogo.atualizarCartaMesa(carta);
-                        telaJogo.atualizarListas();
+//                        telaJogo.atualizarListas();
 
                         telaJogo.setMyTurn(false);
-
-                        String msg = new MessageBuilder()
-                            .withType("play-card")
-                            .withParam("userId", String.valueOf(jogador.getUserId()))
-                            .withParam("matchId", String.valueOf(telaJogo.getJogo().getMatchId()))
-                            .withParam("cardSymbol", carta.getSimbolo())
-                            .withParam("cardColor", String.valueOf(carta.getColor()))
-                            .withParam("cardImageUrl", carta.getImageUrl())
-                            .build();
-
-                        telaJogo.getBinder().getService().enviarMensagem(msg);
                     } else {
                         holder.imgCarta.startAnimation(AnimationUtils.loadAnimation(telaJogo, R.animator.shake));
                     }
