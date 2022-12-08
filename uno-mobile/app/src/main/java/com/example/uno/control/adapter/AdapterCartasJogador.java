@@ -65,7 +65,7 @@ public class AdapterCartasJogador extends RecyclerView.Adapter<AdapterCartasJoga
                     //Se a carta pode ser dropada na mesa
                     if (telaJogo.getJogo().isDropavel(carta)) {
                         jogador.removeCarta(carta);
-                        telaJogo.atualizarCartaMesa(carta);
+//                        telaJogo.atualizarCartaMesa(carta);
                         telaJogo.atualizarListas();
 
                         telaJogo.setMyTurn(false);
