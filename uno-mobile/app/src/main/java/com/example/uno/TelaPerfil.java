@@ -44,7 +44,7 @@ public class TelaPerfil extends AppCompatActivity implements ServiceConnection, 
 
         ImageView icSair = findViewById(R.id.icSair);
 
-        icSair.setOnClickListener(param -> startActivity(new Intent(this, TelaEntrarJogo.class).putExtra("userId", String.valueOf(jogador.getId()))));
+        icSair.setOnClickListener(param -> startActivity(new Intent(this, TelaEntrarJogo.class).putExtra("userId", String.valueOf(jogador.getUserId()))));
     }
 
     @Override
@@ -67,6 +67,8 @@ public class TelaPerfil extends AppCompatActivity implements ServiceConnection, 
         //Valor retornado pelo server
         String json = this.message;
 
+        System.out.println(json);
+
         //Transforma o Gson novamente em um tipo User
         User user = gson.fromJson(json, User.class);
         this.jogador = user;
@@ -84,7 +86,7 @@ public class TelaPerfil extends AppCompatActivity implements ServiceConnection, 
         //Jogos
         msg = new MessageBuilder()
             .withType("get-matches-with-player")
-            .withParam("userId", String.valueOf(jogador.getId()))
+            .withParam("userId", String.valueOf(jogador.getUserId()))
             .build();
 
         binder.getService().enviarMensagem(msg);
@@ -103,7 +105,7 @@ public class TelaPerfil extends AppCompatActivity implements ServiceConnection, 
         //Vitórias
         msg = new MessageBuilder()
                 .withType("get-wins-player")
-                .withParam("userId", String.valueOf(jogador.getId()))
+                .withParam("userId", String.valueOf(jogador.getUserId()))
                 .build();
 
         binder.getService().enviarMensagem(msg);

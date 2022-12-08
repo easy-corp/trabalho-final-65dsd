@@ -94,10 +94,6 @@ public class ServiceSocket extends Service {
             ServiceSocket.this.socket.removeListener(listener);
         }
 
-        public String teste() {
-            return "Estou aqui";
-        }
-
     }
 
 }

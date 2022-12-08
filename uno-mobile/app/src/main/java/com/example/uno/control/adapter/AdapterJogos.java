@@ -70,7 +70,7 @@ public class AdapterJogos extends RecyclerView.Adapter<AdapterJogos.ViewHolder> 
     public void onBindViewHolder(ViewHolder holder, int position) {
         Match jogo = matches.get(position);
 
-        holder.txtJogo.setText(jogo.getName());
+        holder.txtJogo.setText(jogo.getMatchName());
         holder.txtParticipantes.setText(jogo.getPlayers().size() + "/" + jogo.getQtdPlayers());
 
         if (!jogo.isEntravel()) {

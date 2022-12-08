@@ -24,11 +24,11 @@ public class User {
         this.isUno = false;
     }
 
-    public int getId() {
+    public int getUserId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setUserId(int userId) {
         this.id = id;
     }
 

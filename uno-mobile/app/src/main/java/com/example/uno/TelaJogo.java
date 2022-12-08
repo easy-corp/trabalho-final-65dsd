@@ -28,6 +28,7 @@ import com.example.uno.model.Avatar;
 import com.example.uno.model.Card;
 import com.example.uno.model.User;
 import com.example.uno.model.Match;
+import com.example.uno.model.message.TypedMessage;
 import com.google.gson.Gson;
 
 import java.sql.SQLOutput;
@@ -70,8 +71,8 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
         FrameLayout layUno = findViewById(R.id.layUno);
         FrameLayout layReady = findViewById(R.id.layReady);
 
-        icSairJogo.setOnClickListener(param -> startActivity(new Intent(this, TelaEntrarJogo.class)));
-//        icSairJogo.setOnClickListener(param -> startActivity(new Intent(this, TelaResultados.class).putExtra("userId", String.valueOf(jogador.getId()))));
+        icSairJogo.setOnClickListener(param -> startActivity(new Intent(this, TelaEntrarJogo.class).putExtra("userId", String.valueOf(jogador.getUserId()))));
+//        icSairJogo.setOnClickListener(param -> startActivity(new Intent(this, TelaResultados.class).putExtra("userId", String.valueOf(jogador.getUserId()))));
 
         layReady.setOnClickListener(param -> {
             try {
@@ -232,40 +233,8 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
     private void entrarNaPartida() throws InterruptedException {
         //Cria a mensagem e envia ao servidor
         String msg = new MessageBuilder()
-            .withType("my-profile")
-            .withParam("userId", getIntent().getStringExtra("userId"))
-            .build();
-
-        binder.getService().enviarMensagem(msg);
-
-        Thread.sleep(500);
-
-        //Valor retornado pelo server
-        String json = this.message;
-
-        //Transforma o Gson novamente em um tipo User
-        this.jogador = gson.fromJson(json, User.class);
-
-        //Adiciona o jogador logado no dispositivo
-        //Cria a mensagem e envia ao servidor
-        msg = new MessageBuilder()
-            .withType("join-match")
-            .withParam("userId", String.valueOf(jogador.getId()))
-            .withParam("matchId", getIntent().getStringExtra("matchId"))
-            .build();
-
-        binder.getService().enviarMensagem(msg);
-        Thread.sleep(500);
-
-        //Faz uma nova consulta pela partida
-        atualizarPartida();
-    }
-
-    public void atualizarPartida() throws InterruptedException {
-        //Cria a mensagem e envia ao servidor
-        String msg = new MessageBuilder()
-                .withType("get-match-lifecycle")
-                .withParam("matchId", getIntent().getStringExtra("matchId"))
+                .withType("my-profile")
+                .withParam("userId", getIntent().getStringExtra("userId"))
                 .build();
 
         binder.getService().enviarMensagem(msg);
@@ -275,14 +244,16 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
         //Valor retornado pelo server
         String json = this.message;
 
-        //Transforma o Gson novamente em um tipo Match
-        Match match = gson.fromJson(json, Match.class);
-        this.jogo = match;
+        //Adiciona o jogador logado no dispositivo
+        //Cria a mensagem e envia ao servidor
+        msg = new MessageBuilder()
+                .withType("join-match")
+                .withParam("userId", getIntent().getStringExtra("userId"))
+                .withParam("matchId", getIntent().getStringExtra("matchId"))
+                .build();
 
-        //Atualiza o jogador também com base nos novos dados
-        this.jogador = this.jogo.getPlayers().get(jogador.getId());
-
-        atualizarListas();
+        binder.getService().enviarMensagem(msg);
+        Thread.sleep(500);
     }
 
     //Atualizar as listas na tela quando os dados mudarem
@@ -318,11 +289,6 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
 
         //Valor retornado pelo server
         String json = this.message;
-
-        //Atualiza o jogador com a resposta do server
-        this.jogo = gson.fromJson(json, Match.class);
-
-        atualizarPartida();
     }
 
     //Ao clicar para pedir uno
@@ -345,8 +311,6 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
 
         try {
             entrarNaPartida();                           //Coloca o jogador na partida
-            criarRecyclerViewJogadores();                //Cria a lista de jogadores na tela
-            criarRecyclerViewCartas();                   //Cria a lista de cartas do jogador na tela
             setAnimacaoComprarCarta();                   //Define as animações para compra de cartas
             gerarCartaMesa();                            //Vira a primeira carta na mesa
         } catch (InterruptedException e) {
@@ -382,13 +346,31 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
     @Override
     public void onMessage(String message) {
         this.message = message;
-        System.out.println(message);
 
-        //Quando o jogo estiver rodando
-        if (this.jogo != null) {
-            if (this.jogo.getStatus() == Match.MatchStatus.PLAYING) {
-//                exibirMensagem(message);
-                System.out.println("O jogo atual é:" + gson.toJson(this.jogo));
+        try {
+            User jogador = gson.fromJson(message, User.class);
+
+            if (jogador.getName() == null) {
+                throw new Exception();
+            }
+
+            this.jogador = jogador;
+        } catch (Exception e) {
+            try {
+                Match match = gson.fromJson(message, Match.class);
+
+                if (match.getMatchName() == null) {
+                    throw new Exception();
+                }
+
+                this.jogo = match;
+
+                criarRecyclerViewJogadores();                //Cria a lista de jogadores na tela
+                criarRecyclerViewCartas();                   //Cria a lista de cartas do jogador na tela
+            } catch (Exception ex) {
+                //Uma mensagem qualquer
+                System.out.println(ex);
+                System.out.println("filho da puta");
             }
         }
     }

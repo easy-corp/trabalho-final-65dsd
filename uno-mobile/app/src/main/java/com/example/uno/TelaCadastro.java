@@ -22,7 +22,10 @@ import com.example.uno.control.socket.ServiceSocket;
 import com.example.uno.model.Avatar;
 import com.example.uno.model.Match;
 import com.example.uno.model.User;
+import com.example.uno.model.message.TypedMessage;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
@@ -127,7 +130,7 @@ public class TelaCadastro extends AppCompatActivity implements ServiceConnection
                 Thread.sleep(500);
 
                 //Valor retornado pelo server
-                String json = this.message;
+                String json = message;
 
                 //Transforma o Gson novamente em um tipo User
                 User user = gson.fromJson(json, User.class);
