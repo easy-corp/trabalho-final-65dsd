@@ -161,7 +161,15 @@ public class ServerController {
 
         MatchRunner runner = registry.getRunner(message.getMatchId());
         runner.onPlayCardMessage(message);
-    }    
+    }
+    
+    // Indica que uma carta foi comprada
+    public void buyCard(BuyCardMessage message) {
+        System.out.println("O " + message.getUserId() + " comprou um " + message.getCardBuyed().getImageUrl());
+
+        MatchRunner runner = registry.getRunner(message.getMatchId());
+        runner.onBuyCardMessage(message);
+    } 
 
     public String signUp(String username, String password, int avatarId) {
         User user = new User(username, password, this.registry.getAvatar(avatarId));

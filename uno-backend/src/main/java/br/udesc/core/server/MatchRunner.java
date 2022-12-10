@@ -9,11 +9,13 @@ import java.util.concurrent.Callable;
 import br.udesc.core.model.Card;
 import br.udesc.core.model.Match;
 import br.udesc.core.model.User;
+import br.udesc.core.server.messages.BuyCardMessage;
 import br.udesc.core.server.messages.PlayCardMessage;
 import br.udesc.core.server.messages.TypedMessage;
 
 import org.awaitility.Awaitility;
 import org.awaitility.core.ConditionTimeoutException;
+import org.hamcrest.core.AnyOf;
 
 import com.google.gson.Gson;
 
@@ -23,6 +25,7 @@ public class MatchRunner extends Thread {
     private List<User> players;                    // Uma lista de usuários que define a ordem de jogadas
     private boolean matchRunning = true;           // Atributo que define que a partida está acontecendo
     private PlayCardMessage lastPlayCardMessage;   // A última carta jogada
+    private BuyCardMessage lastBuyCardMessage;     // A última carta comprada
     private Gson gson;
     private Random random;
 
@@ -52,29 +55,49 @@ public class MatchRunner extends Thread {
             sendMessageToAllPlayers(new TypedMessage("player-turn", user));
 
             try {
-                // Aguarda o jogador jogar, por um máximo de 10 segundos
+                // Aguarda o jogador jogar ou comprar uma carta, por um máximo de segundos
                 Awaitility.await()
-                    .atMost(Duration.ofSeconds(10))
-                    .until(doesPlayerPlayCard(user.getId()));
+                    .atMost(Duration.ofSeconds(30))
+                    .until(doesPlayerPlay(user.getId()));
 
-                // Pega a última carta jogada pelo players
-                Card c = lastPlayCardMessage.getCardPlayed();
-                lastPlayCardMessage = null;
+                if (lastPlayCardMessage != null) { //Se o jogador jogou uma carta
+                    // Pega a última carta jogada pelo players
+                    User us = this.match.getPlayers().get(lastPlayCardMessage.getUserId());
+                    Card c = lastPlayCardMessage.getCardPlayed();
+                    lastPlayCardMessage = null;
 
-                // Avisa todo mundo a carta que foi jogada
-                sendMessageToAllPlayers(new TypedMessage("card-played", c));
+                    // Avisa todo mundo a carta que foi jogada
+                    sendMessageToAllPlayers(new TypedMessage("card-played", c));
 
-                // Tira a carta da mão do player que jogou
-                match.getPlayers().get(user.getId()).popCarta(c);
-                
-                // Coloca ela na lista de cartas descartadas
-                match.addDiscard(c);
+                    // Tira a carta da mão do player que jogou
+                    us.popCarta(c);
+                    
+                    // Coloca ela na lista de cartas descartadas
+                    match.addDiscard(c);
+                } else { //Se o jogador comprou uma carta
+                    // Adiciona essa carta na mão do jogador
+                    User us = this.match.getPlayers().get(lastBuyCardMessage.getUserId());
+                    Card c = lastBuyCardMessage.getCardBuyed();
+                    lastBuyCardMessage = null;
+
+                    //Adiciona a carta na mão do jogador
+                    us.getDeck().add(c);
+
+                    // Avisa todo mundo que o jogador comprou uma carta
+                    // Os demais jogadores não precisam saber qual carta foi
+                    sendMessageToAllPlayers(new TypedMessage("card-buyed", us));
+                    
+                }
 
                 // Pula pro próximo jogador da lista
                 jogadorAtual = getProximoPlayer(jogadorAtual);
             } catch (ConditionTimeoutException e) {
                 // Pula pro próximo jogador da lista
                 jogadorAtual = getProximoPlayer(jogadorAtual);
+            }
+
+            for (User p : match.getPlayers().values()) {
+                System.out.println("O " + p.getName() + " tem " + p.getDeck().size() + " cartas.");
             }
             
             // Verifica se a partida terminou
@@ -91,13 +114,23 @@ public class MatchRunner extends Thread {
         this.lastPlayCardMessage = message;
     }
 
-    // Verifica se uma carta foi jogada
+    // Sempre que uma carta for comprada, define ela como última carta comprada
+    public void onBuyCardMessage(BuyCardMessage message) {
+        this.lastBuyCardMessage = message;
+    }
+
+    // Verifica se uma carta foi jogada ou se o jogador comprou
     // Essa verificação é feita com base no atributo que guarda a última carta jogada
-    private Callable<Boolean> doesPlayerPlayCard(int playerId) {
+    // Ou pelo número de cartas do jogador
+    private Callable<Boolean> doesPlayerPlay(int playerId) {
         return () -> {
-            if (lastPlayCardMessage != null) {
+
+            if (lastPlayCardMessage != null) { // Se a carta da mesa mudou
                 return lastPlayCardMessage.getUserId() == playerId;
+            } else if (lastBuyCardMessage != null) { // Se uma carta foi comprada
+                return lastBuyCardMessage.getUserId() == playerId;
             }
+
             return false;
         };
     }
@@ -122,7 +155,7 @@ public class MatchRunner extends Thread {
     // Indica que uma carta foi jogada
     public void playCard(PlayCardMessage message) {
         System.out.println("O " + message.getUserId() + " jogou um " + message.getCardPlayed().getImageUrl());
-
+        System.out.println("Ele tem " + match.getPlayers().get(message.getUserId()).getDeck().size() + " cartas.");
         this.onPlayCardMessage(message);
     }
 

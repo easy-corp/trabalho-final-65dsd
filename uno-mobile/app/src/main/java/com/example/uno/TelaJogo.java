@@ -200,6 +200,20 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
         binder.getService().enviarMensagem(msg);
     }
 
+    public void enviarCartaComprada(Card carta) {
+        String msg = new MessageBuilder()
+                .withType("buy-card")
+                .withParam("userId", String.valueOf(jogador.getUserId()))
+                .withParam("matchId", String.valueOf(this.getJogo().getMatchId()))
+                .withParam("cardSymbol", carta.getSimbolo())
+                .withParam("cardColor", String.valueOf(carta.getColor()))
+                .withParam("cardImageUrl", carta.getImageUrl())
+                .build();
+
+        binder.getService().enviarMensagem(msg);
+    }
+
+
     //Cria animações na tela para compra de cartas na mesa
     private void setAnimacaoComprarCarta() {
         ImageView imgMonte = findViewById(R.id.imgMonte);
@@ -214,48 +228,52 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
         imgMonte.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isFront) {
-                    //Recupera e troca a carta para o flip seguinte
-                    cartaVirada = jogo.getDeck().get(random.nextInt(jogo.getDeck().size()));
-                    int image = getResources().getIdentifier(cartaVirada.getImageUrl(), "drawable", getPackageName());
-                    imgMonteVirado.setBackgroundResource(image);
+                if (myTurn) {
+                    if (isFront) {
+                        //Recupera e troca a carta para o flip seguinte
+                        cartaVirada = jogo.getDeck().get(random.nextInt(jogo.getDeck().size()));
+                        int image = getResources().getIdentifier(cartaVirada.getImageUrl(), "drawable", getPackageName());
+                        imgMonteVirado.setBackgroundResource(image);
 
-                    //Move a carta de volta para baixo do monte
-                    ObjectAnimator moveIn = ObjectAnimator.ofFloat(imgMonteVirado, "translationY", 0);
-                    moveIn.setDuration(0);
-                    moveIn.start();
+                        //Move a carta de volta para baixo do monte
+                        ObjectAnimator moveIn = ObjectAnimator.ofFloat(imgMonteVirado, "translationY", 0);
+                        moveIn.setDuration(0);
+                        moveIn.start();
 
-                    //Flipa a carta de costas
-                    flipFront.setTarget(imgMonte);
-                    flipBack.setTarget(imgMonteVirado);
+                        //Flipa a carta de costas
+                        flipFront.setTarget(imgMonte);
+                        flipBack.setTarget(imgMonteVirado);
 
-                    flipFront.start();
-                    flipBack.start();
+                        flipFront.start();
+                        flipBack.start();
 
-                    isFront = false;
-                } else {
-                    //Tira a carta da tela
-                    ObjectAnimator moveOut = ObjectAnimator.ofFloat(imgMonteVirado, "translationY", 1000f);
-                    moveOut.setDuration(600);
-                    moveOut.start();
+                        isFront = false;
+                    } else {
+                        //Tira a carta da tela
+                        ObjectAnimator moveOut = ObjectAnimator.ofFloat(imgMonteVirado, "translationY", 1000f);
+                        moveOut.setDuration(600);
+                        moveOut.start();
 
-                    //Volta a de costas para cima
-                    flipFront.setTarget(imgMonteVirado);
-                    flipBack.setTarget(imgMonte);
+                        //Volta a de costas para cima
+                        flipFront.setTarget(imgMonteVirado);
+                        flipBack.setTarget(imgMonte);
 
-                    flipBack.start();
-                    flipFront.start();
+                        flipBack.start();
+                        flipFront.start();
 
-                    isFront = true;
-                    myTurn = false;
+                        isFront = true;
+                        myTurn = false;
 
-                    //Adiciona a carta na mão do jogador
-                    jogo.getPlayers().get(userJogada).compraCarta();
-                    jogador.getDeck().add(cartaVirada);
-//                        jogo.getDeck().remove(cartaVirada);
+                        //Adiciona a carta na mão do jogador
+//                        jogo.getPlayers().get(userJogada).compraCarta();
+//                        jogador.getDeck().add(cartaVirada);
 
-                    //Atualiza as listas
-                    atualizarListas();
+                        //Avisa que o jogador comprou uma carta
+                        enviarCartaComprada(cartaVirada);
+
+                        //Atualiza as listas
+                        atualizarListas();
+                    }
                 }
             }
         });
@@ -310,10 +328,10 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
 
         //Cria a mensagem e envia ao servidor
         String msg = new MessageBuilder()
-                .withType("ready-to-play")
-                .withParam("matchId", getIntent().getStringExtra("matchId"))
-                .withParam("userId", getIntent().getStringExtra("userId"))
-                .build();
+            .withType("ready-to-play")
+            .withParam("matchId", getIntent().getStringExtra("matchId"))
+            .withParam("userId", getIntent().getStringExtra("userId"))
+            .build();
 
         binder.getService().enviarMensagem(msg);
 
@@ -485,6 +503,14 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
                                 atualizarCartaMesa(carta);
                             }
                         });
+
+                        break;
+                    case "card-buyed":
+                    //Quando o jogador compra uma carta
+                        us = gson.fromJson(msg.getContent().toString(), User.class);
+
+                        //Atualiza o número de cartas desse jogador
+                        jogo.getPlayers().get(us.getUserId()).compraCarta();
 
                         break;
                     case "match-ended":

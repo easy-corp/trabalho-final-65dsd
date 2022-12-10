@@ -71,8 +71,10 @@ public class User {
     //Localiza a carta referida e tira ela da minha mão
     public void popCarta(Card c) {
         for(Card card : this.deck){
-            if (card.getSimbolo() == c.getSimbolo() && card.getColor() == c.getColor()) {
-                this.deck.remove(c);
+            if (card.getImageUrl().contentEquals(c.getImageUrl())) {
+                this.deck.remove(card);
+
+                break;
             }
         }
     }
