@@ -1,19 +1,25 @@
 package com.example.uno;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+
+import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.uno.control.NotificationService;
 import com.example.uno.control.socket.IMessageListener;
-import com.example.uno.control.socket.MessageBuilder;
 import com.example.uno.control.socket.ServiceSocket;
 
 public class TelaInicial extends AppCompatActivity implements ServiceConnection, IMessageListener {
@@ -49,12 +55,11 @@ public class TelaInicial extends AppCompatActivity implements ServiceConnection,
         if (ip.isEmpty() || porta.isEmpty()) {
             exibirMensagem("Você precisa inserir ip e porta para poder se conectar.");
         } else {
+
             if (ip.contains(".")) {
                 //Binda o serviço nessa Activity
                 bindService(new Intent(this, ServiceSocket.class), service, Context.BIND_AUTO_CREATE);
                 startService(ip, porta);
-
-                Intent intent = new Intent(this, TelaLogin.class);
 
                 if (testarConexao()) {
                     startActivity(new Intent(this, TelaLogin.class));

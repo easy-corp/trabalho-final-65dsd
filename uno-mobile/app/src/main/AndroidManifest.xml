@@ -17,34 +17,43 @@
         tools:targetApi="31">
         <activity
             android:name=".TelaCriarJogo"
-            android:exported="false" />
+            android:exported="true" />
 
         <service
             android:name=".control.socket.ServiceSocket"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true">
+        </service>
+        <service
+            android:name=".control.NotificationService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
 
         <activity
             android:name=".TelaLogin"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".TelaResultados"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".TelaTestesSocket"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".TelaJogo"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".TelaEntrarJogo"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".TelaPerfil"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".TelaCadastro"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".TelaInicial"
             android:exported="true">

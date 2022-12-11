@@ -10,6 +10,8 @@ import br.udesc.core.model.User;
 import br.udesc.core.model.User.UserStatus;
 import br.udesc.core.server.messages.*;
 
+// import com.google.firebase.messaging;
+
 public class ServerController {
 
     private static ServerController instance; // Instância do Singleton
