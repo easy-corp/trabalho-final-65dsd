@@ -70,10 +70,16 @@ public class AdapterCartasJogador extends RecyclerView.Adapter<AdapterCartasJoga
 
                         //Atualiza a quantidade de cartas do jogador da vez
                         jogador.removeCarta(carta);
-
                         telaJogo.atualizarListas();
 
+                        //Determina que não é mais a vez do jogador
                         telaJogo.setMyTurn(false);
+
+                        //Se o jogador tiver apenas 1 carta
+                        //Indica que ele pode pedir Uno
+                        if (jogador.getDeck().size() == 1 && !jogador.isUno()) {
+                            telaJogo.habilitarPedirUno(true);
+                        }
                     } else {
                         holder.imgCarta.startAnimation(AnimationUtils.loadAnimation(telaJogo, R.animator.shake));
                     }

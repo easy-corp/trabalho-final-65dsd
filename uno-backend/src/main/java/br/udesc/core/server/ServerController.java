@@ -125,6 +125,8 @@ public class ServerController {
                 MessageBroker.getInstance().sendMessageToUser(user.getId(), gson.toJson(messageToPlayers));
             }
         }
+
+        u.getDeck().clear();
     }
 
     // Indica que o jogador está pronto para jogar
@@ -170,6 +172,18 @@ public class ServerController {
     public void buyCard(BuyCardMessage message) {
         MatchRunner runner = registry.getRunner(message.getMatchId());
         runner.onBuyCardMessage(message);
+    }
+
+    // Indica que o jogo precisou dar ao jogador várias cartas
+    public void buyCardAuto(BuyCardAutoMessage message) {
+        MatchRunner runner = registry.getRunner(message.getMatchId());
+        runner.onBuyCardAutoMessage(message);
+    }
+
+    // Indica que um jogador pediu uno
+    public void askUno(AskUnoMessage message) {
+        MatchRunner runner = registry.getRunner(message.getMatchId());
+        runner.onAskUno(message);
     } 
 
     public String signUp(String username, String password, int avatarId) {

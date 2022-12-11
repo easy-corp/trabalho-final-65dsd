@@ -20,14 +20,9 @@ import com.example.uno.control.socket.IMessageListener;
 import com.example.uno.control.socket.MessageBuilder;
 import com.example.uno.control.socket.ServiceSocket;
 import com.example.uno.model.Avatar;
-import com.example.uno.model.Match;
 import com.example.uno.model.User;
-import com.example.uno.model.message.TypedMessage;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import com.google.gson.reflect.TypeToken;
-
 import java.lang.reflect.Type;
 import java.util.List;
 

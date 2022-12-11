@@ -10,6 +10,8 @@ import br.udesc.core.model.Card;
 import br.udesc.core.model.Match;
 import br.udesc.core.model.User;
 import br.udesc.core.model.User.UserStatus;
+import br.udesc.core.server.messages.AskUnoMessage;
+import br.udesc.core.server.messages.BuyCardAutoMessage;
 import br.udesc.core.server.messages.BuyCardMessage;
 import br.udesc.core.server.messages.PlayCardMessage;
 import br.udesc.core.server.messages.TypedMessage;
@@ -54,8 +56,6 @@ public class MatchRunner extends Thread {
             User user = this.match.getPlayers().get(jogadorAtual);
             sendMessageToAllPlayers(new TypedMessage("player-turn", user));
 
-            System.out.println(gson.toJson(this.match));
-
             try {
                 // Aguarda o jogador jogar ou comprar uma carta, por um máximo de segundos
                 Awaitility.await()
@@ -90,8 +90,7 @@ public class MatchRunner extends Thread {
 
                     // Avisa todo mundo que o jogador comprou uma carta
                     // Os demais jogadores não precisam saber qual carta foi
-                    sendMessageToAllPlayers(new TypedMessage("card-buyed", us));
-                    
+                    sendMessageToAllPlayers(new TypedMessage("card-buyed", us));                    
                 }
 
                 // Pula pro próximo jogador da lista
@@ -154,6 +153,33 @@ public class MatchRunner extends Thread {
         this.lastBuyCardMessage = message;
     }
 
+    // Sempre que várias cartas forem compradas
+    // Isso acontece quando o jogador leva uma penalidade
+    public void onBuyCardAutoMessage(BuyCardAutoMessage message) {
+        // Adiciona essas cartas na mão do jogador
+        User us = this.match.getPlayers().get(message.getUserId());
+        List<Card> cards = message.getCardsBuyed();
+
+        for (Card c : cards) {
+            //Retira a carta do jogo
+            match.removerCarta(c);
+
+            //Adiciona a carta na mão do jogador
+            us.getDeck().add(c);
+        }
+
+        // Avisa aquele jogador q ele comprou várias cartas
+        // Envia o jogador e as cartas compradas
+        sendMessageToAllPlayers(new TypedMessage("card-buyed-auto", us));
+    }
+
+    public void onAskUno(AskUnoMessage message) {
+        User us = this.match.getPlayers().get(message.getUserId());
+        us.setIsUno(true);
+        
+        sendMessageToAllPlayersExcludeMe(new TypedMessage("asked-uno", us), us.getId());
+    }
+
     // Verifica se uma carta foi jogada ou se o jogador comprou
     // Essa verificação é feita com base no atributo que guarda a última carta jogada
     // Ou pelo número de cartas do jogador
@@ -185,6 +211,20 @@ public class MatchRunner extends Thread {
         for (User us : this.match.getPlayers().values()) {
             MessageBroker.getInstance().sendMessageToUser(us.getId(), gson.toJson(msg));
         }
+    }
+
+    // Envia uma mensagem para todos menos para quem fez a ação
+    private void sendMessageToAllPlayersExcludeMe(TypedMessage msg, int exclude) {
+        for (User us : this.match.getPlayers().values()) {
+            if (us.getId() != exclude) {
+                MessageBroker.getInstance().sendMessageToUser(us.getId(), gson.toJson(msg));
+            }
+        }
+    }
+
+    // Envia uma mensagem para um player específico
+    private void sendMessageToOnePlayer(TypedMessage msg, int userId) {
+        MessageBroker.getInstance().sendMessageToUser(userId, gson.toJson(msg));
     }
 
     // Indica que uma carta foi jogada
@@ -229,6 +269,7 @@ public class MatchRunner extends Thread {
         // Deixa os jogadores prontos para jogar novamente
         for (User p : match.getPlayers().values()) {
             p.setStatus(UserStatus.UNREADY);
+            p.setIsUno(false);
             p.getDeck().clear();
         }
 

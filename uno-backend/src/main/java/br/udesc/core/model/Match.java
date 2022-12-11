@@ -10,10 +10,6 @@ import java.util.Random;
 import java.util.Stack;
 
 import br.udesc.core.model.User.UserStatus;
-import br.udesc.core.server.ClientSocketThread;
-import br.udesc.core.server.MatchRunner;
-import br.udesc.core.server.Registry;
-import br.udesc.core.server.Server;
 
 public class Match {
 
@@ -200,7 +196,7 @@ public class Match {
     //Distribui as cartas aleatoriamente entre os jogadores
     public void distribuirCartas() {
         for (User j : this.getPlayers().values()) {
-            for (int i = 0; i < 7; i++) {
+            for (int i = 0; i < 2; i++) {
                 //Tira uma carta do baralho para meu deck
                 Card carta = this.getMatchdeck().get(this.random.nextInt(getMatchdeck().size()));
                 this.getMatchdeck().remove(carta);
@@ -241,9 +237,6 @@ public class Match {
 
     //Pega as cartas do monte de descarte, embaralha e devolve para o deck
     public void reporCartas() {
-        System.out.println("o descarte tem: " + this.discard.size());
-        System.out.println("o jogo tem: " + this.matchdeck.size());
-
         //Separa a carta da mesa
         Card c = this.discard.pop();
 
@@ -256,9 +249,6 @@ public class Match {
 
         //Devolve a carta da mesa;
         this.discard.add(c);
-        
-        System.out.println("o descarte tem: " + this.discard.size());
-        System.out.println("o jogo tem: " + this.matchdeck.size());
     }
 
 }

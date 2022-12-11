@@ -65,6 +65,8 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
     ImageView icSairJogo;
     FrameLayout layUno;
     FrameLayout layReady;
+    ImageView icPedirUno;
+    TextView txtPedirUno;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +76,8 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
         icSairJogo = findViewById(R.id.icSairJogo);
         layUno = findViewById(R.id.layUno);
         layReady = findViewById(R.id.layReady);
+        icPedirUno = findViewById(R.id.icPedirUno);
+        txtPedirUno = findViewById(R.id.txtPedirUno);
 
         this.gson = new Gson();
         this.service = this;
@@ -96,14 +100,23 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
                 e.printStackTrace();
             }
         });
-
-        layUno.setOnClickListener(param -> pedirUno());
     }
 
     @Override
     protected void onDestroy() {
         unbindService(service);
         super.onDestroy();
+    }
+
+    public void habilitarPedirUno(boolean opt) {
+        if (opt) {
+            layUno.setOnClickListener(param -> pedirUno());
+        } else {
+            icPedirUno.setBackgroundResource(R.drawable.mao_uno_nao_selecionado);
+            txtPedirUno.setTextColor(Color.parseColor("#595959"));
+            layUno.setOnClickListener(param -> exibirMensagem("Você não pode pedir Uno"));
+        }
+
     }
 
     public Match getJogo() {
@@ -216,6 +229,79 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
         binder.getService().enviarMensagem(msg);
     }
 
+    public void enviarCartaAutomatica(List<Card> cartas) {
+        String msg = new MessageBuilder()
+                .withType("buy-card-auto")
+                .withParam("userId", String.valueOf(jogador.getUserId()))
+                .withParam("matchId", String.valueOf(this.getJogo().getMatchId()))
+                .withParam("cards", gson.toJson(cartas))
+                .build();
+
+        binder.getService().enviarMensagem(msg);
+    }
+
+    public void compraAutomatica(int qtd) throws InterruptedException {
+        exibirMensagem("Você precisa comprar " + qtd + " cartas");
+        List<Card> cartas = new ArrayList<>();
+
+        ImageView imgMonte = findViewById(R.id.imgMonte);
+        ImageView imgMonteVirado = findViewById(R.id.imgMonteVirado);
+        AnimatorSet flipFront = (AnimatorSet) AnimatorInflater.loadAnimator(getApplicationContext(), R.animator.flip_front);
+        AnimatorSet flipBack = (AnimatorSet) AnimatorInflater.loadAnimator(getApplicationContext(), R.animator.flip_back);
+        Float scale = getApplicationContext().getResources().getDisplayMetrics().density;
+
+        imgMonte.setCameraDistance(8000 * scale);
+        imgMonteVirado.setCameraDistance(8000 * scale);
+
+        for (int i = 0; i < qtd; i++) {
+            //Recupera e troca a carta para o flip seguinte
+            cartaVirada = jogo.getDeck().get(random.nextInt(jogo.getDeck().size()));
+            int image = getResources().getIdentifier(cartaVirada.getImageUrl(), "drawable", getPackageName());
+            imgMonteVirado.setBackgroundResource(image);
+
+            //Move a carta de volta para baixo do monte
+            ObjectAnimator moveIn = ObjectAnimator.ofFloat(imgMonteVirado, "translationY", 0);
+            moveIn.setDuration(0);
+            moveIn.start();
+
+            //Flipa a carta de costas
+            flipFront.setTarget(imgMonte);
+            flipBack.setTarget(imgMonteVirado);
+
+            flipFront.start();
+            flipBack.start();
+
+            //Tira a carta da tela
+            ObjectAnimator moveOut = ObjectAnimator.ofFloat(imgMonteVirado, "translationY", 1000f);
+            moveOut.setDuration(600);
+            moveOut.start();
+
+            Thread.sleep(600);
+
+            //Volta a de costas para cima
+            flipFront.setTarget(imgMonteVirado);
+            flipBack.setTarget(imgMonte);
+
+            flipBack.start();
+            flipFront.start();
+
+            //Adiciona a carta na mão do jogador
+            //Remove a carta do deck
+            jogador.getDeck().add(cartaVirada);
+            jogo.getDeck().remove(cartaVirada);
+
+            //Atualiza as listas
+            atualizarListas();
+
+            //Indica que o jogador não pode pedir Uno
+            habilitarPedirUno(false);
+
+            cartas.add(cartaVirada);
+        }
+
+        //Avisa que o jogador comprou essas cartas
+        enviarCartaAutomatica(cartas);
+    }
 
     //Cria animações na tela para compra de cartas na mesa
     private void setAnimacaoComprarCarta() {
@@ -231,52 +317,69 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
         imgMonte.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Verifica se é minha vez de jogar
                 if (myTurn) {
-                    if (isFront) {
-                        //Recupera e troca a carta para o flip seguinte
-                        cartaVirada = jogo.getDeck().get(random.nextInt(jogo.getDeck().size()));
-                        int image = getResources().getIdentifier(cartaVirada.getImageUrl(), "drawable", getPackageName());
-                        imgMonteVirado.setBackgroundResource(image);
+                    //Verifica se eu deveria ter pedido Uno
+                    //Me da duas cartas do monte e avisa
+                    if (jogador.getDeck().size() == 1 && !jogador.isUno()) {
+                        exibirMensagem("Você esqueceu de pedir Uno.");
 
-                        //Move a carta de volta para baixo do monte
-                        ObjectAnimator moveIn = ObjectAnimator.ofFloat(imgMonteVirado, "translationY", 0);
-                        moveIn.setDuration(0);
-                        moveIn.start();
-
-                        //Flipa a carta de costas
-                        flipFront.setTarget(imgMonte);
-                        flipBack.setTarget(imgMonteVirado);
-
-                        flipFront.start();
-                        flipBack.start();
-
-                        isFront = false;
+                        //Me faz comprar carta automaticamente
+                        try {
+                            compraAutomatica(2);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     } else {
-                        //Tira a carta da tela
-                        ObjectAnimator moveOut = ObjectAnimator.ofFloat(imgMonteVirado, "translationY", 1000f);
-                        moveOut.setDuration(600);
-                        moveOut.start();
+                        if (isFront) {
+                            //Recupera e troca a carta para o flip seguinte
+                            cartaVirada = jogo.getDeck().get(random.nextInt(jogo.getDeck().size()));
+                            int image = getResources().getIdentifier(cartaVirada.getImageUrl(), "drawable", getPackageName());
+                            imgMonteVirado.setBackgroundResource(image);
 
-                        //Volta a de costas para cima
-                        flipFront.setTarget(imgMonteVirado);
-                        flipBack.setTarget(imgMonte);
+                            //Move a carta de volta para baixo do monte
+                            ObjectAnimator moveIn = ObjectAnimator.ofFloat(imgMonteVirado, "translationY", 0);
+                            moveIn.setDuration(0);
+                            moveIn.start();
 
-                        flipBack.start();
-                        flipFront.start();
+                            //Flipa a carta de costas
+                            flipFront.setTarget(imgMonte);
+                            flipBack.setTarget(imgMonteVirado);
 
-                        isFront = true;
-                        myTurn = false;
+                            flipFront.start();
+                            flipBack.start();
 
-                        //Adiciona a carta na mão do jogador
-                        //Remove a carta do deck
-                        jogador.getDeck().add(cartaVirada);
-                        jogo.getDeck().remove(cartaVirada);
+                            isFront = false;
+                        } else {
+                            //Tira a carta da tela
+                            ObjectAnimator moveOut = ObjectAnimator.ofFloat(imgMonteVirado, "translationY", 1000f);
+                            moveOut.setDuration(600);
+                            moveOut.start();
 
-                        //Avisa que o jogador comprou uma carta
-                        enviarCartaComprada(cartaVirada);
+                            //Volta a de costas para cima
+                            flipFront.setTarget(imgMonteVirado);
+                            flipBack.setTarget(imgMonte);
 
-                        //Atualiza as listas
-                        atualizarListas();
+                            flipBack.start();
+                            flipFront.start();
+
+                            isFront = true;
+                            myTurn = false;
+
+                            //Adiciona a carta na mão do jogador
+                            //Remove a carta do deck
+                            jogador.getDeck().add(cartaVirada);
+                            jogo.getDeck().remove(cartaVirada);
+
+                            //Avisa que o jogador comprou uma carta
+                            enviarCartaComprada(cartaVirada);
+
+                            //Atualiza as listas
+                            atualizarListas();
+
+                            //Indica que o jogador não pode pedir Uno
+                            habilitarPedirUno(false);
+                        }
                     }
                 }
             }
@@ -344,13 +447,19 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
 
     //Ao clicar para pedir uno
     public void pedirUno() {
-        ImageView icPedirUno = findViewById(R.id.icPedirUno);
-        TextView txtPedirUno = findViewById(R.id.txtPedirUno);
-
-        icPedirUno.setBackgroundResource(R.drawable.mao_uno_selecionado);
-        txtPedirUno.setTextColor(Color.parseColor("#ED1C24"));
+        this.icPedirUno.setBackgroundResource(R.drawable.mao_uno_selecionado);
+        this.txtPedirUno.setTextColor(Color.parseColor("#ED1C24"));
 
         this.jogador.setIsUno(true);
+
+        //Indica ao servidor que esse jogador pediu Uno
+        String msg = new MessageBuilder()
+            .withType("ask-uno")
+            .withParam("matchId", getIntent().getStringExtra("matchId"))
+            .withParam("userId", getIntent().getStringExtra("userId"))
+            .build();
+
+        binder.getService().enviarMensagem(msg);
     }
 
     //Quando o serviço for bindado
@@ -444,7 +553,7 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
 
                         //Não sabemos a mão dos outros jogadores, somente a quantidade
                         for (User player : this.jogo.getPlayers().values()) {
-                            player.setQtdCartas(player.getDeck().size());
+                            player.setQtdCartas(7);
                         }
 
                         break;
@@ -460,7 +569,6 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
                                 break;
                             }
                         }
-
 
                         //Atualiza a carta da mesa
                         runOnUiThread(new Runnable() {
@@ -530,6 +638,19 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
                         jogo.getPlayers().get(us.getUserId()).compraCarta();
 
                         break;
+                    case "card-buyed-auto":
+                        //Quando o jogador compra várias cartas
+                        //Por conta de alguma regra do jogo que puniu ele
+                        us = gson.fromJson(msg.getContent().toString(), User.class);
+
+                        //Atualiza o número de cartas desse jogador
+                        int diferenca = us.getDeck().size() - jogo.getPlayers().get(us.getUserId()).getDeck().size();
+
+                        for (int i = 0; i < diferenca; i++) {
+                            jogo.getPlayers().get(us.getUserId()).compraCarta();
+                        }
+
+                        break;
                     case "card-shuffled":
                         //Quando as cartas acabarem e precisarem ser reembaralhadas
                         //O servidor envia a partida
@@ -542,6 +663,19 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
                         //Atualiza as descartadas
                         this.jogo.getDiscard().clear();
                         this.jogo.getDiscard().addAll(match.getDiscard());
+
+                        break;
+                    case "asked-uno":
+                        //Quando alguém pedir uno
+                        User usUno = gson.fromJson(msg.getContent().toString(), User.class);
+
+                        //Atualiza a carta da mesa
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                exibirMensagem(usUno.getName() + " pediu uno. Fica de olho nele!");
+                            }
+                        });
 
                         break;
                     case "match-ended":
