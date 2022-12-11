@@ -31,9 +31,12 @@ import com.example.uno.model.Match;
 import com.example.uno.model.message.TypedMessage;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class TelaJogo extends AppCompatActivity implements ServiceConnection, IMessageListener {
@@ -265,7 +268,9 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
                         myTurn = false;
 
                         //Adiciona a carta na mão do jogador
+                        //Remove a carta do deck
                         jogador.getDeck().add(cartaVirada);
+                        jogo.getDeck().remove(cartaVirada);
 
                         //Avisa que o jogador comprou uma carta
                         enviarCartaComprada(cartaVirada);
@@ -427,18 +432,35 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
                         break;
                     case "match-started":
                         //Quando a partida começar
-                        us = gson.fromJson(msg.getContent().toString(), User.class);
-                        this.jogador.setDeck(us.getDeck());
+                        //O servidor envia a partida
+                        match = gson.fromJson(msg.getContent().toString(), Match.class);
+
+                        //Preenche meu deck com as cartas que o servidor separou para mim
+                        this.jogador.setDeck(match.getPlayers().get(this.jogador.getUserId()).getDeck());
+
+                        //Atualizo o deck sem essas cartas
+                        this.jogo.getDeck().clear();
+                        this.jogo.getDeck().addAll(match.getDeck());
 
                         //Não sabemos a mão dos outros jogadores, somente a quantidade
                         for (User player : this.jogo.getPlayers().values()) {
-                            player.setQtdCartas(7);
+                            player.setQtdCartas(player.getDeck().size());
                         }
 
                         break;
                     case "first-card":
                         //Para gerar a primeira carta na mesa
                         Card cartaMesa = gson.fromJson(msg.getContent().toString(), Card.class);
+
+                        //Remove a carta do deck
+                        for (Card c : jogo.getDeck()) {
+                            if (c.getImageUrl().contentEquals(cartaMesa.getImageUrl())) {
+                                jogo.getDeck().remove(c);
+
+                                break;
+                            }
+                        }
+
 
                         //Atualiza a carta da mesa
                         runOnUiThread(new Runnable() {
@@ -506,6 +528,20 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
 
                         //Atualiza o número de cartas desse jogador
                         jogo.getPlayers().get(us.getUserId()).compraCarta();
+
+                        break;
+                    case "card-shuffled":
+                        //Quando as cartas acabarem e precisarem ser reembaralhadas
+                        //O servidor envia a partida
+                        match = gson.fromJson(msg.getContent().toString(), Match.class);
+
+                        //Atualiza o deck
+                        this.jogo.getDeck().clear();
+                        this.jogo.getDeck().addAll(match.getDeck());
+
+                        //Atualiza as descartadas
+                        this.jogo.getDiscard().clear();
+                        this.jogo.getDiscard().addAll(match.getDiscard());
 
                         break;
                     case "match-ended":

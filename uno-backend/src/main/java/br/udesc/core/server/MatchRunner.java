@@ -54,6 +54,8 @@ public class MatchRunner extends Thread {
             User user = this.match.getPlayers().get(jogadorAtual);
             sendMessageToAllPlayers(new TypedMessage("player-turn", user));
 
+            System.out.println(gson.toJson(this.match));
+
             try {
                 // Aguarda o jogador jogar ou comprar uma carta, por um máximo de segundos
                 Awaitility.await()
@@ -104,12 +106,37 @@ public class MatchRunner extends Thread {
             if (verificarGanhador() != null) {
                 // Avisa todo mundo que a partida terminou
                 sendMessageToAllPlayers(new TypedMessage("match-ended", verificarGanhador()));
-                
-                // Deixa os jogadores prontos para jogar novamente
-                for (User p : match.getPlayers().values()) {
-                    p.setStatus(UserStatus.UNREADY);
-                }
 
+                terminarPartida();
+            }   
+
+            // Verifica se acabaram as cartas do monte
+            if (this.match.getMatchdeck().size() == 0) {
+                // Se tiverem cartas para serem embaralhadas e colocadas de volta no jogo
+                if (this.match.getDiscard().size() > 1) {
+                    this.match.reporCartas();
+
+                    sendMessageToAllPlayers(new TypedMessage("card-shuffled", gson.toJson(match)));
+                } else {
+                    // Do contrário termina o jogo e quem tiver com menos cartas ganha
+                    // Percorre todos vendo quem tem menos cartas
+                    User winner = this.match.getPlayers().get(0);
+
+                    for (User us : this.match.getPlayers().values()) {
+                        if (us.getDeck().size() < winner.getDeck().size()) {
+                            winner = us;
+                        }
+                    }
+
+                    // Avisa todo mundo que a partida terminou
+                    sendMessageToAllPlayers(new TypedMessage("match-ended", winner));
+                
+                    terminarPartida();
+                }
+            }
+
+            // Verifica se todos os jogadores do sairam da partida
+            if (this.match.getPlayers().size() == 0) {
                 // Termina essa thread
                 this.matchRunning = false;
                 this.interrupt();
@@ -196,6 +223,18 @@ public class MatchRunner extends Thread {
         }
 
         return winner;
+    }
+
+    public void terminarPartida() {
+        // Deixa os jogadores prontos para jogar novamente
+        for (User p : match.getPlayers().values()) {
+            p.setStatus(UserStatus.UNREADY);
+            p.getDeck().clear();
+        }
+
+        // Termina essa thread
+        this.matchRunning = false;
+        this.interrupt();
     }
 
 }

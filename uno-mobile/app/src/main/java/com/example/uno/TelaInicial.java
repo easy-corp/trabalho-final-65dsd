@@ -53,6 +53,8 @@ public class TelaInicial extends AppCompatActivity implements ServiceConnection,
             }
         });
 
+        testarConexao();
+
         FirebaseMessaging.getInstance().getToken().addOnSuccessListener(token -> {
             if (!TextUtils.isEmpty(token)) {
                 System.out.println("retrieve token successful : " + token);
@@ -71,31 +73,20 @@ public class TelaInicial extends AppCompatActivity implements ServiceConnection,
         if (ip.isEmpty() || porta.isEmpty()) {
             exibirMensagem("Você precisa inserir ip e porta para poder se conectar.");
         } else {
-
             if (ip.contains(".")) {
-                //Binda o serviço nessa Activity
-                bindService(new Intent(this, ServiceSocket.class), service, Context.BIND_AUTO_CREATE);
                 startService(ip, porta);
 
-                if (testarConexao()) {
-                    startActivity(new Intent(this, TelaLogin.class));
-                } else {
-                    exibirMensagem(ip + ":" + porta + " não é um servidor ativo.");
-                }
+                startActivity(new Intent(this, TelaLogin.class));
             } else {
                 exibirMensagem("IP inválido.");
             }
         }
     }
 
-    private boolean testarConexao() throws InterruptedException {
-        //Aguarda um tempo e verifica se o Binder estará disponível
-        Thread.sleep(500);
-
-        if (this.binder == null) {
-            return false;
-        } else {
-            return true;
+    private void testarConexao() {
+        //Verifica se voltou a essa tela com status de servidor offline
+        if (getIntent().getStringExtra("offServer") != null) {
+            exibirMensagem("O servidor solicitado está indisponível. Tente novamente.");
         }
     }
 

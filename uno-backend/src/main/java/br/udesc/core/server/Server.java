@@ -68,7 +68,6 @@ public class Server {
 
                     //Inicia a thread do cliente
                     clientThread.start();
-
                 }
 
             } catch (Exception e) {

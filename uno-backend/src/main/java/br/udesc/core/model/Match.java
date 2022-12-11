@@ -1,6 +1,8 @@
 package br.udesc.core.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -235,6 +237,28 @@ public class Match {
                 break;
             }
         }
+    }
+
+    //Pega as cartas do monte de descarte, embaralha e devolve para o deck
+    public void reporCartas() {
+        System.out.println("o descarte tem: " + this.discard.size());
+        System.out.println("o jogo tem: " + this.matchdeck.size());
+
+        //Separa a carta da mesa
+        Card c = this.discard.pop();
+
+        //Embaralha o restante
+        Collections.shuffle(discard);
+
+        //Adiciona as embaralhadas ao jogo e tira da pilha do descarte
+        this.matchdeck.addAll(this.discard);
+        this.discard.clear();
+
+        //Devolve a carta da mesa;
+        this.discard.add(c);
+        
+        System.out.println("o descarte tem: " + this.discard.size());
+        System.out.println("o jogo tem: " + this.matchdeck.size());
     }
 
 }

@@ -10,8 +10,6 @@ import br.udesc.core.model.User;
 import br.udesc.core.model.User.UserStatus;
 import br.udesc.core.server.messages.*;
 
-// import com.google.firebase.messaging;
-
 public class ServerController {
 
     private static ServerController instance; // Instância do Singleton
@@ -35,6 +33,11 @@ public class ServerController {
         }
 
         return instance;
+    }
+
+    // Testa a conexão com o servidor
+    public void testConnection(TestConnectionMessage message) {
+        message.sendReply("Connection ok");
     }
 
     // Recupera a lista de avatares
@@ -140,7 +143,7 @@ public class ServerController {
             match.iniciarPartida();
 
             for (User user : match.getPlayers().values()) {
-                TypedMessage messagetoUser = new TypedMessage("match-started", user);
+                TypedMessage messagetoUser = new TypedMessage("match-started", gson.toJson(match));
                 MessageBroker.getInstance().sendMessageToUser(user.getId(), gson.toJson(messagetoUser));
             }
             

@@ -97,6 +97,24 @@ public class TelaLogin extends AppCompatActivity implements ServiceConnection, I
     public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
         this.binder = (ServiceSocket.LocalBinder) iBinder;
         this.binder.addListener(this);
+
+        //Envia uma mensagem de teste ao servidor
+        //Aguarda uma resposta para verificar se o servidor está ok
+        String msg = new MessageBuilder()
+            .withType("test-connection")
+            .build();
+
+        this.binder.getService().enviarMensagem(msg);
+
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        if (this.message == null) {
+            startActivity(new Intent(this, TelaInicial.class).putExtra("offServer", "true"));
+        }
     }
 
     //Quando o serviço for desbindado
