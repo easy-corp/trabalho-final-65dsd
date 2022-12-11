@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
 
-import com.google.gson.JsonElement;
-
 import br.udesc.core.model.Avatar;
 import br.udesc.core.model.Match;
 import br.udesc.core.model.User;
@@ -101,6 +99,21 @@ public class Registry {
         try {
             mutex.acquire();
             matches.put(match.getMatchId(), match);
+            mutex.release();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateMatch(Match matchOther) {
+        try {
+            mutex.acquire();
+            Match match = matches.get(matchOther.getMatchId());
+
+            match.getPlayers().putAll(matchOther.getPlayers());
+            match.getMatchdeck().addAll(matchOther.getMatchdeck());
+            match.getDiscard().addAll(matchOther.getDiscard());
+
             mutex.release();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -206,8 +219,21 @@ public class Registry {
             
             //Verifica as partidas em que esse jogador está
             for (Match m : this.matches.values()) {
-                if (false) {
-                    vitorias.add(m);
+                //Se a partida já tiver sido jogada
+                if (m.getPlayers().size() > 0) {
+                    //Verifica quem ganhou a partida
+                    User winner = (User) m.getPlayers().values().toArray()[0];
+
+                    for (User player : m.getPlayers().values()) {
+                        if (player.getDeck().size() < winner.getDeck().size()) {
+                            winner = player;
+                        }
+                    }
+    
+                    //Se o vencedor for o jogador coloca essa junto das partidas que ele ganhou
+                    if (winner.getId() == userId) {
+                        vitorias.add(m);
+                    }
                 }
             }
 

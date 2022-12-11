@@ -28,12 +28,15 @@ public class MatchRunner extends Thread {
     private boolean matchRunning = true;           // Atributo que define que a partida está acontecendo
     private PlayCardMessage lastPlayCardMessage;   // A última carta jogada
     private BuyCardMessage lastBuyCardMessage;     // A última carta comprada
+    private int jogadorAtual;                      // Jogador da vez
+    private boolean reverse;                       // A sequência dos jogadores, muda quando uma carta de reverse for ativada
     private Gson gson;
     private Random random;
 
     public MatchRunner(Match match) throws InterruptedException {
         this.match = match;
         this.players = new ArrayList<>();
+        this.reverse = false;
         this.gson = new Gson();
         this.random = new Random();
 
@@ -45,7 +48,7 @@ public class MatchRunner extends Thread {
 
     @Override
     public void run() {
-        int jogadorAtual = 0;
+        this.jogadorAtual = 0;
 
         //Gera a carta inicial na mesa
         gerarCartaMesa();
@@ -53,7 +56,7 @@ public class MatchRunner extends Thread {
         while (matchRunning) {
             // Primeiro jogador a jogar
             // Avisa os demais que é a vez dele
-            User user = this.match.getPlayers().get(jogadorAtual);
+            User user = this.players.get(jogadorAtual);
             sendMessageToAllPlayers(new TypedMessage("player-turn", user));
 
             try {
@@ -76,6 +79,8 @@ public class MatchRunner extends Thread {
                     
                     // Coloca ela na lista de cartas descartadas
                     match.addDiscard(c);
+
+                    verifySpecialCard(c);
                 } else { //Se o jogador comprou uma carta
                     // Adiciona essa carta na mão do jogador
                     User us = this.match.getPlayers().get(lastBuyCardMessage.getUserId());
@@ -161,10 +166,10 @@ public class MatchRunner extends Thread {
         List<Card> cards = message.getCardsBuyed();
 
         for (Card c : cards) {
-            //Retira a carta do jogo
+            // Retira a carta do jogo
             match.removerCarta(c);
 
-            //Adiciona a carta na mão do jogador
+            // Adiciona a carta na mão do jogador
             us.getDeck().add(c);
         }
 
@@ -173,11 +178,49 @@ public class MatchRunner extends Thread {
         sendMessageToAllPlayers(new TypedMessage("card-buyed-auto", us));
     }
 
+    // Quando Uno for pedido
     public void onAskUno(AskUnoMessage message) {
         User us = this.match.getPlayers().get(message.getUserId());
         us.setIsUno(true);
         
         sendMessageToAllPlayersExcludeMe(new TypedMessage("asked-uno", us), us.getId());
+    }
+
+    // Verifica se a carta possui algum efeito especial
+    public void verifySpecialCard(Card card) {
+        switch (card.getSimbolo()) {
+            case "block":
+                int jogadorPulado = getProximoPlayer(jogadorAtual);
+
+                // Pular jogador
+                this.jogadorAtual = getProximoPlayer(jogadorAtual);
+
+                // Avisar ele que foi pulado
+                sendMessageToOnePlayer(new TypedMessage("blocked", this.match.getPlayers().get(jogadorPulado)), jogadorPulado);
+
+                break;
+            case "reverse":
+                // Inverte a ordem do jogo
+                inverterOrdem();
+                // Avisa a todos que a ordem foi invertida
+                sendMessageToAllPlayers(new TypedMessage("reverse", card));
+
+                break;
+            case "+2":
+                // Avisa aquele jogador q ele comprou várias cartas
+                User comprador = this.match.getPlayers().get(getProximoPlayer(jogadorAtual));
+                sendMessageToOnePlayer(new TypedMessage("+2", comprador), comprador.getId());
+                
+                break;
+        }
+    }
+
+    public void inverterOrdem() {
+        if (this.reverse) {
+            this.reverse = false;
+        } else {
+            this.reverse = true;
+        }
     }
 
     // Verifica se uma carta foi jogada ou se o jogador comprou
@@ -198,11 +241,21 @@ public class MatchRunner extends Thread {
 
     // Recupera o próximo player que deve jogar
     private int getProximoPlayer(int posAtual) {
-        // Se chegou ao último, volta ao começo da lista
-        if (posAtual == (this.players.size() - 1)) {
-            return 0;
+        // Se a ordem está invertida
+        if (this.reverse) {
+            // Se chegou ao último, volta ao começo da lista
+            if (posAtual == 0) {
+                return (this.players.size() - 1);
+            } else {
+                return posAtual - 1;
+            }
         } else {
-            return posAtual + 1;
+            // Se chegou ao último, volta ao começo da lista
+            if (posAtual == (this.players.size() - 1)) {
+                return 0;
+            } else {
+                return posAtual + 1;
+            }
         }
     }
 
@@ -266,11 +319,12 @@ public class MatchRunner extends Thread {
     }
 
     public void terminarPartida() {
+        Registry.getInstance().updateMatch(this.match);
+
         // Deixa os jogadores prontos para jogar novamente
         for (User p : match.getPlayers().values()) {
             p.setStatus(UserStatus.UNREADY);
             p.setIsUno(false);
-            p.getDeck().clear();
         }
 
         // Termina essa thread

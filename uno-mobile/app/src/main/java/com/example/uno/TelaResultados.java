@@ -52,13 +52,16 @@ public class TelaResultados extends AppCompatActivity implements ServiceConnecti
         bindService(new Intent(this, ServiceSocket.class), service, 0);
 
         ImageView icVoltar = findViewById(R.id.icSair);
-        ImageView icUsuario = findViewById(R.id.icUsuario);
         this.imgVencedorAvatar = findViewById(R.id.imgVencedorAvatar);
         this.txtVencedorNome = findViewById(R.id.txtVencedorNome);
 
-        icVoltar.setOnClickListener(param -> startActivity(new Intent(this, TelaEntrarJogo.class).putExtra("userId", String.valueOf(jogadorId))));
-
-        icUsuario.setOnClickListener(param -> startActivity(new Intent(this, TelaPerfil.class).putExtra("userId", String.valueOf(jogadorId))));
+        icVoltar.setOnClickListener(param -> {
+            try {
+                quitMatch();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     public void criarRecyclerView() {
@@ -89,6 +92,8 @@ public class TelaResultados extends AppCompatActivity implements ServiceConnecti
         this.jogo = gson.fromJson(json, Match.class);
         this.jogadorId = Integer.parseInt(getIntent().getStringExtra("userId"));
 
+        System.out.println(json);
+
         //Preenche vencedor
         User vencedor = jogo.getPlayers().get(Integer.parseInt(getIntent().getStringExtra("winnerId")));
         vencedor.getAvatar().click(true);
@@ -97,6 +102,21 @@ public class TelaResultados extends AppCompatActivity implements ServiceConnecti
         this.imgVencedorAvatar.setBackgroundResource(image);
 
         this.txtVencedorNome.setText(vencedor.getName());
+    }
+
+    //Sai da partida
+    public void quitMatch() throws InterruptedException {
+        String msg = new MessageBuilder()
+                .withType("quit-match")
+                .withParam("userId", getIntent().getStringExtra("userId"))
+                .withParam("matchId", getIntent().getStringExtra("matchId"))
+                .build();
+
+        binder.getService().enviarMensagem(msg);
+
+        Thread.sleep(500);
+
+        startActivity(new Intent(this, TelaEntrarJogo.class).putExtra("userId", String.valueOf(jogadorId)));
     }
 
     //Quando o serviço for bindado

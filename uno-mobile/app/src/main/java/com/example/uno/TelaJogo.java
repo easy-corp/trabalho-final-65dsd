@@ -24,17 +24,12 @@ import com.example.uno.control.adapter.AdapterJogadores;
 import com.example.uno.control.socket.IMessageListener;
 import com.example.uno.control.socket.MessageBuilder;
 import com.example.uno.control.socket.ServiceSocket;
-import com.example.uno.model.Avatar;
 import com.example.uno.model.Card;
 import com.example.uno.model.User;
 import com.example.uno.model.Match;
 import com.example.uno.model.message.TypedMessage;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -553,7 +548,7 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
 
                         //Não sabemos a mão dos outros jogadores, somente a quantidade
                         for (User player : this.jogo.getPlayers().values()) {
-                            player.setQtdCartas(7);
+                            player.setQtdCartas(match.getPlayers().get(player.getUserId()).getDeck().size());
                         }
 
                         break;
@@ -644,11 +639,7 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
                         us = gson.fromJson(msg.getContent().toString(), User.class);
 
                         //Atualiza o número de cartas desse jogador
-                        int diferenca = us.getDeck().size() - jogo.getPlayers().get(us.getUserId()).getDeck().size();
-
-                        for (int i = 0; i < diferenca; i++) {
-                            jogo.getPlayers().get(us.getUserId()).compraCarta();
-                        }
+                        jogo.getPlayers().get(us.getUserId()).setQtdCartas(us.getDeck().size());
 
                         break;
                     case "card-shuffled":
@@ -678,6 +669,44 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
                         });
 
                         break;
+                    case "blocked":
+                        //Indica que sua vez foi pulada
+                        us = gson.fromJson(msg.getContent().toString(), User.class);
+
+                        //Atualiza a carta da mesa
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                exibirMensagem("Sua vez foi pulada.");
+                            }
+                        });
+
+                        break;
+                    case "reverse":
+                        //Indica que a ordem do jogo foi invertida
+                        //Atualiza a carta da mesa
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                exibirMensagem("A ordem do jogo foi invertida.");
+                            }
+                        });
+
+                        break;
+                    case "+2":
+                        //Me faz comprar cartas automaticamente
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    compraAutomatica(2);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+
+                        break;
                     case "match-ended":
                         //Quando a partida termina
                         //Declara-se o ganhador
@@ -686,7 +715,7 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
                         //Inicia a tela de resultados
                         //Enviamos o jogador atual, a partida e o vencedor
                         Intent telaResultados = new Intent(this, TelaResultados.class);
-                        telaResultados.putExtra("userId", String.valueOf(jogador.getUserId()));
+                        telaResultados.putExtra("userId", String.valueOf(this.jogador.getUserId()));
                         telaResultados.putExtra("matchId", String.valueOf(jogo.getMatchId()));
                         telaResultados.putExtra("winnerId", String.valueOf(winner.getUserId()));
                         startActivity(telaResultados);

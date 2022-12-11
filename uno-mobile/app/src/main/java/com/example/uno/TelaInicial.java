@@ -55,21 +55,41 @@ public class TelaInicial extends AppCompatActivity implements ServiceConnection,
 
         testarConexao();
 
-        FirebaseMessaging.getInstance().getToken().addOnSuccessListener(token -> {
-            if (!TextUtils.isEmpty(token)) {
-                System.out.println("retrieve token successful : " + token);
-            } else{
-                System.out.println("token should not be null...");
-            }
-        }).addOnFailureListener(e -> {
-            System.out.println(e);
-        }).addOnCanceledListener(() -> {
-            //handle cancel
-        }).addOnCompleteListener(task ->
-                System.out.println("This is the token : " + task.getResult()));
+//        FirebaseMessaging.getInstance().getToken().addOnSuccessListener(token -> {
+//            if (!TextUtils.isEmpty(token)) {
+//                System.out.println("retrieve token successful : " + token);
+//            } else{
+//                System.out.println("token should not be null...");
+//            }
+//        }).addOnFailureListener(e -> {
+//            System.out.println(e);
+//        }).addOnCanceledListener(() -> {
+//            //handle cancel
+//        }).addOnCompleteListener(task ->
+//                System.out.println("This is the token : " + task.getResult()));
     }
 
     private void conectar(String ip, String porta) throws InterruptedException {
+        // Create an instance of the NotificationCompat.Builder class
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.uno)
+                .setContentTitle("Notification Title")
+                .setContentText("Notification body text goes here")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        // Get a reference to the NotificationManager
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // Use the NotificationManager to show the notification
+        notificationManager.notify(1, builder.build());
+
         if (ip.isEmpty() || porta.isEmpty()) {
             exibirMensagem("Você precisa inserir ip e porta para poder se conectar.");
         } else {

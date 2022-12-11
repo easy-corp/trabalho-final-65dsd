@@ -55,7 +55,7 @@ public class AdapterJogadoresResult extends RecyclerView.Adapter<AdapterJogadore
     //Pega o elemento na lista e joga o conteudo na view referente
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        User jogador = this.jogo.getPlayers().get(position);
+        User jogador = (User) this.jogo.getPlayers().values().toArray()[position];
         jogador.getAvatar().click(false);
 
         int image = this.telaResultados.getResources().getIdentifier(jogador.getAvatar().getImageUrl(), "drawable", telaResultados.getPackageName());
