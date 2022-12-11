@@ -1,29 +1,19 @@
 package com.example.uno;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-
-import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.uno.control.NotificationService;
 import com.example.uno.control.socket.IMessageListener;
 import com.example.uno.control.socket.ServiceSocket;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 public class TelaInicial extends AppCompatActivity implements ServiceConnection, IMessageListener {
 
@@ -54,42 +44,9 @@ public class TelaInicial extends AppCompatActivity implements ServiceConnection,
         });
 
         testarConexao();
-
-//        FirebaseMessaging.getInstance().getToken().addOnSuccessListener(token -> {
-//            if (!TextUtils.isEmpty(token)) {
-//                System.out.println("retrieve token successful : " + token);
-//            } else{
-//                System.out.println("token should not be null...");
-//            }
-//        }).addOnFailureListener(e -> {
-//            System.out.println(e);
-//        }).addOnCanceledListener(() -> {
-//            //handle cancel
-//        }).addOnCompleteListener(task ->
-//                System.out.println("This is the token : " + task.getResult()));
     }
 
     private void conectar(String ip, String porta) throws InterruptedException {
-        // Create an instance of the NotificationCompat.Builder class
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.uno)
-                .setContentTitle("Notification Title")
-                .setContentText("Notification body text goes here")
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-        // Get a reference to the NotificationManager
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        // Use the NotificationManager to show the notification
-        notificationManager.notify(1, builder.build());
-
         if (ip.isEmpty() || porta.isEmpty()) {
             exibirMensagem("Você precisa inserir ip e porta para poder se conectar.");
         } else {

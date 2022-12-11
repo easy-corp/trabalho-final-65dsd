@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.NotificationManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -37,6 +38,7 @@ import java.util.Random;
 public class TelaJogo extends AppCompatActivity implements ServiceConnection, IMessageListener {
 
     private ServiceConnection service;
+    private NotificationManager notificationManager;
     private String message;
     private ServiceSocket.LocalBinder binder;
     private Gson gson;
@@ -95,6 +97,9 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
                 e.printStackTrace();
             }
         });
+
+        // Get a reference to the NotificationManager
+        this.notificationManager = (NotificationManager) getSystemService(this.NOTIFICATION_SERVICE);
     }
 
     @Override
@@ -463,6 +468,8 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
     public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
         this.binder = (ServiceSocket.LocalBinder) iBinder;
         this.binder.addListener(this);
+        this.binder.addContext(this);
+        this.binder.addManager(notificationManager);
 
         try {
             entrarNaPartida();                           //Coloca o jogador na partida
@@ -480,19 +487,23 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
     //Quando a tela pausar
     @Override
     public void onPause() {
-        super.onPause();
         if (binder != null) {
-            binder.removeListener(this);
+            binder.setIsPause(true);
+//            binder.removeListener(this);
         }
+
+        super.onPause();
     }
 
     //Quando a tela voltar
     @Override
     public void onResume() {
-        super.onResume();
         if (binder != null) {
-            binder.addListener(this);
+            binder.setIsPause(false);
+//            binder.addListener(this);
         }
+
+        super.onResume();
     }
 
     //Esperando mensagens

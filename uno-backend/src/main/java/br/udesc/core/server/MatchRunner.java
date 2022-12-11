@@ -59,6 +59,9 @@ public class MatchRunner extends Thread {
             User user = this.players.get(jogadorAtual);
             sendMessageToAllPlayers(new TypedMessage("player-turn", user));
 
+            //Notica o player caso o jogo esteja minimizado
+            sendMessageToOnePlayer(new TypedMessage("notify-turn-turn", user), user.getId());
+
             try {
                 // Aguarda o jogador jogar ou comprar uma carta, por um máximo de segundos
                 Awaitility.await()
