@@ -163,8 +163,6 @@ public class ServerController {
     
     // Indica que uma carta foi comprada
     public void buyCard(BuyCardMessage message) {
-        System.out.println("O " + message.getUserId() + " comprou um " + message.getCardBuyed().getImageUrl());
-
         MatchRunner runner = registry.getRunner(message.getMatchId());
         runner.onBuyCardMessage(message);
     } 

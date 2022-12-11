@@ -198,14 +198,12 @@ public class Match {
     //Distribui as cartas aleatoriamente entre os jogadores
     public void distribuirCartas() {
         for (User j : this.getPlayers().values()) {
-            for (int i = 0; i < 1; i++) {
+            for (int i = 0; i < 7; i++) {
                 //Tira uma carta do baralho para meu deck
-                // Card carta = this.getMatchdeck().get(this.random.nextInt(getMatchdeck().size()));
-                // this.getMatchdeck().remove(carta);
+                Card carta = this.getMatchdeck().get(this.random.nextInt(getMatchdeck().size()));
+                this.getMatchdeck().remove(carta);
 
-                // j.addCarta(carta);
-
-                j.addCarta(this.getMatchdeck().get(0));
+                j.addCarta(carta);
             }
         }
     }

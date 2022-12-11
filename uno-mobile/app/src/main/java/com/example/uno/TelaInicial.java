@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.uno.control.socket.IMessageListener;
+import com.example.uno.control.socket.MessageBuilder;
 import com.example.uno.control.socket.ServiceSocket;
 
 public class TelaInicial extends AppCompatActivity implements ServiceConnection, IMessageListener {
@@ -28,14 +29,23 @@ public class TelaInicial extends AppCompatActivity implements ServiceConnection,
 
         this.service = this;
 
+        //Binda o serviço nessa Activity
+        bindService(new Intent(this, ServiceSocket.class), service, 0);
+
         EditText edIP = findViewById(R.id.edUsuario);
         EditText edPorta = findViewById(R.id.edSenha);
         Button btnConectar = findViewById(R.id.btnConectar);
 
-        btnConectar.setOnClickListener(param -> conectar(edIP.getText().toString(), edPorta.getText().toString()));
+        btnConectar.setOnClickListener(param -> {
+            try {
+                conectar(edIP.getText().toString(), edPorta.getText().toString());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
-    private void conectar(String ip, String porta) {
+    private void conectar(String ip, String porta) throws InterruptedException {
         if (ip.isEmpty() || porta.isEmpty()) {
             exibirMensagem("Você precisa inserir ip e porta para poder se conectar.");
         } else {
@@ -45,10 +55,26 @@ public class TelaInicial extends AppCompatActivity implements ServiceConnection,
                 startService(ip, porta);
 
                 Intent intent = new Intent(this, TelaLogin.class);
-                startActivity(new Intent(this, TelaLogin.class));
+
+                if (testarConexao()) {
+                    startActivity(new Intent(this, TelaLogin.class));
+                } else {
+                    exibirMensagem(ip + ":" + porta + " não é um servidor ativo.");
+                }
             } else {
                 exibirMensagem("IP inválido.");
             }
+        }
+    }
+
+    private boolean testarConexao() throws InterruptedException {
+        //Aguarda um tempo e verifica se o Binder estará disponível
+        Thread.sleep(500);
+
+        if (this.binder == null) {
+            return false;
+        } else {
+            return true;
         }
     }
 

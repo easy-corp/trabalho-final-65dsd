@@ -391,27 +391,23 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
     public void onMessage(String message) {
         this.message = message;
 
-        try {
-            User jogador = gson.fromJson(message, User.class);
+        User jogador = gson.fromJson(message, User.class);
 
-            if (jogador.getName() == null) {
-                throw new Exception();
-            }
-
+        if (jogador.getName() != null) {
             this.jogador = jogador;
-        } catch (Exception e) {
-            try {
-                Match match = gson.fromJson(message, Match.class);
+        } else {
+            Match match = gson.fromJson(message, Match.class);
 
-                if (match.getMatchName() == null) {
-                    throw new Exception();
-                }
-
+            if (match.getMatchName() != null) {
                 this.jogo = match;
 
-                criarRecyclerViewJogadores();                //Cria a lista de jogadores na tela
-                criarRecyclerViewCartas();                   //Cria a lista de cartas do jogador na tela
-            } catch (Exception ex) {
+                try {
+                    criarRecyclerViewJogadores();                //Cria a lista de jogadores na tela
+                    criarRecyclerViewCartas();                   //Cria a lista de cartas do jogador na tela
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            } else {
                 TypedMessage msg = gson.fromJson(message, TypedMessage.class);
                 User us = null;
 
@@ -424,13 +420,13 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
 
                         break;
                     case "player-exited":
-                    //Quando um player sai da partida
+                        //Quando um player sai da partida
                         us = gson.fromJson(msg.getContent().toString(), User.class);
                         this.jogo.removePlayer(us);
 
                         break;
                     case "match-started":
-                    //Quando a partida começar
+                        //Quando a partida começar
                         us = gson.fromJson(msg.getContent().toString(), User.class);
                         this.jogador.setDeck(us.getDeck());
 
@@ -441,7 +437,7 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
 
                         break;
                     case "first-card":
-                    //Para gerar a primeira carta na mesa
+                        //Para gerar a primeira carta na mesa
                         Card cartaMesa = gson.fromJson(msg.getContent().toString(), Card.class);
 
                         //Atualiza a carta da mesa
@@ -454,8 +450,8 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
 
                         break;
                     case "player-turn":
-                    //A cada jogada
-                    //Avisa de quem é a vez
+                        //A cada jogada
+                        //Avisa de quem é a vez
                         User usJogada = gson.fromJson(msg.getContent().toString(), User.class);
                         this.userJogada = usJogada.getUserId();
 
@@ -489,7 +485,7 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
 
                         break;
                     case "card-played":
-                    //Quando uma carta é jogada
+                        //Quando uma carta é jogada
                         Card carta = gson.fromJson(msg.getContent().toString(), Card.class);
 
                         //Atualiza a quantidade de cartas do jogador da vez
@@ -505,7 +501,7 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
 
                         break;
                     case "card-buyed":
-                    //Quando o jogador compra uma carta
+                        //Quando o jogador compra uma carta
                         us = gson.fromJson(msg.getContent().toString(), User.class);
 
                         //Atualiza o número de cartas desse jogador
@@ -535,7 +531,6 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
                         atualizarListas();
                     }
                 });
-
             }
         }
     }

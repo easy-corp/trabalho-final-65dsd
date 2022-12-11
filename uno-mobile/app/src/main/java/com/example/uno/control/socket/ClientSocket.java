@@ -53,6 +53,7 @@ public class ClientSocket extends Thread {
                 input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             } catch (IOException e) {
                 e.printStackTrace();
+                this.killThread();
             }
         }
 
@@ -85,8 +86,10 @@ public class ClientSocket extends Thread {
         }
 
         try {
-            output.close();
-            clientSocket.close();
+            if (output != null && clientSocket != null) {
+                output.close();
+                clientSocket.close();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

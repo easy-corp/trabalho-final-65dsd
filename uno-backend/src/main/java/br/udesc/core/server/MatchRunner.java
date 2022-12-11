@@ -16,7 +16,6 @@ import br.udesc.core.server.messages.TypedMessage;
 
 import org.awaitility.Awaitility;
 import org.awaitility.core.ConditionTimeoutException;
-import org.hamcrest.core.AnyOf;
 
 import com.google.gson.Gson;
 
@@ -169,8 +168,7 @@ public class MatchRunner extends Thread {
     //Gera carta inicial virada para cima na mesa
     private void gerarCartaMesa() {
         //Pega uma carta aleatoriamente para botar na mesa
-        // Card carta = this.match.getMatchdeck().get(random.nextInt(this.match.getMatchdeck().size()));
-        Card carta = this.match.getMatchdeck().get(0);
+        Card carta = this.match.getMatchdeck().get(random.nextInt(this.match.getMatchdeck().size()));
 
         //Ela não pode ser preta
         if (carta.getColor() == Card.Color.BLACK) {
