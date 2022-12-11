@@ -17,12 +17,9 @@ import com.google.firebase.messaging.RemoteMessage;
 
 public class NotificationService extends FirebaseMessagingService {
 
-    private String token;
-
     @Override
     public void onNewToken(String s) {
         super.onNewToken(s);
-        this.token = s;
         System.out.println("NEW_TOKEN: " + s);
     }
 

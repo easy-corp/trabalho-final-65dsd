@@ -14,6 +14,8 @@ import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -21,6 +23,7 @@ import android.widget.Toast;
 import com.example.uno.control.NotificationService;
 import com.example.uno.control.socket.IMessageListener;
 import com.example.uno.control.socket.ServiceSocket;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class TelaInicial extends AppCompatActivity implements ServiceConnection, IMessageListener {
 
@@ -49,6 +52,19 @@ public class TelaInicial extends AppCompatActivity implements ServiceConnection,
                 e.printStackTrace();
             }
         });
+
+        FirebaseMessaging.getInstance().getToken().addOnSuccessListener(token -> {
+            if (!TextUtils.isEmpty(token)) {
+                System.out.println("retrieve token successful : " + token);
+            } else{
+                System.out.println("token should not be null...");
+            }
+        }).addOnFailureListener(e -> {
+            System.out.println(e);
+        }).addOnCanceledListener(() -> {
+            //handle cancel
+        }).addOnCompleteListener(task ->
+                System.out.println("This is the token : " + task.getResult()));
     }
 
     private void conectar(String ip, String porta) throws InterruptedException {
