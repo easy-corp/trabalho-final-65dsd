@@ -147,6 +147,10 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
 
         Thread.sleep(500);
 
+        //Remove o bind dessa tela
+        this.binder.removeListener(this);
+        this.binder.setIsPause(false);
+
         startActivity(new Intent(this, TelaEntrarJogo.class).putExtra("userId", String.valueOf(jogador.getUserId())));
     }
 
@@ -489,7 +493,6 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
     public void onPause() {
         if (binder != null) {
             binder.setIsPause(true);
-//            binder.removeListener(this);
         }
 
         super.onPause();
@@ -500,7 +503,6 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
     public void onResume() {
         if (binder != null) {
             binder.setIsPause(false);
-//            binder.addListener(this);
         }
 
         super.onResume();

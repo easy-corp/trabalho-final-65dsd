@@ -177,6 +177,17 @@ public class Registry {
         return null;
     }
 
+    public void killRunner(int matchId) {
+        try {
+            mutex.acquire();
+            MatchRunner runner = runners.get(matchId);
+            runner = null;
+            mutex.release();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     private Map<Integer, Avatar> buildAvatars() {
         Map<Integer, Avatar> avatars = new HashMap<>();
 

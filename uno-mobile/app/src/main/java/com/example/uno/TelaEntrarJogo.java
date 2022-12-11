@@ -111,6 +111,7 @@ public class TelaEntrarJogo extends AppCompatActivity implements ServiceConnecti
 
         try {
             criarRecyclerView();
+            binder.setIsPause(false);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

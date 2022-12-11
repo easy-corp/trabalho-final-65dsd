@@ -256,9 +256,6 @@ public class ServerController {
     public String quitMatch(int userId, int matchId) {
         this.registry.removePlayerFromMatch(matchId, userId);
         Match match = this.registry.getMatch(matchId);
-        User user = match.getPlayers().get(userId);
-        
-        user.setStatus(UserStatus.UNREADY);
 
         return gson.toJson(match);
     }

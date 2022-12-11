@@ -54,6 +54,11 @@ public class MatchRunner extends Thread {
         gerarCartaMesa();
 
         while (matchRunning) {
+            // Verifica se todos os jogadores do sairam da partida
+            if (this.match.getPlayers().size() == 0) {
+                terminarPartida();
+            }
+
             // Primeiro jogador a jogar
             // Avisa os demais que é a vez dele
             User user = this.players.get(jogadorAtual);
@@ -141,13 +146,6 @@ public class MatchRunner extends Thread {
                     terminarPartida();
                 }
             }
-
-            // Verifica se todos os jogadores do sairam da partida
-            if (this.match.getPlayers().size() == 0) {
-                // Termina essa thread
-                this.matchRunning = false;
-                this.interrupt();
-            }
         }
     }
 
@@ -212,7 +210,11 @@ public class MatchRunner extends Thread {
             case "+2":
                 // Avisa aquele jogador q ele comprou várias cartas
                 User comprador = this.match.getPlayers().get(getProximoPlayer(jogadorAtual));
-                sendMessageToOnePlayer(new TypedMessage("+2", comprador), comprador.getId());
+
+                // Se estiver jogando sozinho, não compra +2
+                if (comprador.getId() != jogadorAtual) {
+                    sendMessageToOnePlayer(new TypedMessage("+2", comprador), comprador.getId());
+                }
                 
                 break;
         }
@@ -333,6 +335,8 @@ public class MatchRunner extends Thread {
         // Termina essa thread
         this.matchRunning = false;
         this.interrupt();
+
+        Registry.getInstance().killRunner(this.match.getMatchId());
     }
 
 }
