@@ -74,7 +74,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Luis Felipe"
             android:textColor="#ED1C24"
             android:textSize="20sp"
             android:textStyle="bold"

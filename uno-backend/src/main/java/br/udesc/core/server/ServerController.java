@@ -1,12 +1,7 @@
 package br.udesc.core.server;
 
-import java.time.Duration;
 import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 import java.awt.EventQueue;
-
-import org.awaitility.Awaitility;
 
 import com.google.gson.Gson;
 
@@ -75,6 +70,11 @@ public class ServerController {
     // Cria uma nova partida
     public void createMatch(CreateMatchMessage message) {
         message.sendReply(createMatch(message.getName(), message.getQtdPlayers()));
+    }
+
+    // Recupera uma partida
+    public void getMatch(GetMatchMessage message) {
+        message.sendReply(getMatch(message.getMatchId()));
     }
 
     // Recupera a lista de partidas
@@ -157,8 +157,6 @@ public class ServerController {
 
     // Indica que uma carta foi jogada
     public void playCard(PlayCardMessage message) {
-        System.out.println("O " + message.getUserId() + " jogou um " + message.getCardPlayed().getImageUrl());
-
         MatchRunner runner = registry.getRunner(message.getMatchId());
         runner.onPlayCardMessage(message);
     }
@@ -199,11 +197,6 @@ public class ServerController {
         return gson.toJson(user);
     }
 
-    public String getMatch(int matchId) {
-        Match match = this.registry.getMatch(matchId);
-        return gson.toJson(match);
-    }
-
     public String createMatch(String name, int qtdPlayers) {
         Match match = new Match(name, qtdPlayers);
 
@@ -214,6 +207,12 @@ public class ServerController {
 
     public String getAvatarsList() {
         return gson.toJson(this.registry.getAvatarsList());
+    }
+
+    public String getMatch(int matchId) {
+        Match match = this.registry.getMatch(matchId);
+
+        return gson.toJson(match);
     }
 
     public String getMatchesList() {

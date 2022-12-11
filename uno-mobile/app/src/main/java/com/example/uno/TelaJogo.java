@@ -265,8 +265,7 @@ public class TelaJogo extends AppCompatActivity implements ServiceConnection, IM
                         myTurn = false;
 
                         //Adiciona a carta na mão do jogador
-//                        jogo.getPlayers().get(userJogada).compraCarta();
-//                        jogador.getDeck().add(cartaVirada);
+                        jogador.getDeck().add(cartaVirada);
 
                         //Avisa que o jogador comprou uma carta
                         enviarCartaComprada(cartaVirada);

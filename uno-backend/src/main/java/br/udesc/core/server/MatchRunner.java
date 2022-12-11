@@ -9,6 +9,7 @@ import java.util.concurrent.Callable;
 import br.udesc.core.model.Card;
 import br.udesc.core.model.Match;
 import br.udesc.core.model.User;
+import br.udesc.core.model.User.UserStatus;
 import br.udesc.core.server.messages.BuyCardMessage;
 import br.udesc.core.server.messages.PlayCardMessage;
 import br.udesc.core.server.messages.TypedMessage;
@@ -80,6 +81,9 @@ public class MatchRunner extends Thread {
                     Card c = lastBuyCardMessage.getCardBuyed();
                     lastBuyCardMessage = null;
 
+                    //Retira a carta do jogo
+                    match.removerCarta(c);
+
                     //Adiciona a carta na mão do jogador
                     us.getDeck().add(c);
 
@@ -95,16 +99,21 @@ public class MatchRunner extends Thread {
                 // Pula pro próximo jogador da lista
                 jogadorAtual = getProximoPlayer(jogadorAtual);
             }
-
-            for (User p : match.getPlayers().values()) {
-                System.out.println("O " + p.getName() + " tem " + p.getDeck().size() + " cartas.");
-            }
             
             // Verifica se a partida terminou
             // Se algum jogador estiver com 0 cartas
             if (verificarGanhador() != null) {
                 // Avisa todo mundo que a partida terminou
                 sendMessageToAllPlayers(new TypedMessage("match-ended", verificarGanhador()));
+                
+                // Deixa os jogadores prontos para jogar novamente
+                for (User p : match.getPlayers().values()) {
+                    p.setStatus(UserStatus.UNREADY);
+                }
+
+                // Termina essa thread
+                this.matchRunning = false;
+                this.interrupt();
             }
         }
     }
@@ -154,15 +163,14 @@ public class MatchRunner extends Thread {
 
     // Indica que uma carta foi jogada
     public void playCard(PlayCardMessage message) {
-        System.out.println("O " + message.getUserId() + " jogou um " + message.getCardPlayed().getImageUrl());
-        System.out.println("Ele tem " + match.getPlayers().get(message.getUserId()).getDeck().size() + " cartas.");
         this.onPlayCardMessage(message);
     }
 
     //Gera carta inicial virada para cima na mesa
     private void gerarCartaMesa() {
         //Pega uma carta aleatoriamente para botar na mesa
-        Card carta = this.match.getMatchdeck().get(random.nextInt(this.match.getMatchdeck().size()));
+        // Card carta = this.match.getMatchdeck().get(random.nextInt(this.match.getMatchdeck().size()));
+        Card carta = this.match.getMatchdeck().get(0);
 
         //Ela não pode ser preta
         if (carta.getColor() == Card.Color.BLACK) {
@@ -184,6 +192,8 @@ public class MatchRunner extends Thread {
         for (User us : match.getPlayers().values()) {
             if (us.getDeck().size() == 0) {
                 winner = us;
+
+                break;
             }   
         }
 

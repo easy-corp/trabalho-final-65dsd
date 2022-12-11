@@ -25,6 +25,7 @@ public class AdapterJogadoresResult extends RecyclerView.Adapter<AdapterJogadore
         LinearLayout layout;
         ImageView imgJogador;
         TextView txtNome;
+        TextView txtCartas;
 
         public ViewHolder(View view) {
             super(view);
@@ -32,6 +33,7 @@ public class AdapterJogadoresResult extends RecyclerView.Adapter<AdapterJogadore
             layout = (LinearLayout) view.findViewById(R.id.layJogadoresResult);
             imgJogador = (ImageView) view.findViewById(R.id.imgJogadorResult);
             txtNome = (TextView) view.findViewById(R.id.txtNomeResult);
+            txtCartas = (TextView) view.findViewById(R.id.txtCartas);
         }
     }
 
@@ -54,11 +56,13 @@ public class AdapterJogadoresResult extends RecyclerView.Adapter<AdapterJogadore
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         User jogador = this.jogo.getPlayers().get(position);
-        jogador.getAvatar().click(true);
+        jogador.getAvatar().click(false);
+
         int image = this.telaResultados.getResources().getIdentifier(jogador.getAvatar().getImageUrl(), "drawable", telaResultados.getPackageName());
 
         holder.imgJogador.setBackgroundResource(image);
         holder.txtNome.setText(jogador.getName());
+        holder.txtCartas.setText(jogador.getDeck().size() + " cartas");
     }
 
     @Override

@@ -26,8 +26,10 @@ public class TelaResultados extends AppCompatActivity implements ServiceConnecti
     private ServiceConnection service;
     private String message;
     private ServiceSocket.LocalBinder binder;
-    private Match jogo;
     private Gson gson;
+
+    private Match jogo;
+    private int jogadorId;
 
     //RecyclerView
     private RecyclerView listaJogadoresResult;
@@ -46,14 +48,17 @@ public class TelaResultados extends AppCompatActivity implements ServiceConnecti
         this.gson = new Gson();
         this.service = this;
 
+        //Binda o serviço nessa Activity
+        bindService(new Intent(this, ServiceSocket.class), service, 0);
+
         ImageView icVoltar = findViewById(R.id.icSair);
         ImageView icUsuario = findViewById(R.id.icUsuario);
         this.imgVencedorAvatar = findViewById(R.id.imgVencedorAvatar);
         this.txtVencedorNome = findViewById(R.id.txtVencedorNome);
 
-        icVoltar.setOnClickListener(param -> startActivity(new Intent(this, TelaEntrarJogo.class)));
+        icVoltar.setOnClickListener(param -> startActivity(new Intent(this, TelaEntrarJogo.class).putExtra("userId", String.valueOf(jogadorId))));
 
-        icUsuario.setOnClickListener(param -> startActivity(new Intent(this, TelaPerfil.class)));
+        icUsuario.setOnClickListener(param -> startActivity(new Intent(this, TelaPerfil.class).putExtra("userId", String.valueOf(jogadorId))));
     }
 
     public void criarRecyclerView() {
@@ -82,10 +87,10 @@ public class TelaResultados extends AppCompatActivity implements ServiceConnecti
 
         String json = this.message;
         this.jogo = gson.fromJson(json, Match.class);
+        this.jogadorId = Integer.parseInt(getIntent().getStringExtra("userId"));
 
         //Preenche vencedor
-
-        User vencedor = jogo.getPlayers().get(getIntent().getStringExtra("winnerId"));
+        User vencedor = jogo.getPlayers().get(Integer.parseInt(getIntent().getStringExtra("winnerId")));
         vencedor.getAvatar().click(true);
 
         int image = getResources().getIdentifier(vencedor.getAvatar().getImageUrl(), "drawable", getPackageName());
@@ -102,8 +107,8 @@ public class TelaResultados extends AppCompatActivity implements ServiceConnecti
         this.binder.addListener(this);
 
         try {
-            geraJogadores();
-            criarRecyclerView();
+            geraJogadores();        //Busca partida
+            criarRecyclerView();    //Cria lista com os outros jogadores
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -138,4 +143,5 @@ public class TelaResultados extends AppCompatActivity implements ServiceConnecti
     public void onMessage(String message) {
         this.message = message;
     }
+
 }
